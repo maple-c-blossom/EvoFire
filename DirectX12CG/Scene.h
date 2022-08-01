@@ -22,7 +22,6 @@
 #pragma endregion •W€.h include
 
 #pragma region ©ì.h include
-
 #include "Input.h"
 #include "DxWindow.h"
 #include "Dx12.h"
@@ -46,8 +45,6 @@
 #include "Sound.h"
 #include "Collider.h"
 #include "Light.h"
-
-#include "Human.h"
 #pragma endregion ©ì.h include
 
 #pragma region ƒQ[ƒ€Œn.h include

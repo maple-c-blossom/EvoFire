@@ -86,7 +86,7 @@ void MCB::Scene::MatrixUpdate()
 {
     matProjection.UpdataMatrixProjection();
     matView.UpDateMatrixView();
-    Skydorm.Updata(matView, matProjection);
+    Skydorm.MatrixUpdata(matView, matProjection);
 }
 
 MCB::Scene::Scene(RootParameter* root, Depth* depthptr, PipelineRootSignature* pipeline, PipelineRootSignature* pipeline1)

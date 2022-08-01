@@ -136,6 +136,12 @@
     <Filter Include="ヘッダー ファイル\Scene">
       <UniqueIdentifier>{9626c07b-d810-4c3a-a52f-1f3eb218727d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Player">
+      <UniqueIdentifier>{9e977aa8-ea8f-43aa-b1f5-32340a204980}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Player">
+      <UniqueIdentifier>{0c743cc5-87d9-4132-9bf8-fd74b1ada150}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -252,9 +258,6 @@
     <ClCompile Include="Collider.cpp">
       <Filter>ソース ファイル\Engin\3D</Filter>
     </ClCompile>
-    <ClCompile Include="Human.cpp">
-      <Filter>ソース ファイル\Game</Filter>
-    </ClCompile>
     <ClCompile Include="IScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
@@ -268,6 +271,12 @@
       <Filter>ソース ファイル\Engin\3D</Filter>
     </ClCompile>
     <ClCompile Include="LightGroup.cpp">
+      <Filter>ソース ファイル\Engin\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>ソース ファイル\Game\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="FPS.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -409,9 +418,6 @@
     <ClInclude Include="Collider.h">
       <Filter>ヘッダー ファイル\Engin\3D</Filter>
     </ClInclude>
-    <ClInclude Include="Human.h">
-      <Filter>ヘッダー ファイル\Game</Filter>
-    </ClInclude>
     <ClInclude Include="IScene.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
@@ -425,6 +431,12 @@
       <Filter>ヘッダー ファイル\Engin\3D</Filter>
     </ClInclude>
     <ClInclude Include="LightGroup.h">
+      <Filter>ヘッダー ファイル\Engin\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>ヘッダー ファイル\Game\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="FPS.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
