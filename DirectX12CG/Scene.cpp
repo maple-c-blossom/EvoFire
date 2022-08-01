@@ -2,12 +2,12 @@
 
 using namespace MCB;
 using namespace DirectX;
+using namespace std;
 
 MCB::Scene::~Scene()
 {
     soundManager.ReleasexAudio2();
     soundManager.AllDeleteSound();
-    delete skydomeModel;
     delete light;
 }
 
@@ -32,10 +32,13 @@ void MCB::Scene::Initialize()
 
 void MCB::Scene::Object3DInit()
 {
-    Skydorm;
     Skydorm.Init();
-    Skydorm.model = skydomeModel;
+    Skydorm.model = skydomeModel.get();
     Skydorm.scale = { 4,4,4 };
+
+    player.Init();
+    player.model = testBoxModel.get();
+    player.scale = { 4,4,4 };
 }
 
 #pragma endregion 通常変数の初期化
@@ -44,7 +47,8 @@ void MCB::Scene::Object3DInit()
 void MCB::Scene::LoadModel()
 {
 
-	skydomeModel = new Model("skydome");
+	skydomeModel = make_shared<Model>("skydome");
+    testBoxModel = make_shared<Model>("Box");
 }
 
 void MCB::Scene::LoadTexture()
@@ -65,6 +69,10 @@ void MCB::Scene::SpriteInit()
 
 void MCB::Scene::Update()
 {
+
+    player.Update();
+
+
     light->Updata();
     //行列変換
     MatrixUpdate();
@@ -75,7 +83,7 @@ void MCB::Scene::Draw()
     draw.PreDraw(*depth, *obj3dPipelinePtr, clearColor);
     //3Dオブジェクト
     Skydorm.Draw();
-
+    player.Draw();
     //スプライト
     Sprite::SpriteCommonBeginDraw(*spritePipelinePtr);
     debugText.AllDraw();
@@ -87,6 +95,7 @@ void MCB::Scene::MatrixUpdate()
     matProjection.UpdataMatrixProjection();
     matView.UpDateMatrixView();
     Skydorm.MatrixUpdata(matView, matProjection);
+    player.MatrixUpdata(matView, matProjection);
 }
 
 MCB::Scene::Scene(RootParameter* root, Depth* depthptr, PipelineRootSignature* pipeline, PipelineRootSignature* pipeline1)

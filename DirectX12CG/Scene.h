@@ -51,6 +51,7 @@
 
 #include "RayObject.h"
 #include "SphereObj.h"
+#include "Player.h"
 
 #pragma endregion ゲーム系.h include
 
@@ -106,7 +107,8 @@ namespace MCB
 		#pragma region 各種リソース
 		//3Dモデル
 		#pragma region 3Dモデル
-		Model* skydomeModel;
+		std::shared_ptr<Model> skydomeModel;
+		std::shared_ptr<Model> testBoxModel;
 #pragma endregion 3Dモデル
 
 		//テクスチャ
@@ -125,6 +127,7 @@ namespace MCB
 		#pragma region 3Dオブジェクト
 
 		Object3d Skydorm;
+		Player player;
 
 #pragma endregion 3Dオブジェクト
 
