@@ -6,7 +6,8 @@ class Player:public MCB::Object3d
 {
 private:
 	MCB::Input* input = MCB::Input::GetInstance();
-	float speed = 5.0f;
+	float speedFront = 0.0f;
+	float speedRight = 0.0f;
 
 public:
 	void Update();

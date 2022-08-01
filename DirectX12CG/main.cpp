@@ -4,6 +4,7 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include "Scene.h"
+#include "FPS.h"
 using namespace MCB;
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine,
     _In_ int nCmdShow)
@@ -49,7 +50,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     PipelineRootSignature spritePipeline = spritePipeline.CreateSpritePipeline(depth, rootparams);
     Scene scene(&rootparams,&depth ,&obj3dPipeline, &spritePipeline);
     scene.Initialize();
-
+    FPS fpsControll;
+    fpsControll.Initialize(60);
 
 
 
@@ -61,6 +63,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
         if (input->IsKeyDown(DIK_ESCAPE) || dxWindow->breakFlag) break;
         scene.Update();
         scene.Draw();
+        fpsControll.FPSFixed();
     }
 #pragma endregion ƒQ[ƒ€ƒ‹[ƒv
     ShaderResource::DeleteInstace();
