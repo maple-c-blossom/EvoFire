@@ -109,23 +109,16 @@ namespace MCB
 		#pragma region 各種リソース
 		//3Dモデル
 		#pragma region 3Dモデル
-		Model* BoxModel;
-		Model* groundModel;
 		Model* skydomeModel;
 #pragma endregion 3Dモデル
 
 		//テクスチャ
 		#pragma region テクスチャ
-		Texture testTex;
 		Texture debugTextTexture;
-		Texture zoomTex;
-		Texture scopeTex;
 #pragma endregion テクスチャ
 
 		//サウンド
 		#pragma region サウンド
-		int testSound;
-		int test2Sound;
 
 		int volume = 255;
 #pragma endregion サウンド
@@ -133,30 +126,19 @@ namespace MCB
 #pragma endregion 各種リソース
 
 		#pragma region 3Dオブジェクト
-		SimpleFigure triangle;
-		Human human;
-		Object3d ground;
+
 		Object3d Skydorm;
-		Object3d box;
-		RayObject ray;
-		SphereObj sphere;
 
 #pragma endregion 3Dオブジェクト
 
 		#pragma region スプライト
-		Sprite sprite;
-
-		Sprite zoomSprite;
-
-		Sprite scopeSprite;
 
 		DebugText debugText;
 
 #pragma endregion スプライト
 
 		#pragma region 通常変数
-		bool loopFlag = true;
-		bool startPositionReset = true;
+
 #pragma endregion 通常変数
 
 	public:
