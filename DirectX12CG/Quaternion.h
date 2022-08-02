@@ -18,6 +18,7 @@ namespace MCB
 		float Dot(Quaternion a, Quaternion b);
 		float GetAngle(Quaternion a, Quaternion b);
 		Quaternion Slerp(Quaternion start, Quaternion end, int time,int maxTime);
+		Vector3D Vector3DRotasion(Vector3D vec, Quaternion q);
 		Quaternion SetRotationQuaternion(Vector3D rotationAxisVec, Vector3D PositionVec, float angle);
 		Quaternion SetRotationQuaternion(Quaternion rotationQuaternion, Vector3D PositionVec);
 		Quaternion SetRotationQuaternion(Quaternion rotationQuaternion, Quaternion PositionVec);

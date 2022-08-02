@@ -7,7 +7,7 @@ Light* Object3d::light = nullptr;
 
 MCB::Object3d::Object3d()
 {
-    NORM_FRONT_VEC.vec = { 0,0,1 };
+    
     nowFrontVec = NORM_FRONT_VEC;
     //model->material.Init(dx12);
     this->Init();
@@ -26,7 +26,7 @@ MCB::Object3d::~Object3d()
 void Object3d::Init()
 {
     Dx12* dx12 = Dx12::GetInstance();
-    NORM_FRONT_VEC.vec = { 0,0,1 };
+   
     nowFrontVec = NORM_FRONT_VEC;
 
     D3D12_HEAP_PROPERTIES HeapProp{};

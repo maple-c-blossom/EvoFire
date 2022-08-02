@@ -42,7 +42,9 @@ namespace MCB
 		//XMMatrixÇ…ïœä∑Ç∑ÇÈä÷êî
 		DirectX::XMMATRIX MatrixConvertXMMatrix(MCBMatrix mat);
 
-		MCBMatrix MCBMatrixConvertXMMatrix( DirectX::XMMATRIX mat);
+		static MCBMatrix MCBMatrixConvertXMMatrix( DirectX::XMMATRIX mat);
+
+		static Vector3D Vector3DCrossMatrix(MCBMatrix mat, Vector3D vec);
 
 		//MCBMatrix operator*(MCBMatrix matrix);
 		MCBMatrix operator*(float s);

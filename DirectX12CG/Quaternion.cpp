@@ -267,3 +267,15 @@ MCB::Quaternion MCB::Quaternion::Slerp(Quaternion start, Quaternion end, int tim
 	ans.QuaternoinNorm();
 	return ans;
 }
+
+Vector3D  MCB::Quaternion::Vector3DRotasion(Vector3D vec, Quaternion q)
+{
+	Quaternion tempVec = { 0,0,0,0 };
+	Vector3D ans;
+	tempVec = q.SetRotationQuaternion(q, vec);
+	ans.vec.x = tempVec.x;
+	ans.vec.y = tempVec.y;
+	ans.vec.z = tempVec.z;
+	ans.V3Norm();
+	return ans;
+}

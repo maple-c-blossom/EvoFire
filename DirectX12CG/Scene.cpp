@@ -34,7 +34,7 @@ void MCB::Scene::Object3DInit()
 {
     Skydorm.Init();
     Skydorm.model = skydomeModel.get();
-    Skydorm.scale = { 4,4,4 };
+    Skydorm.scale = { 100,100,100 };
 
     player.Init();
     player.model = testBoxModel.get();
@@ -93,9 +93,10 @@ void MCB::Scene::Draw()
 void MCB::Scene::MatrixUpdate()
 {
     matProjection.UpdataMatrixProjection();
+    matView.FollowingFor3DObject(player.position,player.nowFrontVec,{100,50,100},player.UpVec);
     matView.UpDateMatrixView();
     Skydorm.MatrixUpdata(matView, matProjection);
-    player.MatrixUpdata(matView, matProjection);
+    player.MatrixUpdata(matView, matProjection,player.playerQ);
 }
 
 MCB::Scene::Scene(RootParameter* root, Depth* depthptr, PipelineRootSignature* pipeline, PipelineRootSignature* pipeline1)

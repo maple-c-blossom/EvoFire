@@ -1,6 +1,6 @@
 #pragma once
 #include <DirectXMath.h>
-
+#include "Vector3D.h"
 
 namespace MCB
 {
@@ -26,6 +26,8 @@ namespace MCB
         /// ‚·‚Å‚É‚ ‚é•Ï”‚ğ—˜—p‚µ‚Äs—ñ‚ğì¬‚µ‚Ü‚·
         /// </summary>
         void UpDateMatrixView();
+
+        void FollowingFor3DObject(DirectX::XMFLOAT3 position, Vector3D frontVec, Float3 distance, Vector3D UpVec = { 0,1,0 });
     };
 
 }

@@ -223,7 +223,18 @@ MCB::MCBMatrix MCB::MCBMatrix::MCBMatrixConvertXMMatrix(XMMATRIX mat)
 	ans._42 = mat.r[3].m128_f32[1] ;
 	ans._43 = mat.r[3].m128_f32[2] ;
 	ans._44 = mat.r[3].m128_f32[3] ;
-	return MCBMatrix();
+	return ans;
+}
+
+Vector3D MCB::MCBMatrix::Vector3DCrossMatrix(MCBMatrix mat, Vector3D vec)
+{
+	Vector3D temp = vec;
+	MCBMatrix tempm = mat;
+	temp.vec.x = vec.vec.x * tempm._11 + vec.vec.y * tempm._21 + vec.vec.z * tempm._31 + 0 * tempm._41;
+	temp.vec.y = vec.vec.x * tempm._12 + vec.vec.y * tempm._22 + vec.vec.z * tempm._32 + 0 * tempm._42;
+	temp.vec.z = vec.vec.x * tempm._13 + vec.vec.y * tempm._23 + vec.vec.z * tempm._33 + 0 * tempm._43;
+	temp.V3Norm();
+	return temp;
 }
 
 MCB::MCBMatrix MCB::MCBMatrix::operator*(float s)

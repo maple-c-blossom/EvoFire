@@ -49,7 +49,7 @@ namespace MCB
         //ÉèÅ[ÉãÉhçsóÒ
         WorldMatrix matWorld = {};
 
-        Vector3D NORM_FRONT_VEC = {};
+        const Vector3D NORM_FRONT_VEC = {0,0,1};
         Vector3D nowFrontVec = {0,0,1};
         float frontAngle = 0;
 
