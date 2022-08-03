@@ -15,7 +15,7 @@ MCB::Scene::~Scene()
 void MCB::Scene::Initialize()
 {
     matView.CreateMatrixView(XMFLOAT3(0.0f, 0.0f, -10.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 1.0f, 0.0f));
-    matProjection.CreateMatrixProjection(XMConvertToRadians(45.0f), (float)dxWindow->window_width / dxWindow->window_height, 0.1f, 4000.0f);
+    matProjection.CreateMatrixProjection(XMConvertToRadians(45.0f), (float)dxWindow->window_width / dxWindow->window_height, 0.1f, 10000.0f);
     LoadTexture();
     LoadModel();
     LoadSound();
@@ -34,10 +34,11 @@ void MCB::Scene::Object3DInit()
 {
     Skydorm.Init();
     Skydorm.model = skydomeModel.get();
-    Skydorm.scale = { 100,100,100 };
+    Skydorm.scale = { 30,30,30 };
 
     player.Init();
     player.model = testBoxModel.get();
+    player.bulletModel = testSphereModel.get();
     player.scale = { 4,4,4 };
 }
 
@@ -49,6 +50,7 @@ void MCB::Scene::LoadModel()
 
 	skydomeModel = make_shared<Model>("skydome");
     testBoxModel = make_shared<Model>("Box");
+    testSphereModel = make_shared<Model>("sphere");
 }
 
 void MCB::Scene::LoadTexture()
@@ -72,7 +74,10 @@ void MCB::Scene::Update()
 
     player.Update();
 
-
+    if (input->IsMouseDown(input->LEFT))
+    {
+        player.position = { 0,0,0 };
+    }
     light->Updata();
     //行列変換
     MatrixUpdate();
@@ -84,6 +89,8 @@ void MCB::Scene::Draw()
     //3Dオブジェクト
     Skydorm.Draw();
     player.Draw();
+    for (std::unique_ptr<PlayerBullet>& bullet : player.bullets) { bullet->Draw(); }
+    
     //スプライト
     Sprite::SpriteCommonBeginDraw(*spritePipelinePtr);
     debugText.AllDraw();
@@ -97,6 +104,10 @@ void MCB::Scene::MatrixUpdate()
     matView.UpDateMatrixView();
     Skydorm.MatrixUpdata(matView, matProjection);
     player.MatrixUpdata(matView, matProjection,player.playerQ);
+    for (std::unique_ptr<PlayerBullet>& bullet : player.bullets)
+    {
+        bullet->MatrixUpdata(matView, matProjection);
+    }
 }
 
 MCB::Scene::Scene(RootParameter* root, Depth* depthptr, PipelineRootSignature* pipeline, PipelineRootSignature* pipeline1)

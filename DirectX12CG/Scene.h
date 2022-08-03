@@ -95,7 +95,7 @@ namespace MCB
 		//サウンドマネージャー
 		SoundManager soundManager;
 		//クリアカラー
-		float clearColor[4] = { 0.0f,0.25f, 0.5f,0.0f }; // 青っぽい色
+		float clearColor[4] = { 0.0f,0.0f, 0.0f,0.0f }; // 青っぽい色
 #pragma endregion DirectX基礎機能群
 
 		#pragma region 変換行列
@@ -109,6 +109,7 @@ namespace MCB
 		#pragma region 3Dモデル
 		std::shared_ptr<Model> skydomeModel;
 		std::shared_ptr<Model> testBoxModel;
+		std::shared_ptr<Model> testSphereModel;
 #pragma endregion 3Dモデル
 
 		//テクスチャ

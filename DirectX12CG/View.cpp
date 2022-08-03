@@ -60,11 +60,15 @@ void View::UpDateMatrixView()
 
 void MCB::View::FollowingFor3DObject(DirectX::XMFLOAT3 position, Vector3D frontVec, Float3 distance, Vector3D UpVec)
 {
-	target = position;
+	
 
 	eye.x = position.x + (-frontVec.vec.x * distance.x);
-	eye.y = position.y + (-frontVec.vec.y * distance.y) + 25;
+	eye.y = position.y + (-frontVec.vec.y * distance.y);
 	eye.z = position.z + (-frontVec.vec.z * distance.z);
+
+	target.x = position.x;
+	target.y = position.y;
+	target.z = position.z;
 
 	up.x = UpVec.vec.x;
 	up.y = UpVec.vec.y;

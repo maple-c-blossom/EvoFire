@@ -279,6 +279,12 @@
     <ClCompile Include="FPS.cpp">
       <Filter>ソース ファイル\Engin</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerBullet.cpp">
+      <Filter>ソース ファイル\Game\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePad.cpp">
+      <Filter>ソース ファイル\Engin\Input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="ParticleGeometryShader.hlsl">
@@ -438,6 +444,12 @@
     </ClInclude>
     <ClInclude Include="FPS.h">
       <Filter>ヘッダー ファイル\Engin</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerBullet.h">
+      <Filter>ヘッダー ファイル\Game\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePad.h">
+      <Filter>ヘッダー ファイル\Engin\Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
