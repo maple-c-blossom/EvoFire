@@ -10,11 +10,7 @@ void PlayerBullet::VelocityUpdate( MCB::Vector3D targetPosition)
 		velocity.V3Norm();
 		Quaternion velocityQ = { velocity.vec.x,velocity.vec.y,velocity.vec.z,0 };
 		Quaternion toEnemyQ = { toEnemy.vec.x,toEnemy.vec.y,toEnemy.vec.z,0 };
-		if (lifeTime < maxLifeTime - 100)
-		{
-			velocity = toEnemy;
-		}
-		else
+		if (lifeTime < maxLifeTime - 10 && !SlerpStop)
 		{
 			velocityQ = velocityQ.Slerp(velocityQ, toEnemyQ, t, tUpdateMaxTime);
 			velocity.vec = { velocityQ.x,velocityQ.y,velocityQ.z };
@@ -28,6 +24,7 @@ void PlayerBullet::Update()
 	position.x += velocity.vec.x * speedOffSet;
 	position.y += velocity.vec.y * speedOffSet;
 	position.z += velocity.vec.z * speedOffSet;
+	//if(speedOffSet > 0 && maxLifeTime - lifeTime < 60)speedOffSet--;
 	lifeTime++;
 	tUpdateNowTime++;
 	if (tUpdateNowTime >= tUpdateTime)
@@ -50,10 +47,15 @@ void PlayerBullet::BulletHit()
 	deleteFlag = true;
 }
 
+void PlayerBullet::SlerpHit()
+{
+	SlerpStop = true;
+}
+
 void PlayerBullet::Fire(Float3 startPosition, Vector3D frontVec)
 {
 	Init();
-	
+	speedOffSet = 50;
 	position.x = startPosition.x;
 	position.y = startPosition.y;
 	position.z = startPosition.z;

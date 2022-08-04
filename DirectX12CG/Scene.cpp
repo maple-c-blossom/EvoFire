@@ -76,7 +76,8 @@ void MCB::Scene::SpriteInit()
 
 void MCB::Scene::Update()
 {
-
+    if (testEnemy.position.x > 100 || testEnemy.position.x < -100) testEnemySpeed *= -1;
+    testEnemy.position.x += testEnemySpeed;
     player.Update();
     CheckAllColision();
     light->Updata();
@@ -106,6 +107,13 @@ void MCB::Scene::CheckAllColision()
             { testEnemy.position.x,testEnemy.position.y,testEnemy.position.z }, testEnemyR))
         {
             bullet->BulletHit();
+            continue;
+        }
+
+        if (CalcSphere({ bullet.get()->position.x,bullet.get()->position.y,bullet.get()->position.z }, bullet.get()->slerpStopR,
+            { testEnemy.position.x,testEnemy.position.y,testEnemy.position.z }, testEnemyR))
+        {
+            bullet->SlerpHit();
         }
     }
 }

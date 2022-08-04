@@ -109,6 +109,7 @@ Input* MCB::Input::GetInstance()
 
 void MCB::Input::DeleteInstace()
 {
+	GamePad::DeleteInstace();
 	delete Input::GetInstance();
 }
 

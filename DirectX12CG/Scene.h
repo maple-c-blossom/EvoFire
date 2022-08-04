@@ -131,7 +131,8 @@ namespace MCB
 		Object3d Skydorm;
 		Player player;
 		Object3d testEnemy;
-		float testEnemyR;
+		float testEnemyR = 10;
+		float testEnemySpeed = 1;
 
 #pragma endregion 3Dオブジェクト
 
