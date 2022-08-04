@@ -52,6 +52,7 @@
 #include "RayObject.h"
 #include "SphereObj.h"
 #include "Player.h"
+#include "Enemy.h"
 
 #pragma endregion ゲーム系.h include
 
@@ -129,6 +130,8 @@ namespace MCB
 
 		Object3d Skydorm;
 		Player player;
+		Object3d testEnemy;
+		float testEnemyR;
 
 #pragma endregion 3Dオブジェクト
 
@@ -158,6 +161,8 @@ namespace MCB
 		void MatrixUpdate();
 		void Update() override;
 		void Draw() override;
+
+		void CheckAllColision();
 	};
 
 }

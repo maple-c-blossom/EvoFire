@@ -22,9 +22,9 @@ bool MCB::CalcSphere(Sphere sphereA, Sphere sphereB)
 
 bool MCB::CalcSphere(Float3 sphereA, float rudiusA, Float3 sphereB, float rudiusB)
 {
-	int hitX = (sphereA.x - sphereB.x) * (sphereA.x - sphereB.x);
-	int hitY = (sphereA.y - sphereB.y) * (sphereA.y - sphereB.y);
-	int hitZ = (sphereA.z - sphereB.z) * (sphereA.z - sphereB.z);
+	int hitX = (sphereB.x - sphereA.x) * (sphereB.x - sphereA.x);
+	int hitY = (sphereB.y - sphereA.y) * (sphereB.y - sphereA.y);
+	int hitZ = (sphereB.z - sphereA.z) * (sphereB.z - sphereA.z);
 	int hitR = (rudiusB + rudiusA) * (rudiusB + rudiusA);
 	hitX = Abs(hitX);
 	hitY = Abs(hitY);

@@ -1,5 +1,7 @@
 #pragma once
-class Enemy
+#include "Object3d.h"
+
+class Enemy:MCB::Object3d
 {
 };
 

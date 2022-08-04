@@ -28,6 +28,7 @@
     <ClCompile Include="Dx12.cpp" />
     <ClCompile Include="DxWindow.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="exp.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GamePad.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="Dx12.h" />
     <ClInclude Include="DxWindow.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="exp.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GamePad.h" />

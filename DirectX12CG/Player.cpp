@@ -13,6 +13,10 @@ void Player::Update()
 	Attack();
 	for (std::unique_ptr<PlayerBullet>& bullet : bullets)
 	{
+		if (target != nullptr)
+		{
+			bullet->VelocityUpdate({ target->position.x, target->position.y,target->position.z});
+		}
 		bullet->Update();
 	}
 	bullets.remove_if([](std::unique_ptr<PlayerBullet>& bullet) {return bullet->deleteFlag; });
@@ -219,6 +223,11 @@ void Player::GetSPAttack()
 		bombCount++;
 	}
 
+}
+
+void Player::SetTarget(Object3d* target)
+{
+	this->target = target;
 }
 
 

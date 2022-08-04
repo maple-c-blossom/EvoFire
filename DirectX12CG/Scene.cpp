@@ -40,6 +40,11 @@ void MCB::Scene::Object3DInit()
     player.model = testBoxModel.get();
     player.bulletModel = testSphereModel.get();
     player.scale = { 4,4,4 };
+    player.SetTarget(&testEnemy);
+
+    testEnemy.Init();
+    testEnemy.model = testBoxModel.get();
+    testEnemy.scale = { 6,6,6 };
 }
 
 #pragma endregion 通常変数の初期化
@@ -73,11 +78,7 @@ void MCB::Scene::Update()
 {
 
     player.Update();
-
-    if (input->IsMouseDown(input->LEFT))
-    {
-        player.position = { 0,0,0 };
-    }
+    CheckAllColision();
     light->Updata();
     //行列変換
     MatrixUpdate();
@@ -90,11 +91,23 @@ void MCB::Scene::Draw()
     Skydorm.Draw();
     player.Draw();
     for (std::unique_ptr<PlayerBullet>& bullet : player.bullets) { bullet->Draw(); }
-    
+    testEnemy.Draw();
     //スプライト
     Sprite::SpriteCommonBeginDraw(*spritePipelinePtr);
     debugText.AllDraw();
     draw.PostDraw();
+}
+
+void MCB::Scene::CheckAllColision()
+{
+    for (std::unique_ptr<PlayerBullet>& bullet : player.bullets)
+    {
+        if (CalcSphere({ bullet.get()->position.x,bullet.get()->position.y,bullet.get()->position.z }, bullet.get()->r,
+            { testEnemy.position.x,testEnemy.position.y,testEnemy.position.z }, testEnemyR))
+        {
+            bullet->BulletHit();
+        }
+    }
 }
 
 void MCB::Scene::MatrixUpdate()
@@ -104,6 +117,7 @@ void MCB::Scene::MatrixUpdate()
     matView.UpDateMatrixView();
     Skydorm.MatrixUpdata(matView, matProjection);
     player.MatrixUpdata(matView, matProjection,player.playerQ);
+    testEnemy.MatrixUpdata(matView, matProjection);
     for (std::unique_ptr<PlayerBullet>& bullet : player.bullets)
     {
         bullet->MatrixUpdata(matView, matProjection);
