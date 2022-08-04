@@ -9,8 +9,8 @@ void Player::Update()
 {
 	Rotasion();
 	Move();
+	GetSPAttack();
 	Attack();
-
 	for (std::unique_ptr<PlayerBullet>& bullet : bullets)
 	{
 		bullet->Update();
@@ -203,6 +203,25 @@ void Player::Attack()
 		bullets.push_back(std::move(bullet));
 	}
 }
+
+void Player::GetSPAttack()
+{
+	if (exp % 20 == 0 && homingMissileCount < maxHomingMissileCount)
+	{
+		homingMissileCount++;
+	}
+	if (exp % 40 == 0 && laserCount < maxLaserCount)
+	{
+		laserCount++;
+	}
+	if (exp % 60 == 0 && bombCount < maxBombCount)
+	{
+		bombCount++;
+	}
+
+}
+
+
 
 
 //自由に飛び回るタイプ

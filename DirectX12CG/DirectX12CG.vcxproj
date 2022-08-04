@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="DebugText.cpp" />
     <ClCompile Include="Depth.cpp" />
@@ -26,6 +27,8 @@
     <ClCompile Include="Draw.cpp" />
     <ClCompile Include="Dx12.cpp" />
     <ClCompile Include="DxWindow.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="exp.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GamePad.cpp" />
     <ClCompile Include="IScene.cpp" />
@@ -142,6 +145,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Boss.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="DebugText.h" />
     <ClInclude Include="Depth.h" />
@@ -149,6 +153,8 @@
     <ClInclude Include="Draw.h" />
     <ClInclude Include="Dx12.h" />
     <ClInclude Include="DxWindow.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="exp.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GamePad.h" />
     <ClInclude Include="IScene.h" />

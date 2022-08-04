@@ -142,6 +142,12 @@
     <Filter Include="ヘッダー ファイル\Game\Player">
       <UniqueIdentifier>{0c743cc5-87d9-4132-9bf8-fd74b1ada150}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Enemy">
+      <UniqueIdentifier>{6e50a960-5072-43a5-bdaf-b0e1b83ca02a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Enemy">
+      <UniqueIdentifier>{90da33e6-9c38-4a5a-a8b8-a715caf4676e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -284,6 +290,15 @@
     </ClCompile>
     <ClCompile Include="GamePad.cpp">
       <Filter>ソース ファイル\Engin\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="exp.cpp">
+      <Filter>ソース ファイル\Game\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>ソース ファイル\Game\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>ソース ファイル\Game\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -450,6 +465,15 @@
     </ClInclude>
     <ClInclude Include="GamePad.h">
       <Filter>ヘッダー ファイル\Engin\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>ヘッダー ファイル\Game\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="exp.h">
+      <Filter>ヘッダー ファイル\Game\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h">
+      <Filter>ヘッダー ファイル\Game\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

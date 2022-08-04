@@ -7,12 +7,24 @@ class Player:public MCB::Object3d
 {
 private:
 	MCB::Input* input = MCB::Input::GetInstance();
+	Sphere playerColSphere;
 	float speedFront = 0.0f;
 	float speedRight = 0.0f;
 	float rotasionSpeed = 0.025f;
-	float speed = 1.0f;
+	float speed = 2.0f;
 	float Srowspeed = 0.25f;
 	float maxspeed = 15.0f;
+
+	int homingMissileCount = 0;
+	int laserCount = 0;
+	int bombCount = 0;
+
+	const int maxHomingMissileCount = 3;
+	const int maxLaserCount = 2;
+	const int maxBombCount = 1;
+
+	int exp = 0;
+
 public:
 	MCB::Model* bulletModel = nullptr;
 	std::list<std::unique_ptr<PlayerBullet>> bullets;
@@ -23,5 +35,7 @@ public:
 	void Move();
 	void Rotasion();
 	void Attack();
+	void GetSPAttack();
+
 };
 
