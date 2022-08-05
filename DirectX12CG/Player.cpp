@@ -134,33 +134,33 @@ void Player::Rotasion()
 			PitchQ.SetRota(rightVec, angle.x);
 		}
 
-		if (input->IsKeyDown(DIK_RIGHT) || input->IsKeyDown(DIK_LEFT) || 
-			input->gamePad->LTrriger.y || input->gamePad->RTrriger.y)
-		{
-			if (input->IsKeyDown(DIK_RIGHT))
-			{
-				angle.z += rotasionSpeed;
-			}
+		//if (input->IsKeyDown(DIK_RIGHT) || input->IsKeyDown(DIK_LEFT) || 
+		//	input->gamePad->LTrriger.y || input->gamePad->RTrriger.y)
+		//{
+		//	if (input->IsKeyDown(DIK_RIGHT))
+		//	{
+		//		angle.z += rotasionSpeed;
+		//	}
 
-			if (input->IsKeyDown(DIK_LEFT))
-			{
-				angle.z -= rotasionSpeed;
-			}
+		//	if (input->IsKeyDown(DIK_LEFT))
+		//	{
+		//		angle.z -= rotasionSpeed;
+		//	}
 
-			if (input->gamePad->RTrriger.y)
-			{
-				float angleSpeed = input->gamePad->RTrriger.y * rotasionSpeed;
-				angle.z += angleSpeed;
-			}
+		//	if (input->gamePad->RTrriger.y)
+		//	{
+		//		float angleSpeed = input->gamePad->RTrriger.y * rotasionSpeed;
+		//		angle.z += angleSpeed;
+		//	}
 
-			if (input->gamePad->LTrriger.y)
-			{
-				float angleSpeed = input->gamePad->LTrriger.y * rotasionSpeed;
-				angle.z -= angleSpeed;
-			}
+		//	if (input->gamePad->LTrriger.y)
+		//	{
+		//		float angleSpeed = input->gamePad->LTrriger.y * rotasionSpeed;
+		//		angle.z -= angleSpeed;
+		//	}
 
-			RollQ.SetRota(nowFrontVec, angle.z);
-		}
+		//	RollQ.SetRota(nowFrontVec, angle.z);
+		//}
 
 		if (input->IsKeyDown(DIK_E) || input->IsKeyDown(DIK_Q) || input->gamePad->RStick.x)
 		{
@@ -197,7 +197,8 @@ void Player::Rotasion()
 
 void Player::Attack()
 {
-	if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_X))
+	attackTime++;
+	if ((input->IsKeyDown(DIK_SPACE) || input->gamePad->IsButtonDown(GAMEPAD_X)) && attackTime >= attackResponceTime)
 	{
 		std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
 		bullet->Fire({ position.x,position.y,position.z }, nowFrontVec,target);
@@ -205,6 +206,7 @@ void Player::Attack()
 		bullet->scale = {6,6,6};
 		bullet->rotasion = rotasion;
 		bullets.push_back(std::move(bullet));
+		attackTime = 0;
 	}
 }
 

@@ -63,7 +63,7 @@ void MCB::View::FollowingFor3DObject(DirectX::XMFLOAT3 position, Vector3D frontV
 	
 
 	eye.x = position.x + (-frontVec.vec.x * distance.x);
-	eye.y = position.y + (-frontVec.vec.y * distance.y);
+	eye.y = position.y + (-frontVec.vec.y * distance.y) + 30;
 	eye.z = position.z + (-frontVec.vec.z * distance.z);
 
 	target.x = position.x;

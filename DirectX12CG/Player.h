@@ -23,7 +23,8 @@ private:
 	const int maxBombCount = 1;
 	int exp = 0;
 	Object3d* target;
-
+	int attackTime = 0;
+	int attackResponceTime = 20;
 
 public:
 	float r = 10;
