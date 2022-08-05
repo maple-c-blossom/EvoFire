@@ -26,6 +26,7 @@ private:
 
 
 public:
+	float r = 10;
 	MCB::Model* bulletModel = nullptr;
 	std::list<std::unique_ptr<PlayerBullet>> bullets;
 	MCB::Quaternion playerQ = {0,0,0,1};

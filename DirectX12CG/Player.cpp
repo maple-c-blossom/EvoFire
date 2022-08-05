@@ -15,7 +15,7 @@ void Player::Update()
 	{
 		if (target != nullptr)
 		{
-			bullet->VelocityUpdate({ target->position.x, target->position.y,target->position.z});
+			bullet->VelocityUpdate();
 		}
 		bullet->Update();
 	}
@@ -200,7 +200,7 @@ void Player::Attack()
 	if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_X))
 	{
 		std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
-		bullet->Fire({ position.x,position.y,position.z }, nowFrontVec);
+		bullet->Fire({ position.x,position.y,position.z }, nowFrontVec,target);
 		bullet->model = bulletModel;
 		bullet->scale = {6,6,6};
 		bullet->rotasion = rotasion;

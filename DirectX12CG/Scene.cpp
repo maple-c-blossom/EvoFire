@@ -76,9 +76,13 @@ void MCB::Scene::SpriteInit()
 
 void MCB::Scene::Update()
 {
-    if (testEnemy.position.x > 100 || testEnemy.position.x < -100) testEnemySpeed *= -1;
-    testEnemy.position.x += testEnemySpeed;
+    if (input->IsKeyTrigger(DIK_P))
+    {
+        enemys.enemyPop(&player, { (float)GetRand(-20,20),(float)GetRand(-20,20),(float)GetRand(-20,20) }, testBoxModel.get(), testSphereModel.get());
+        player.SetTarget(enemys.enemys.begin()->get());
+    }
     player.Update();
+    enemys.Update();
     CheckAllColision();
     light->Updata();
     //行列変換
@@ -92,7 +96,7 @@ void MCB::Scene::Draw()
     Skydorm.Draw();
     player.Draw();
     for (std::unique_ptr<PlayerBullet>& bullet : player.bullets) { bullet->Draw(); }
-    testEnemy.Draw();
+    enemys.Draw();
     //スプライト
     Sprite::SpriteCommonBeginDraw(*spritePipelinePtr);
     debugText.AllDraw();
@@ -101,19 +105,45 @@ void MCB::Scene::Draw()
 
 void MCB::Scene::CheckAllColision()
 {
+
+    //敵と自弾の当たり判定
     for (std::unique_ptr<PlayerBullet>& bullet : player.bullets)
     {
-        if (CalcSphere({ bullet.get()->position.x,bullet.get()->position.y,bullet.get()->position.z }, bullet.get()->r,
-            { testEnemy.position.x,testEnemy.position.y,testEnemy.position.z }, testEnemyR))
+        for (std::unique_ptr<Enemy>& enemy : enemys.enemys)
         {
-            bullet->BulletHit();
-            continue;
-        }
+            if (CalcSphere({ bullet.get()->position.x,bullet.get()->position.y,bullet.get()->position.z }, bullet.get()->r,
+                { enemy->position.x,enemy->position.y,enemy->position.z }, enemy->r))
+            {
+                bullet->BulletHit();
+                enemy->Deth();
+                player.SetTarget(nullptr);
+                continue;
+            }
 
-        if (CalcSphere({ bullet.get()->position.x,bullet.get()->position.y,bullet.get()->position.z }, bullet.get()->slerpStopR,
-            { testEnemy.position.x,testEnemy.position.y,testEnemy.position.z }, testEnemyR))
+            if (CalcSphere({ bullet.get()->position.x,bullet.get()->position.y,bullet.get()->position.z }, bullet.get()->slerpStopR,
+                { testEnemy.position.x,testEnemy.position.y,testEnemy.position.z }, testEnemyR))
+            {
+                bullet->SlerpHit();
+            }
+        }
+    }
+
+    for (std::unique_ptr<Enemy>& enemy : enemys.enemys)
+    {
+        for (std::unique_ptr<EnemyBullet>& bullet : enemy->bullets)
         {
-            bullet->SlerpHit();
+            if (CalcSphere({ bullet->position.x,bullet->position.y,bullet->position.z }, bullet->r,
+                { player.position.x,player.position.y,player.position.z }, player.r))
+            {
+                bullet->BulletHit();
+                continue;
+            }
+
+            if (CalcSphere({ bullet->position.x,bullet->position.y,bullet->position.z }, bullet->slerpStopR,
+                { player.position.x,player.position.y,player.position.z }, player.r))
+            {
+                bullet->SlerpHit();
+            }
         }
     }
 }
@@ -125,7 +155,7 @@ void MCB::Scene::MatrixUpdate()
     matView.UpDateMatrixView();
     Skydorm.MatrixUpdata(matView, matProjection);
     player.MatrixUpdata(matView, matProjection,player.playerQ);
-    testEnemy.MatrixUpdata(matView, matProjection);
+    enemys.UpdateMatrix(matView, matProjection);
     for (std::unique_ptr<PlayerBullet>& bullet : player.bullets)
     {
         bullet->MatrixUpdata(matView, matProjection);

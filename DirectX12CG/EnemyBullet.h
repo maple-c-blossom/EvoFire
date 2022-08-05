@@ -1,11 +1,9 @@
 #pragma once
 #include "Object3d.h"
-#include "Collider.h"
 
-class PlayerBullet :public MCB::Object3d
+class EnemyBullet: public MCB::Object3d
 {
 private:
-	static const int BULLET_NUM = 3;
 	int damage = 1;
 	MCB::Vector3D velocity = {};
 	float speedOffSet = 5;
@@ -19,7 +17,7 @@ public:
 	int tUpdateTime = 5;
 	int tUpdateNowTime = 0;
 	float r = 10;
-	float slerpStopR = 15 + r;
+	float slerpStopR = 30 + r;
 	bool deleteFlag = false;
 	bool SlerpStop = false;
 	void VelocityUpdate();
@@ -28,3 +26,4 @@ public:
 	void SlerpHit();
 	void Fire(MCB::Float3 startPosition, MCB::Vector3D frontVec, Object3d* target);
 };
+

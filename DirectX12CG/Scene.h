@@ -52,7 +52,7 @@
 #include "RayObject.h"
 #include "SphereObj.h"
 #include "Player.h"
-#include "Enemy.h"
+#include "EnemyManager.h"
 
 #pragma endregion ゲーム系.h include
 
@@ -133,6 +133,7 @@ namespace MCB
 		Object3d testEnemy;
 		float testEnemyR = 10;
 		float testEnemySpeed = 1;
+		EnemyManager enemys;
 
 #pragma endregion 3Dオブジェクト
 

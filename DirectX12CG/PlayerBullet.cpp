@@ -2,10 +2,12 @@
 #include "Quaternion.h"
 using namespace MCB;
 
-void PlayerBullet::VelocityUpdate( MCB::Vector3D targetPosition)
+void PlayerBullet::VelocityUpdate()
 {
+		if (target == nullptr) return;
+		Float3 targetposition = { target->position.x,target->position.y,target->position.z };
 		Vector3D toEnemy;
-		toEnemy = toEnemy.V3Get({ position.x,position.y,position.z }, targetPosition.vec);
+		toEnemy = toEnemy.V3Get({ position.x,position.y,position.z }, targetposition);
 		toEnemy.V3Norm();
 		velocity.V3Norm();
 		Quaternion velocityQ = { velocity.vec.x,velocity.vec.y,velocity.vec.z,0 };
@@ -52,7 +54,7 @@ void PlayerBullet::SlerpHit()
 	SlerpStop = true;
 }
 
-void PlayerBullet::Fire(Float3 startPosition, Vector3D frontVec)
+void PlayerBullet::Fire(Float3 startPosition, Vector3D frontVec,Object3d* target)
 {
 	Init();
 	speedOffSet = 50;
@@ -60,4 +62,5 @@ void PlayerBullet::Fire(Float3 startPosition, Vector3D frontVec)
 	position.y = startPosition.y;
 	position.z = startPosition.z;
 	velocity = frontVec;
+	this->target = target;
 }
