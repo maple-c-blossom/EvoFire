@@ -25,6 +25,10 @@ private:
 	Object3d* target;
 	int attackTime = 0;
 	int attackResponceTime = 20;
+	int Level = 1;
+	int nextLevelExp = 20;
+	int maxhp = 20;
+	int hp = maxhp;
 
 public:
 	float r = 10;
@@ -33,12 +37,14 @@ public:
 	MCB::Quaternion playerQ = {0,0,0,1};
 	MCB::Vector3D rightVec;
 	MCB::Vector3D UpVec;
+	void PlayerInit();
 	void Update();
 	void Move();
 	void Rotasion();
 	void Attack();
 	void GetSPAttack();
 	void SetTarget(Object3d* target);
-
+	void GetExp(int expPoint);
+	void LevelUp();
 };
 

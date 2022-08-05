@@ -40,7 +40,7 @@ void MCB::Scene::Object3DInit()
     player.model = testBoxModel.get();
     player.bulletModel = testSphereModel.get();
     player.scale = { 4,4,4 };
-    player.SetTarget(&testEnemy);
+    player.PlayerInit();
 
     testEnemy.Init();
     testEnemy.model = testBoxModel.get();

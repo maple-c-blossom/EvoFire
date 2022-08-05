@@ -2,6 +2,8 @@
 
 using namespace MCB;
 
+
+
 void MCB::FPS::Initialize(unsigned int FPS)
 {
 	MIN_FREAM_TIME = 1.0f / FPS;

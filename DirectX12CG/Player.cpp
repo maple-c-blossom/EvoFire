@@ -5,6 +5,33 @@
 using namespace MCB;
 using namespace std;
 
+void Player::PlayerInit()
+{
+	speedFront = 0.0f;
+	speedRight = 0.0f;
+	rotasionSpeed = 0.025f;
+	speed = 2.0f;
+	Srowspeed = 0.25f;
+	maxspeed = 15.0f;
+	homingMissileCount = 0;
+	laserCount = 0;
+	bombCount = 0;
+	exp = 0;
+	target = nullptr;
+	attackTime = 0;
+	attackResponceTime = 20;
+	Level = 1;
+	nextLevelExp = 20;
+	maxhp = 20;
+	hp = maxhp;
+	r = 10;
+	for (std::unique_ptr<PlayerBullet>& bullet : bullets)
+	{
+		bullet->deleteFlag = true;
+	}
+	bullets.remove_if([](std::unique_ptr<PlayerBullet>& bullet) {return bullet->deleteFlag; });
+}
+
 void Player::Update()
 {
 	Rotasion();
@@ -230,6 +257,23 @@ void Player::GetSPAttack()
 void Player::SetTarget(Object3d* target)
 {
 	this->target = target;
+}
+
+void Player::GetExp(int expPoint)
+{
+	exp += expPoint;
+}
+
+void Player::LevelUp()
+{
+	if (exp >= nextLevelExp)
+	{
+		exp = 0;
+		Level++;
+		maxhp = Level * 20;
+		hp = maxhp;
+		nextLevelExp = nextLevelExp * 20;
+	}
 }
 
 

@@ -5,6 +5,7 @@
 #include <mmsystem.h>
 #pragma comment(lib,"winmm.lib")
 
+
 namespace MCB
 {
 	class FPS
@@ -16,6 +17,7 @@ namespace MCB
 		LARGE_INTEGER timeFreq;
 		float fps = 0;
 	public:
+		FPS() {};
 		void Initialize(unsigned int fps);
 		void FPSFixed();
 	};

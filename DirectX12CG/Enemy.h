@@ -2,6 +2,7 @@
 #include "Object3d.h"
 #include "EnemyBullet.h"
 
+
 class Enemy: public MCB::Object3d
 {
 private:
@@ -14,7 +15,7 @@ private:
 
 	int attackResponse = 60;
 	int attacktime = 0;
-
+	int expPoint = 1;
 	float Angle = 0;
 	Object3d* target;
 public:

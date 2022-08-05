@@ -31,14 +31,18 @@
     <ClCompile Include="EnemyBullet.cpp" />
     <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="exp.cpp" />
-    <ClCompile Include="FPS.cpp" />
+    <ClCompile Include="FPS.cpp">
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MaxSpeed</Optimization>
+    </ClCompile>
     <ClCompile Include="GamePad.cpp" />
     <ClCompile Include="IScene.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightGroup.cpp" />
     <ClCompile Include="MCBFloat.cpp" />
     <ClCompile Include="Input.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="main.cpp">
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MaxSpeed</Optimization>
+    </ClCompile>
     <ClCompile Include="MCBMatrix.cpp" />
     <ClCompile Include="MipMap.cpp" />
     <ClCompile Include="Object3d.cpp" />
@@ -327,6 +331,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <Optimization>MaxSpeed</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
