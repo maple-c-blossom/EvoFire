@@ -16,9 +16,16 @@ namespace MCB
 		LARGE_INTEGER timeEnd;
 		LARGE_INTEGER timeFreq;
 		float fps = 0;
+
+		DWORD prev_time = timeGetTime();	// 前回の時間
+		int frame_count = 0;		// フレームカウント
+		DWORD now_time = timeGetTime();		// 今回のフレームの時間
+		int nowFps = 0;
 	public:
-		FPS() {};
 		void Initialize(unsigned int fps);
 		void FPSFixed();
+
+		int GetFPS();
+
 	};
 }

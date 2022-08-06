@@ -52,7 +52,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     scene.Initialize();
     FPS fpsControll;
     fpsControll.Initialize(60);
-
+    scene.fps = &fpsControll;
 
 
 #pragma region ゲームループ
@@ -63,6 +63,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
         if (input->IsKeyDown(DIK_ESCAPE) || dxWindow->breakFlag) break;
         scene.Update();
         scene.Draw();
+        fpsControll.GetFPS();
         fpsControll.FPSFixed();
     }
 #pragma endregion ゲームループ

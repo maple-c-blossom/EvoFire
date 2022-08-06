@@ -54,4 +54,5 @@ void EnemyBullet::Fire(Float3 startPosition, Vector3D frontVec, Object3d* target
 	position.z = startPosition.z;
 	velocity = frontVec;
 	this->target = target;
+	lifeTime = 0;
 }

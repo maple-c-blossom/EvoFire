@@ -42,9 +42,6 @@ void MCB::Scene::Object3DInit()
     player.scale = { 4,4,4 };
     player.PlayerInit();
 
-    testEnemy.Init();
-    testEnemy.model = testBoxModel.get();
-    testEnemy.scale = { 6,6,6 };
 }
 
 #pragma endregion 通常変数の初期化
@@ -60,7 +57,8 @@ void MCB::Scene::LoadModel()
 
 void MCB::Scene::LoadTexture()
 {
-	debugTextTexture.CreateTexture(L"Resources\\debugfont.png");
+    debugTextTexture = make_shared<Texture>();
+    debugTextTexture->CreateTexture(L"Resources\\debugfont.png");
 }
 
 void MCB::Scene::LoadSound()
@@ -69,7 +67,8 @@ void MCB::Scene::LoadSound()
 
 void MCB::Scene::SpriteInit()
 {
-    debugText.Init(&debugTextTexture);
+    debugText.Init(debugTextTexture.get());
+    
 
 }
 #pragma endregion 各種リソースの読み込みと初期化
@@ -99,6 +98,7 @@ void MCB::Scene::Draw()
     enemys.Draw();
     //スプライト
     Sprite::SpriteCommonBeginDraw(*spritePipelinePtr);
+    debugText.Print(20, 20,2, "fps:%d",fps->GetFPS());
     debugText.AllDraw();
     draw.PostDraw();
 }
@@ -121,7 +121,7 @@ void MCB::Scene::CheckAllColision()
             }
 
             if (CalcSphere({ bullet.get()->position.x,bullet.get()->position.y,bullet.get()->position.z }, bullet.get()->slerpStopR,
-                { testEnemy.position.x,testEnemy.position.y,testEnemy.position.z }, testEnemyR))
+                { enemy->position.x,enemy->position.y,enemy->position.z }, enemy->r))
             {
                 bullet->SlerpHit();
             }

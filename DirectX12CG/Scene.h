@@ -45,6 +45,7 @@
 #include "Sound.h"
 #include "Collider.h"
 #include "Light.h"
+#include "FPS.h"
 #pragma endregion 自作.h include
 
 #pragma region ゲーム系.h include
@@ -53,6 +54,7 @@
 #include "SphereObj.h"
 #include "Player.h"
 #include "EnemyManager.h"
+#include "exp.h"
 
 #pragma endregion ゲーム系.h include
 
@@ -115,7 +117,7 @@ namespace MCB
 
 		//テクスチャ
 		#pragma region テクスチャ
-		Texture debugTextTexture;
+		std::shared_ptr <Texture> debugTextTexture;
 #pragma endregion テクスチャ
 
 		//サウンド
@@ -130,17 +132,15 @@ namespace MCB
 
 		Object3d Skydorm;
 		Player player;
-		Object3d testEnemy;
-		float testEnemyR = 10;
-		float testEnemySpeed = 1;
 		EnemyManager enemys;
+		
 
 #pragma endregion 3Dオブジェクト
 
 		#pragma region スプライト
 
 		DebugText debugText;
-
+		Sprite test;
 #pragma endregion スプライト
 
 		#pragma region 通常変数
@@ -151,6 +151,7 @@ namespace MCB
 		Scene(RootParameter* root,Depth* depth, PipelineRootSignature* pipeline, PipelineRootSignature* pipeline1);
 		~Scene();
 		void Initialize() override;
+		FPS* fps = nullptr;
 
 		//各初期化系関数群--------------------
 		void LoadModel()  override;

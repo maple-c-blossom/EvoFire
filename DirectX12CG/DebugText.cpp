@@ -5,6 +5,7 @@ void MCB::DebugText::Init(Texture* texture)
 	for (int i = 0; maxCharCount > i; i++)
 	{
 		sprite[i] = sprite[i].CreateSprite();
+		sprite[i].InitMatProje();
 	}
 	debugfont = texture;
 	dx12 = Dx12::GetInstance();
