@@ -8,13 +8,14 @@ public:
 	float speed = 0;
 	float startSpeed;
 	int time = 0;
-	int maxTime = 20;
+	int maxTime = 40;
 	bool deleteFlag = false;
 	MCB::Vector3D velosity;
-	void Init(float Speed, MCB::Float3 position,MCB::Vector3D velosity);
+	void ExpInit(float Speed, MCB::Float3 position,MCB::Vector3D velosity);
 	void Update();
 	void ExpDraw();
 	void GetExp();
+
 
 };
 

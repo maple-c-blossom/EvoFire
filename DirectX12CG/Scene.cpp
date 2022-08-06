@@ -82,6 +82,13 @@ void MCB::Scene::Update()
     }
     player.Update();
     enemys.Update();
+
+    for (std::unique_ptr<Exp>& exp : exps)
+    {
+        exp->Update();
+    }
+    exps.remove_if([](std::unique_ptr<Exp>& exp) {return exp->deleteFlag; });
+
     CheckAllColision();
     light->Updata();
     //行列変換
@@ -96,9 +103,13 @@ void MCB::Scene::Draw()
     player.Draw();
     for (std::unique_ptr<PlayerBullet>& bullet : player.bullets) { bullet->Draw(); }
     enemys.Draw();
+    for (std::unique_ptr<Exp>& exp : exps) { exp->ExpDraw(); }
     //スプライト
     Sprite::SpriteCommonBeginDraw(*spritePipelinePtr);
     debugText.Print(20, 20,2, "fps:%d",fps->GetFPS());
+    if(exps.size() > 0) debugText.Print(20, 40, 2, "positin:%f,%f,%f", 
+                        exps.begin()->get()->position.x, exps.begin()->get()->position.y,
+                        exps.begin()->get()->position.z);
     debugText.AllDraw();
     draw.PostDraw();
 }
@@ -116,6 +127,18 @@ void MCB::Scene::CheckAllColision()
             {
                 bullet->BulletHit();
                 enemy->Deth();
+                for (int i = 0; i < 10; i++)
+                {
+                    std::unique_ptr<Exp> exp = make_unique<Exp>();
+                    exp->Init();
+                    exp->model = testBoxModel.get();
+                    exp->scale = { 2,2,2 };
+                    exp->ExpInit(GetRand(0, 10), 
+                        { enemy->position.x,enemy->position.y,enemy->position.z },
+                        { (float)GetRand(-1000, 1000) / 1000.0f,(float)GetRand(-1000,1000) / 1000.0f,
+                        (float)GetRand(-1000,1000) / 1000.0f });
+                    exps.push_back(std::move(exp));
+                }
                 player.SetTarget(nullptr);
                 continue;
             }
@@ -125,6 +148,8 @@ void MCB::Scene::CheckAllColision()
             {
                 bullet->SlerpHit();
             }
+
+
         }
     }
 
@@ -146,6 +171,15 @@ void MCB::Scene::CheckAllColision()
             }
         }
     }
+
+    for (std::unique_ptr<Exp>& exp : exps)
+    {
+        if (CalcSphere({ exp->position.x,exp->position.y,exp->position.z }, exp->rudius + 100,
+            { player.position.x,player.position.y,player.position.z }, player.r))
+        {
+            exp->GetExp();
+        }
+    }
 }
 
 void MCB::Scene::MatrixUpdate()
@@ -159,6 +193,10 @@ void MCB::Scene::MatrixUpdate()
     for (std::unique_ptr<PlayerBullet>& bullet : player.bullets)
     {
         bullet->MatrixUpdata(matView, matProjection);
+    }
+    for (std::unique_ptr<Exp>& exp : exps)
+    {
+        exp->MatrixUpdata(matView, matProjection);
     }
 }
 

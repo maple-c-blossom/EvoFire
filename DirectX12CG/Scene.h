@@ -133,7 +133,7 @@ namespace MCB
 		Object3d Skydorm;
 		Player player;
 		EnemyManager enemys;
-		
+		std::list<std::unique_ptr<Exp>> exps;
 
 #pragma endregion 3Dオブジェクト
 
