@@ -111,9 +111,10 @@ void MCB::Scene::Draw()
                         exps.begin()->get()->position.x, exps.begin()->get()->position.y,
                         exps.begin()->get()->position.z);
 
-    debugText.Print(20, 60, 2, "Ppositin:%f,%f,%f",
-        player.position.x, player.position.y,
-        player.position.z);
+    debugText.Print(20, 60, 2, "exp:float->%f int->%d,NextLevelExp:%d,Level:%d",player.exp, (int)player.exp / 1,
+                    player.nextLevelExp,player.Level);
+    debugText.Print(20, 80, 2, "homingMissileCount:%d laserCount:%d bombCount;%d", player.homingMissileCount,
+        player.laserCount,player.bombCount);
     debugText.AllDraw();
     draw.PostDraw();
 }
@@ -131,17 +132,10 @@ void MCB::Scene::CheckAllColision()
             {
                 bullet->BulletHit();
                 enemy->Deth();
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < 20; i++)
                 {
-                    std::unique_ptr<Exp> exp = make_unique<Exp>();
-                    exp->Init();
-                    exp->model = testBoxModel.get();
-                    exp->scale = { 2,2,2 };
-                    exp->ExpInit(GetRand(0, 10), 
-                        { enemy->position.x,enemy->position.y,enemy->position.z },
-                        { (float)GetRand(-1000, 1000) / 1000.0f,(float)GetRand(-1000,1000) / 1000.0f,
-                        (float)GetRand(-1000,1000) / 1000.0f },&player);
-                    exps.push_back(std::move(exp));
+                    Sporn({ enemy->position.x,enemy->position.y,enemy->position.z }, enemy->expPoint);
+                    DeleteExp();
                 }
                 player.SetTarget(nullptr);
                 continue;
@@ -182,10 +176,17 @@ void MCB::Scene::CheckAllColision()
             { player.position.x,player.position.y,player.position.z }, player.r))
         {
             exp->GetExp();
+            player.GetExp(exp->expPoint);
             continue;
         }
 
-        if (CalcSphere({ exp->position.x,exp->position.y,exp->position.z }, exp->rudius + 1000,
+        if (CalcSphere({ exp->position.x,exp->position.y,exp->position.z }, exp->slerpStopR,
+            { player.position.x,player.position.y,player.position.z }, player.r))
+        {
+            exp->StopSlerp();
+        }
+
+        if (CalcSphere({ exp->position.x,exp->position.y,exp->position.z }, exp->approachR,
             { player.position.x,player.position.y,player.position.z }, player.r))
         {
             exp->ExpApproach();
@@ -219,3 +220,29 @@ MCB::Scene::Scene(RootParameter* root, Depth* depthptr, PipelineRootSignature* p
     depth = depthptr;
 }
 
+void MCB::Scene::Sporn(Float3 enemyPos,float expPoint)
+{
+    std::unique_ptr<Exp> exp = make_unique<Exp>();
+    exp->Init();
+    exp->model = testBoxModel.get();
+    exp->scale = { 2,2,2 };
+    exp->ExpInit(GetRand(0, 10),
+        { enemyPos.x,enemyPos.y,enemyPos.z },
+        { (float)GetRand(-1000, 1000) / 1000.0f,(float)GetRand(-1000,1000) / 1000.0f,
+        (float)GetRand(-1000,1000) / 1000.0f }, &player);
+    exp->expPoint = expPoint;
+    exps.push_back(std::move(exp));
+
+}
+
+void MCB::Scene::DeleteExp()
+{
+    for (std::unique_ptr<Exp>& exp : exps)
+    {
+        if (exps.size() <= 180)
+        {
+            break;
+        }
+        exps.remove(exp);
+    }
+}

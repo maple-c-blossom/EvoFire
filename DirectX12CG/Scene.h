@@ -164,6 +164,9 @@ namespace MCB
 		void MatrixUpdate();
 		void Update() override;
 		void Draw() override;
+		void Sporn(Float3 enemyPos, float expPoint);
+
+		void DeleteExp();
 
 		void CheckAllColision();
 	};

@@ -36,7 +36,6 @@ void Player::Update()
 {
 	Rotasion();
 	Move();
-	GetSPAttack();
 	Attack();
 	for (std::unique_ptr<PlayerBullet>& bullet : bullets)
 	{
@@ -239,19 +238,22 @@ void Player::Attack()
 
 void Player::GetSPAttack()
 {
-	if (exp % 20 == 0 && homingMissileCount < maxHomingMissileCount)
-	{
-		homingMissileCount++;
-	}
-	if (exp % 40 == 0 && laserCount < maxLaserCount)
-	{
-		laserCount++;
-	}
-	if (exp % 60 == 0 && bombCount < maxBombCount)
-	{
-		bombCount++;
-	}
 
+		if (((int)exp == 20 || (int)exp == 40 || (int)exp == 60)&& homingMissileCount < maxHomingMissileCount && !homingMissileGet)
+		{
+			homingMissileCount++;
+			homingMissileGet = true;
+		}
+		if (((int)exp == 40 || (int)exp == 60) && laserCount < maxLaserCount && !LaserGet)
+		{
+			laserCount++;
+			LaserGet = true;
+		}
+		if ((int)exp == 60 && bombCount < maxBombCount && !BombGet)
+		{
+			bombCount++;
+			BombGet = true;
+		}
 }
 
 void Player::SetTarget(Object3d* target)
@@ -259,9 +261,18 @@ void Player::SetTarget(Object3d* target)
 	this->target = target;
 }
 
-void Player::GetExp(int expPoint)
+void Player::GetExp(float expPoint)
 {
+	int beforeExp = (int)exp;
 	exp += expPoint;
+	if ((int)exp != beforeExp)
+	{
+		homingMissileGet = false;
+		LaserGet = false;
+		BombGet = false;
+	}
+	GetSPAttack();
+	LevelUp();
 }
 
 void Player::LevelUp()
@@ -270,9 +281,9 @@ void Player::LevelUp()
 	{
 		exp = 0;
 		Level++;
-		maxhp = Level * 20;
+		maxhp = maxhp + ((Level - 1) * 10);
 		hp = maxhp;
-		nextLevelExp = nextLevelExp * 20;
+		nextLevelExp = nextLevelExp + (20 * (Level - 1));
 	}
 }
 

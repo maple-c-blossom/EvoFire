@@ -13,25 +13,31 @@ private:
 	float speed = 2.0f;
 	float Srowspeed = 0.25f;
 	float maxspeed = 15.0f;
-
+#ifdef _DEBUG
+public:
+#endif
 	int homingMissileCount = 0;
 	int laserCount = 0;
 	int bombCount = 0;
 
+private:
 	const int maxHomingMissileCount = 3;
 	const int maxLaserCount = 2;
 	const int maxBombCount = 1;
-	int exp = 0;
 	Object3d* target;
 	int attackTime = 0;
 	int attackResponceTime = 20;
-	int Level = 1;
-	int nextLevelExp = 20;
 	int maxhp = 20;
 	int hp = maxhp;
 
 public:
+	float exp = 0;
+	int Level = 1;
+	int nextLevelExp = 20;
 	float r = 10;
+	bool homingMissileGet = false;
+	bool LaserGet = false;
+	bool BombGet = false;
 	MCB::Model* bulletModel = nullptr;
 	std::list<std::unique_ptr<PlayerBullet>> bullets;
 	MCB::Quaternion playerQ = {0,0,0,1};
@@ -44,7 +50,7 @@ public:
 	void Attack();
 	void GetSPAttack();
 	void SetTarget(Object3d* target);
-	void GetExp(int expPoint);
+	void GetExp(float expPoint);
 	void LevelUp();
 };
 

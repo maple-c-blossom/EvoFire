@@ -12,13 +12,13 @@ private:
 	float speed = 2.0f;
 	float Srowspeed = 0.25f;
 	float maxspeed = 15.0f;
-
+	
 	int attackResponse = 60;
 	int attacktime = 0;
-	int expPoint = 1;
 	float Angle = 0;
 	Object3d* target;
 public:
+	float expPoint = 0.05f;
 	float r = 10;
 	bool deleteFlag = false;
 	MCB::Model* bulletModel = nullptr;
