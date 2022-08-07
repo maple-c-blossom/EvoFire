@@ -12,10 +12,21 @@ void PlayerBullet::VelocityUpdate()
 		velocity.V3Norm();
 		Quaternion velocityQ = { velocity.vec.x,velocity.vec.y,velocity.vec.z,0 };
 		Quaternion toEnemyQ = { toEnemy.vec.x,toEnemy.vec.y,toEnemy.vec.z,0 };
+
 		if (lifeTime < maxLifeTime - 10 && !SlerpStop)
 		{
 			velocityQ = velocityQ.Slerp(velocityQ, toEnemyQ, t, tUpdateMaxTime);
+		}
+
+		if ((isfinite(velocityQ.x)) || (isfinite(velocityQ.y)) || (isfinite(velocityQ.z)) || (isfinite(velocityQ.w)))
+		{
 			velocity.vec = { velocityQ.x,velocityQ.y,velocityQ.z };
+			velocity.V3Norm();
+		}
+		else
+		{
+			velocity.vec = { toEnemy.vec.x,toEnemy.vec.y,toEnemy.vec.z };
+			velocity.V3Norm();
 		}
 
 
@@ -31,10 +42,10 @@ void PlayerBullet::Update()
 	tUpdateNowTime++;
 	if (tUpdateNowTime >= tUpdateTime)
 	{
-		t++;
-		if (t > tUpdateMaxTime)
+		t--;
+		if (t < 1)
 		{
-			t = tUpdateMaxTime;
+			t = 1;
 		}
 		tUpdateNowTime = 0;
 	}
@@ -63,4 +74,5 @@ void PlayerBullet::Fire(Float3 startPosition, Vector3D frontVec,Object3d* target
 	position.z = startPosition.z;
 	velocity = frontVec;
 	this->target = target;
+	t = tUpdateMaxTime;
 }

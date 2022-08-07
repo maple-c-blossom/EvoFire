@@ -110,6 +110,10 @@ void MCB::Scene::Draw()
     if(exps.size() > 0) debugText.Print(20, 40, 2, "positin:%f,%f,%f", 
                         exps.begin()->get()->position.x, exps.begin()->get()->position.y,
                         exps.begin()->get()->position.z);
+
+    debugText.Print(20, 60, 2, "Ppositin:%f,%f,%f",
+        player.position.x, player.position.y,
+        player.position.z);
     debugText.AllDraw();
     draw.PostDraw();
 }
@@ -136,7 +140,7 @@ void MCB::Scene::CheckAllColision()
                     exp->ExpInit(GetRand(0, 10), 
                         { enemy->position.x,enemy->position.y,enemy->position.z },
                         { (float)GetRand(-1000, 1000) / 1000.0f,(float)GetRand(-1000,1000) / 1000.0f,
-                        (float)GetRand(-1000,1000) / 1000.0f });
+                        (float)GetRand(-1000,1000) / 1000.0f },&player);
                     exps.push_back(std::move(exp));
                 }
                 player.SetTarget(nullptr);
@@ -174,10 +178,17 @@ void MCB::Scene::CheckAllColision()
 
     for (std::unique_ptr<Exp>& exp : exps)
     {
-        if (CalcSphere({ exp->position.x,exp->position.y,exp->position.z }, exp->rudius + 100,
+        if (CalcSphere({ exp->position.x,exp->position.y,exp->position.z }, exp->rudius,
             { player.position.x,player.position.y,player.position.z }, player.r))
         {
             exp->GetExp();
+            continue;
+        }
+
+        if (CalcSphere({ exp->position.x,exp->position.y,exp->position.z }, exp->rudius + 1000,
+            { player.position.x,player.position.y,player.position.z }, player.r))
+        {
+            exp->ExpApproach();
         }
     }
 }
