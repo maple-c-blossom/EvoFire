@@ -77,12 +77,14 @@ void MCB::Scene::Update()
     {
         enemys.enemyPop(&player, { (float)GetRand(-500,500),(float)GetRand(-100,100),(float)GetRand(-20,20) }, testBoxModel.get(), testSphereModel.get());
         player.SetTarget(enemys.enemys.begin()->get());
+        player.SetHomingTarget(enemys.enemys.begin()->get());
     }
     player.Update();
     enemys.Update();
     if (enemys.enemys.size() > 0)
     {
         player.SetTarget(enemys.enemys.begin()->get());
+        player.SetHomingTarget(enemys.enemys.begin()->get());
     }
 
     if (input->IsKeyTrigger(DIK_O))
@@ -119,8 +121,8 @@ void MCB::Scene::Draw()
 
     debugText.Print(20, 60, 2, "exp:float->%f int->%d,NextLevelExp:%d,Level:%d",player.exp, (int)player.exp / 1,
                     player.nextLevelExp,player.Level);
-    debugText.Print(20, 80, 2, "homingMissileCount:%d laserCount:%d bombCount;%d", player.homingMissileCount,
-        player.laserCount,player.bombCount);
+    //debugText.Print(20, 80, 2, "homingMissileCount:%d laserCount:%d bombCount;%d", player.homingMissileCount,
+    //    player.laserCount,player.bombCount);
     debugText.AllDraw();
     draw.PostDraw();
 }
@@ -179,7 +181,8 @@ void MCB::Scene::CheckAllColision()
                         Sporn({ enemy->position.x,enemy->position.y,enemy->position.z }, enemy->expPoint);
                         DeleteExp();
                     }
-                    player.SetTarget(enemys.enemys.begin()->get());
+                    player.SetHomingTarget(enemys.enemys.begin()->get());
+                    player.SetTarget(nullptr);
                     continue;
                 }
 
@@ -189,6 +192,7 @@ void MCB::Scene::CheckAllColision()
                     { enemy->position.x,enemy->position.y,enemy->position.z }, enemy->r))
                 {
                     missile->SetSlerp(i,false);
+                    missile->SetMaxSpeed(missile->r + enemy.get()->r - 5,i);
                 }
                 else if (CalcSphere({ missile.get()->homingMissiles[i].position.x,
                     missile.get()->homingMissiles[i].position.y,
@@ -196,6 +200,18 @@ void MCB::Scene::CheckAllColision()
                     { enemy->position.x,enemy->position.y,enemy->position.z }, enemy->r))
                 {
                     missile->SetSlerp(i, true);
+                    missile->SetMaxSpeed(missile->maxDefaultSpeed,i);
+                }
+                else if (CalcSphere({ missile.get()->homingMissiles[i].position.x,
+                    missile.get()->homingMissiles[i].position.y,
+                    missile.get()->homingMissiles[i].position.z }, missile.get()->slerpStopR + missile->speed[i],
+                    { enemy->position.x,enemy->position.y,enemy->position.z }, enemy->r))
+                {
+                    missile->SetMaxSpeed(missile->r + enemy.get()->r - 5, i);
+                }
+                else
+                {
+                    missile->SetMaxSpeed(missile->maxDefaultSpeed, i);
                 }
 
             }
@@ -248,6 +264,23 @@ void MCB::Scene::CheckAllColision()
         }
     }
 
+
+    if (player.GetTarget() == nullptr)
+    {
+        for (std::unique_ptr<PlayerBullet>& bullet : player.bullets)
+        {
+            bullet.get()->SetTarget(nullptr);
+        }
+    }
+
+    if (player.GetHomingTarget() == nullptr)
+    {
+        for (std::unique_ptr<HomingMissile>& missile : player.homingMissile)
+        {
+            missile.get()->SetTarget(nullptr);
+        }
+    }
+
     
 }
 
@@ -277,13 +310,7 @@ void MCB::Scene::MatrixUpdate()
     }
 
 
-    if (player.GetTarget() == nullptr)
-    {
-        for (std::unique_ptr<PlayerBullet>& bullet : player.bullets)
-        {
-            bullet.get()->SetTarget(nullptr);
-        }
-    }
+
 }
 
 MCB::Scene::Scene(RootParameter* root, Depth* depthptr, PipelineRootSignature* pipeline, PipelineRootSignature* pipeline1)

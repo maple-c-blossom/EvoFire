@@ -14,9 +14,8 @@ private:
 	float speed = 2.0f;
 	float Srowspeed = 0.25f;
 	float maxspeed = 15.0f;
-#ifdef _DEBUG
+
 public:
-#endif
 	int homingMissileCount = 0;
 	int laserCount = 0;
 	int bombCount = 0;
@@ -26,6 +25,7 @@ private:
 	const int maxLaserCount = 2;
 	const int maxBombCount = 1;
 	Object3d* target = nullptr;
+	Object3d* homingTarget = nullptr;
 	int attackTime = 0;
 	int attackResponceTime = 20;
 	int maxhp = 20;
@@ -58,5 +58,8 @@ public:
 	void SPAttack();
 	void AllDraw();
 	MCB::Object3d* GetTarget();
+	void SetHomingTarget(Object3d* target);
+	MCB::Object3d* GetHomingTarget();
+
 };
 

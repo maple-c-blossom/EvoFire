@@ -18,13 +18,13 @@ void HomingMissile::VelocityUpdate()
 		Quaternion velocityQ = { velocity[i].vec.x,velocity[i].vec.y,velocity[i].vec.z,0};
 		Quaternion toEnemyQ = { toEnemy.vec.x,toEnemy.vec.y,toEnemy.vec.z,0 };
 
-		if ( lifeTime[i] > 10 && lifeTime[i] < maxLifeTime - 10 && !SlerpStop[i])
+		if ( lifeTime[i] > 10 && lifeTime[i] < maxLifeTime - 10 && !slerpStop[i])
 		{
 			velocityQ = velocityQ.Slerp(velocityQ, toEnemyQ, t[i], tUpdateMaxTime);
 		}
 
 		if (((isfinite(velocityQ.x)) || (isfinite(velocityQ.y)) || (isfinite(velocityQ.z)) || (isfinite(velocityQ.w))) && 
-			lifeTime[i] > 10 && lifeTime[i] < maxLifeTime - 10 && !SlerpStop[i])
+			lifeTime[i] > 10 && lifeTime[i] < maxLifeTime - 10 && !slerpStop[i])
 		{
 			velocity[i].vec = {velocityQ.x,velocityQ.y,velocityQ.z};
 			velocity[i].V3Norm();
@@ -49,11 +49,27 @@ void HomingMissile::Update()
 			continue;
 		}
 		lifeTime[i]++;
-		homingTime[i]++;
-		float Speed = InQuad(10, speedOffSet + maxLifeTime, maxLifeTime, homingTime[i]);
-		homingMissiles[i].position.x += velocity[i].vec.x * Speed;
-		homingMissiles[i].position.y += velocity[i].vec.y * Speed;
-		homingMissiles[i].position.z += velocity[i].vec.z * Speed;
+		if (homingTime[i] < maxHomingTime)
+		{
+			homingTime[i]++;
+
+		}
+		if (maxSpeed[i] <= speed[i])
+		{
+			speed[i] = maxSpeed[i];
+		}
+		else if (maxSpeed[i] != prevMaxSpeed[i])
+		{
+			homingTime[i] = 0;
+			speed[i] = InQuad(speed[i], maxSpeed[i], maxHomingTime, homingTime[i]);
+		}
+		else
+		{
+			speed[i] = InQuad(5, maxSpeed[i], maxHomingTime, homingTime[i]);
+		}
+		homingMissiles[i].position.x += velocity[i].vec.x * speed[i];
+		homingMissiles[i].position.y += velocity[i].vec.y * speed[i];
+		homingMissiles[i].position.z += velocity[i].vec.z * speed[i];
 		//if(speedOffSet > 0 && maxLifeTime - lifeTime < 60)speedOffSet--;
 		tUpdateNowTime[i]++;
 		if (tUpdateNowTime[i] >= tUpdateTime[i])
@@ -73,7 +89,7 @@ void HomingMissile::Update()
 
 	if (deleteFlag[0] && deleteFlag[1] && deleteFlag[2])
 	{
-		AllDeleteFlag = true;
+		allDeleteFlag = true;
 	}
 }
 
@@ -86,7 +102,7 @@ void HomingMissile::BulletHit(int number)
 void HomingMissile::SetSlerp(int number,bool flag)
 {
 	if (number >= MissileCount) return;
-	SlerpStop[number] = flag;
+	slerpStop[number] = flag;
 }
 
 void HomingMissile::Fire(Float3 startPosition, Vector3D frontVec, Object3d* target, Model* model)
@@ -119,7 +135,7 @@ void HomingMissile::SetTarget(MCB::Object3d* target)
 			if (this->target[i] != target)
 			{
 				this->target[i] = target;
-				homingTime[i] = 0;
+				homingTime[i] = maxHomingTime / 2;
 			}
 		}
 }
@@ -130,6 +146,27 @@ void HomingMissile::SetTarget(MCB::Object3d* target, int number)
 	if (this->target[number] != target)
 	{
 		this->target[number] = target;
-		homingTime[number] = 0;
+		homingTime[number] = maxHomingTime / 2;
 	}
+}
+
+void HomingMissile::SetMaxSpeed(int speed)
+{
+	for (int i = 0; i < MissileCount; i++)
+	{
+		prevMaxSpeed[i] = maxSpeed[i];
+		maxSpeed[i] = speed;
+
+	}
+}
+
+void HomingMissile::SetMaxSpeed(int speed, int number)
+{
+	prevMaxSpeed[number] = maxSpeed[number];
+	maxSpeed[number] = speed;
+}
+
+int HomingMissile::GetMaxSpeed(int number)
+{
+	return maxSpeed[number];
 }

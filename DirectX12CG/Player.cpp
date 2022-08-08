@@ -37,9 +37,9 @@ void Player::PlayerInit(Model* model, Model* bulletModel, Model* missileModel)
 
 	for (std::unique_ptr<HomingMissile>& missile : homingMissile)
 	{
-		missile->AllDeleteFlag = true;
+		missile->allDeleteFlag = true;
 	}
-	homingMissile.remove_if([](std::unique_ptr<HomingMissile>& missile) {return missile->AllDeleteFlag; });
+	homingMissile.remove_if([](std::unique_ptr<HomingMissile>& missile) {return missile->allDeleteFlag; });
 }
 
 void Player::Update()
@@ -67,7 +67,7 @@ void Player::Update()
 		missile->VelocityUpdate();
 		missile->Update();
 	}
-	homingMissile.remove_if([](std::unique_ptr<HomingMissile>& missile) {return missile->AllDeleteFlag; });
+	homingMissile.remove_if([](std::unique_ptr<HomingMissile>& missile) {return missile->allDeleteFlag; });
 }
 
 void Player::Move()
@@ -345,6 +345,16 @@ void Player::AllDraw()
 MCB::Object3d* Player::GetTarget()
 {
 	return target;
+}
+
+void Player::SetHomingTarget(Object3d* target)
+{
+	homingTarget = target;
+}
+
+MCB::Object3d* Player::GetHomingTarget()
+{
+	return homingTarget;
 }
 
 
