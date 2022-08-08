@@ -25,11 +25,11 @@ void Exp::Update()
 	position.y += velocity.vec.y * speed;
 	position.z += velocity.vec.z * speed;
 
-	//lifeTime++;
-	//if (lifeTime >= maxLifeTime)
-	//{
-	//	deleteFlag = true;
-	//}
+	lifeTime++;
+	if (lifeTime >= maxLifeTime)
+	{
+		deleteFlag = true;
+	}
 }
 
 void Exp::ExpDraw()

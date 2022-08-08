@@ -5,7 +5,7 @@
 using namespace MCB;
 using namespace std;
 
-void Player::PlayerInit()
+void Player::PlayerInit(Model* model, Model* bulletModel, Model* missileModel)
 {
 	speedFront = 0.0f;
 	speedRight = 0.0f;
@@ -25,11 +25,21 @@ void Player::PlayerInit()
 	maxhp = 20;
 	hp = maxhp;
 	r = 10;
+	this->model = model;
+	this->bulletModel = bulletModel;
+	this->missileModel = missileModel;
+	scale = { 4,4,4 };
 	for (std::unique_ptr<PlayerBullet>& bullet : bullets)
 	{
 		bullet->deleteFlag = true;
 	}
 	bullets.remove_if([](std::unique_ptr<PlayerBullet>& bullet) {return bullet->deleteFlag; });
+
+	for (std::unique_ptr<HomingMissile>& missile : homingMissile)
+	{
+		missile->AllDeleteFlag = true;
+	}
+	homingMissile.remove_if([](std::unique_ptr<HomingMissile>& missile) {return missile->AllDeleteFlag; });
 }
 
 void Player::Update()
@@ -37,16 +47,27 @@ void Player::Update()
 	Rotasion();
 	Move();
 	Attack();
+	SPAttack();
+	for (std::unique_ptr<HomingMissile>& missile : homingMissile)
+	{
+		missile->SetTarget(target);
+	}
+	
+
 	for (std::unique_ptr<PlayerBullet>& bullet : bullets)
 	{
-		if (target != nullptr)
-		{
-			bullet->VelocityUpdate();
-		}
+		bullet->VelocityUpdate();
 		bullet->Update();
 	}
 	bullets.remove_if([](std::unique_ptr<PlayerBullet>& bullet) {return bullet->deleteFlag; });
 
+	for (std::unique_ptr<HomingMissile>& missile : homingMissile)
+	{
+
+		missile->VelocityUpdate();
+		missile->Update();
+	}
+	homingMissile.remove_if([](std::unique_ptr<HomingMissile>& missile) {return missile->AllDeleteFlag; });
 }
 
 void Player::Move()
@@ -285,6 +306,45 @@ void Player::LevelUp()
 		hp = maxhp;
 		nextLevelExp = nextLevelExp + (20 * (Level - 1));
 	}
+}
+
+void Player::SPAttack()
+{
+	if ((input->IsKeyDown(DIK_LSHIFT) && input->IsKeyTrigger(DIK_C)) || 
+		(input->gamePad->IsButtonDown(GAMEPAD_LB) && input->gamePad->IsButtonTrigger(GAMEPAD_A)))
+	{
+		if (homingMissileCount > 0)
+		{
+			homingMissileCount--;
+			std::unique_ptr<HomingMissile> HM = std::make_unique<HomingMissile>();
+			HM->Fire({ position.x,position.y,position.z }, nowFrontVec, target, missileModel);
+			for (int i = 0; i < 3; i++)
+			{
+				HM->homingMissiles[i].scale = { 6,6,6 };
+				HM->homingMissiles[i].rotasion = rotasion;
+			}
+			homingMissile.push_back(std::move(HM));
+			attackTime = 0;
+		}
+	}
+}
+
+void Player::AllDraw()
+{
+	Draw();
+	for (std::unique_ptr<PlayerBullet>& bullet : bullets) { bullet->Draw(); }
+	for (std::unique_ptr<HomingMissile>& missile : homingMissile) 
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			missile->homingMissiles[i].Draw(); 
+		}
+	}
+}
+
+MCB::Object3d* Player::GetTarget()
+{
+	return target;
 }
 
 

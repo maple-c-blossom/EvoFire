@@ -37,10 +37,8 @@ void MCB::Scene::Object3DInit()
     Skydorm.scale = { 30,30,30 };
 
     player.Init();
-    player.model = testBoxModel.get();
-    player.bulletModel = testSphereModel.get();
-    player.scale = { 4,4,4 };
-    player.PlayerInit();
+
+    player.PlayerInit(testBoxModel.get(), testBoxModel.get(), testBoxModel.get());
 
 }
 
@@ -77,11 +75,20 @@ void MCB::Scene::Update()
 {
     if (input->IsKeyTrigger(DIK_P))
     {
-        enemys.enemyPop(&player, { (float)GetRand(-20,20),(float)GetRand(-20,20),(float)GetRand(-20,20) }, testBoxModel.get(), testSphereModel.get());
+        enemys.enemyPop(&player, { (float)GetRand(-500,500),(float)GetRand(-100,100),(float)GetRand(-20,20) }, testBoxModel.get(), testSphereModel.get());
         player.SetTarget(enemys.enemys.begin()->get());
     }
     player.Update();
     enemys.Update();
+    if (enemys.enemys.size() > 0)
+    {
+        player.SetTarget(enemys.enemys.begin()->get());
+    }
+
+    if (input->IsKeyTrigger(DIK_O))
+    {
+        player.homingMissileCount++;
+    }
 
     for (std::unique_ptr<Exp>& exp : exps)
     {
@@ -100,13 +107,12 @@ void MCB::Scene::Draw()
     draw.PreDraw(*depth, *obj3dPipelinePtr, clearColor);
     //3Dオブジェクト
     Skydorm.Draw();
-    player.Draw();
-    for (std::unique_ptr<PlayerBullet>& bullet : player.bullets) { bullet->Draw(); }
+    player.AllDraw();
     enemys.Draw();
     for (std::unique_ptr<Exp>& exp : exps) { exp->ExpDraw(); }
     //スプライト
     Sprite::SpriteCommonBeginDraw(*spritePipelinePtr);
-    debugText.Print(20, 20,2, "fps:%d",fps->GetFPS());
+    debugText.Print(20, 20,2, "fps:%f",fps->GetFPS());
     if(exps.size() > 0) debugText.Print(20, 40, 2, "positin:%f,%f,%f", 
                         exps.begin()->get()->position.x, exps.begin()->get()->position.y,
                         exps.begin()->get()->position.z);
@@ -151,6 +157,54 @@ void MCB::Scene::CheckAllColision()
         }
     }
 
+    //敵とホーミングミサイルの当たり判定
+    for (std::unique_ptr<HomingMissile>& missile : player.homingMissile)
+    {
+        for (std::unique_ptr<Enemy>& enemy : enemys.enemys)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if (missile->deleteFlag[i]) continue;
+
+                if (CalcSphere({ missile.get()->homingMissiles[i].position.x,
+                    missile.get()->homingMissiles[i].position.y,
+                    missile.get()->homingMissiles[i].position.z }, missile.get()->r,
+                    { enemy->position.x,enemy->position.y,enemy->position.z }, enemy->r) && !enemy->deleteFlag)
+                {
+                   
+                    missile->BulletHit(i);
+                    enemy->Deth();
+                    for (int i = 0; i < 20; i++)
+                    {
+                        Sporn({ enemy->position.x,enemy->position.y,enemy->position.z }, enemy->expPoint);
+                        DeleteExp();
+                    }
+                    player.SetTarget(enemys.enemys.begin()->get());
+                    continue;
+                }
+
+                if (CalcSphere({ missile.get()->homingMissiles[i].position.x,
+                    missile.get()->homingMissiles[i].position.y,
+                    missile.get()->homingMissiles[i].position.z }, missile.get()->slerpStopR,
+                    { enemy->position.x,enemy->position.y,enemy->position.z }, enemy->r))
+                {
+                    missile->SetSlerp(i,false);
+                }
+                else if (CalcSphere({ missile.get()->homingMissiles[i].position.x,
+                    missile.get()->homingMissiles[i].position.y,
+                    missile.get()->homingMissiles[i].position.z }, missile.get()->slerpStopR * 10,
+                    { enemy->position.x,enemy->position.y,enemy->position.z }, enemy->r))
+                {
+                    missile->SetSlerp(i, true);
+                }
+
+            }
+
+
+        }
+    }
+
+    //敵弾とプレイヤーの当たり判定
     for (std::unique_ptr<Enemy>& enemy : enemys.enemys)
     {
         for (std::unique_ptr<EnemyBullet>& bullet : enemy->bullets)
@@ -170,6 +224,7 @@ void MCB::Scene::CheckAllColision()
         }
     }
 
+    //経験値とプレイヤーの当たり判定
     for (std::unique_ptr<Exp>& exp : exps)
     {
         if (CalcSphere({ exp->position.x,exp->position.y,exp->position.z }, exp->rudius,
@@ -192,6 +247,8 @@ void MCB::Scene::CheckAllColision()
             exp->ExpApproach();
         }
     }
+
+    
 }
 
 void MCB::Scene::MatrixUpdate()
@@ -206,9 +263,26 @@ void MCB::Scene::MatrixUpdate()
     {
         bullet->MatrixUpdata(matView, matProjection);
     }
+
+    for (std::unique_ptr<HomingMissile>& missile : player.homingMissile)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            missile->homingMissiles[i].MatrixUpdata(matView, matProjection);
+        }
+    }
     for (std::unique_ptr<Exp>& exp : exps)
     {
         exp->MatrixUpdata(matView, matProjection);
+    }
+
+
+    if (player.GetTarget() == nullptr)
+    {
+        for (std::unique_ptr<PlayerBullet>& bullet : player.bullets)
+        {
+            bullet.get()->SetTarget(nullptr);
+        }
     }
 }
 

@@ -5,7 +5,6 @@
 class PlayerBullet :public MCB::Object3d
 {
 private:
-	static const int BULLET_NUM = 3;
 	int damage = 1;
 	MCB::Vector3D velocity = {};
 	float speedOffSet = 5;
@@ -26,5 +25,6 @@ public:
 	void Update();
 	void BulletHit();
 	void SlerpHit();
+	void SetTarget(MCB::Object3d* target);
 	void Fire(MCB::Float3 startPosition, MCB::Vector3D frontVec, Object3d* target);
 };

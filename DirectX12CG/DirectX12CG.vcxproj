@@ -35,6 +35,7 @@
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MaxSpeed</Optimization>
     </ClCompile>
     <ClCompile Include="GamePad.cpp" />
+    <ClCompile Include="HomingMissile.cpp" />
     <ClCompile Include="IScene.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightGroup.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="exp.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GamePad.h" />
+    <ClInclude Include="HomingMissile.h" />
     <ClInclude Include="IScene.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightGroup.h" />

@@ -65,6 +65,11 @@ void PlayerBullet::SlerpHit()
 	SlerpStop = true;
 }
 
+void PlayerBullet::SetTarget(MCB::Object3d* target)
+{
+	this->target = target;
+}
+
 void PlayerBullet::Fire(Float3 startPosition, Vector3D frontVec,Object3d* target)
 {
 	Init();

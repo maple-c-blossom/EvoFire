@@ -30,18 +30,23 @@ void MCB::FPS::FPSFixed()
 	timeStart = timeEnd; // 入れ替え
 }
 
-int FPS::GetFPS()
+float FPS::GetFPS()
 {
-	now_time = timeGetTime();		// 今回のフレームの時間
+	//nowTime = timeGetTime();		// 今回のフレームの時間
 
-	frame_count++;	// フレーム数をカウントする
+	//frameCount++;	// フレーム数をカウントする
 
-	// 経過時間が１秒を超えたらカウントと時間をリセット
-	if (now_time - prev_time >= 1000)
-	{
-		prev_time = timeGetTime();
-		nowFps = frame_count;
-		frame_count = 0;
+	//// 経過時間が１秒を超えたらカウントと時間をリセット
+	//if (nowTime - prevTime >= 1000)
+	//{
+	//	prevTime = timeGetTime();
+	//	nowFps = frameCount;
+	//	frameCount = 0;
+	//}
+	//return nowFps;
+
+	if (frameTime > 0.0) { // 経過時間が0より大きい(こうしないと下の計算でゼロ除算になると思われ)
+		fps = (fps * 0.99f) + (0.01f / frameTime); // 平均fpsを計算
 	}
-	return nowFps;
+	return fps;
 }

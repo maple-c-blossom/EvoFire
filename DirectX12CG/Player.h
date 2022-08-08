@@ -2,6 +2,7 @@
 #include "Object3d.h"
 #include "Input.h"
 #include "PlayerBullet.h"
+#include "HomingMissile.h"
 
 class Player:public MCB::Object3d
 {
@@ -24,7 +25,7 @@ private:
 	const int maxHomingMissileCount = 3;
 	const int maxLaserCount = 2;
 	const int maxBombCount = 1;
-	Object3d* target;
+	Object3d* target = nullptr;
 	int attackTime = 0;
 	int attackResponceTime = 20;
 	int maxhp = 20;
@@ -39,11 +40,13 @@ public:
 	bool LaserGet = false;
 	bool BombGet = false;
 	MCB::Model* bulletModel = nullptr;
+	MCB::Model* missileModel = nullptr;
 	std::list<std::unique_ptr<PlayerBullet>> bullets;
+	std::list<std::unique_ptr<HomingMissile>> homingMissile;
 	MCB::Quaternion playerQ = {0,0,0,1};
 	MCB::Vector3D rightVec;
 	MCB::Vector3D UpVec;
-	void PlayerInit();
+	void PlayerInit(MCB::Model* model, MCB::Model* bulletModel, MCB::Model* missileModel);
 	void Update();
 	void Move();
 	void Rotasion();
@@ -52,5 +55,8 @@ public:
 	void SetTarget(Object3d* target);
 	void GetExp(float expPoint);
 	void LevelUp();
+	void SPAttack();
+	void AllDraw();
+	MCB::Object3d* GetTarget();
 };
 
