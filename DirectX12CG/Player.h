@@ -3,6 +3,7 @@
 #include "Input.h"
 #include "PlayerBullet.h"
 #include "HomingMissile.h"
+#include "Laser.h"
 
 class Player:public MCB::Object3d
 {
@@ -41,12 +42,14 @@ public:
 	bool BombGet = false;
 	MCB::Model* bulletModel = nullptr;
 	MCB::Model* missileModel = nullptr;
+	MCB::Model* laserModel = nullptr;
 	std::list<std::unique_ptr<PlayerBullet>> bullets;
 	std::list<std::unique_ptr<HomingMissile>> homingMissile;
+	std::list<std::unique_ptr<Laser>> lasers;
 	MCB::Quaternion playerQ = {0,0,0,1};
 	MCB::Vector3D rightVec;
 	MCB::Vector3D UpVec;
-	void PlayerInit(MCB::Model* model, MCB::Model* bulletModel, MCB::Model* missileModel);
+	void PlayerInit(MCB::Model* model, MCB::Model* bulletModel, MCB::Model* missileModel, MCB::Model* laserModel);
 	void Update();
 	void Move();
 	void Rotasion();

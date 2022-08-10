@@ -38,7 +38,7 @@ void MCB::Scene::Object3DInit()
 
     player.Init();
 
-    player.PlayerInit(testBoxModel.get(), testBoxModel.get(), testBoxModel.get());
+    player.PlayerInit(testBoxModel.get(), testBoxModel.get(), testBoxModel.get(), testBoxModel.get());
 
 }
 
@@ -75,7 +75,8 @@ void MCB::Scene::Update()
 {
     if (input->IsKeyTrigger(DIK_P))
     {
-        enemys.enemyPop(&player, { (float)GetRand(-500,500),(float)GetRand(-100,100),(float)GetRand(-20,20) }, testBoxModel.get(), testSphereModel.get());
+        //enemys.enemyPop(&player, { (float)GetRand(-500,500),(float)GetRand(-100,100),(float)GetRand(-20,20) }, testBoxModel.get(), testSphereModel.get());
+        enemys.enemyPop(&player, { (float)GetRand(-500,500),0,(float)GetRand(-100,100) }, testBoxModel.get(), testSphereModel.get());
         player.SetTarget(enemys.enemys.begin()->get());
         player.SetHomingTarget(enemys.enemys.begin()->get());
     }
@@ -91,6 +92,12 @@ void MCB::Scene::Update()
     {
         player.homingMissileCount++;
     }
+
+    if (input->IsKeyTrigger(DIK_I))
+    {
+        player.laserCount++;
+    }
+
 
     for (std::unique_ptr<Exp>& exp : exps)
     {
@@ -220,6 +227,28 @@ void MCB::Scene::CheckAllColision()
         }
     }
 
+    //敵とレーザーの当たり判定
+    for (std::unique_ptr<Laser>& laser : player.lasers)
+    {
+        for (std::unique_ptr<Enemy>& enemy : enemys.enemys)
+        {
+            if (CalcRaySphere(laser->laser, { enemy->position.x,enemy->position.y,enemy->position.z }, enemy->r))
+            {
+                enemy->Deth();
+                for (int i = 0; i < 20; i++)
+                {
+                    Sporn({ enemy->position.x,enemy->position.y,enemy->position.z }, enemy->expPoint);
+                    DeleteExp();
+                }
+                player.SetTarget(nullptr);
+                player.SetHomingTarget(nullptr);
+                continue;
+            }
+          
+        }
+    }
+
+
     //敵弾とプレイヤーの当たり判定
     for (std::unique_ptr<Enemy>& enemy : enemys.enemys)
     {
@@ -303,6 +332,10 @@ void MCB::Scene::MatrixUpdate()
         {
             missile->homingMissiles[i].MatrixUpdata(matView, matProjection);
         }
+    }
+    for (std::unique_ptr<Laser>& laser : player.lasers)
+    {
+        laser->MatrixUpdata(matView, matProjection, player.playerQ);
     }
     for (std::unique_ptr<Exp>& exp : exps)
     {

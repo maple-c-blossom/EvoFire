@@ -5,7 +5,7 @@
 using namespace MCB;
 using namespace std;
 
-void Player::PlayerInit(Model* model, Model* bulletModel, Model* missileModel)
+void Player::PlayerInit(Model* model, Model* bulletModel, Model* missileModel, MCB::Model* laserModel)
 {
 	speedFront = 0.0f;
 	speedRight = 0.0f;
@@ -28,6 +28,7 @@ void Player::PlayerInit(Model* model, Model* bulletModel, Model* missileModel)
 	this->model = model;
 	this->bulletModel = bulletModel;
 	this->missileModel = missileModel;
+	this->laserModel = laserModel;
 	scale = { 4,4,4 };
 	for (std::unique_ptr<PlayerBullet>& bullet : bullets)
 	{
@@ -40,6 +41,12 @@ void Player::PlayerInit(Model* model, Model* bulletModel, Model* missileModel)
 		missile->allDeleteFlag = true;
 	}
 	homingMissile.remove_if([](std::unique_ptr<HomingMissile>& missile) {return missile->allDeleteFlag; });
+
+	for (std::unique_ptr<Laser>& laser : lasers)
+	{
+		laser->deleteFlag = true;
+	}
+	lasers.remove_if([](std::unique_ptr<Laser>& laser) {return laser->deleteFlag; });
 }
 
 void Player::Update()
@@ -53,6 +60,7 @@ void Player::Update()
 		missile->SetTarget(target);
 	}
 	
+
 
 	for (std::unique_ptr<PlayerBullet>& bullet : bullets)
 	{
@@ -68,6 +76,12 @@ void Player::Update()
 		missile->Update();
 	}
 	homingMissile.remove_if([](std::unique_ptr<HomingMissile>& missile) {return missile->allDeleteFlag; });
+
+	for (std::unique_ptr<Laser>& laser : lasers)
+	{
+		laser->Update({ position.x,position.y,position.z }, nowFrontVec);
+	}
+	lasers.remove_if([](std::unique_ptr<Laser>& laser) {return laser->deleteFlag; });
 }
 
 void Player::Move()
@@ -327,6 +341,19 @@ void Player::SPAttack()
 			attackTime = 0;
 		}
 	}
+
+	if ((input->IsKeyDown(DIK_LSHIFT) && input->IsKeyTrigger(DIK_V)) ||
+		(input->gamePad->IsButtonDown(GAMEPAD_LB) && input->gamePad->IsButtonTrigger(GAMEPAD_B)))
+	{
+		if (laserCount > 0)
+		{
+			laserCount--;
+			std::unique_ptr<Laser> LS = std::make_unique<Laser>();
+			LS->Fire({ position.x,position.y,position.z }, nowFrontVec, laserModel);
+			lasers.push_back(std::move(LS));
+			attackTime = 0;
+		}
+	}
 }
 
 void Player::AllDraw()
@@ -340,6 +367,7 @@ void Player::AllDraw()
 			missile->homingMissiles[i].Draw(); 
 		}
 	}
+	for (std::unique_ptr<Laser>& laser : lasers) { laser->Draw(); }
 }
 
 MCB::Object3d* Player::GetTarget()
