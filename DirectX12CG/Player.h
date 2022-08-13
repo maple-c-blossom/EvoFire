@@ -4,6 +4,7 @@
 #include "PlayerBullet.h"
 #include "HomingMissile.h"
 #include "Laser.h"
+#include "Bomb.h"
 
 class Player:public MCB::Object3d
 {
@@ -40,16 +41,19 @@ public:
 	bool homingMissileGet = false;
 	bool LaserGet = false;
 	bool BombGet = false;
+	MCB::Ray targetRay;
 	MCB::Model* bulletModel = nullptr;
 	MCB::Model* missileModel = nullptr;
 	MCB::Model* laserModel = nullptr;
+	MCB::Model* bombModel = nullptr;
 	std::list<std::unique_ptr<PlayerBullet>> bullets;
 	std::list<std::unique_ptr<HomingMissile>> homingMissile;
 	std::list<std::unique_ptr<Laser>> lasers;
+	std::list<std::unique_ptr<Bomb>> bombs;
 	MCB::Quaternion playerQ = {0,0,0,1};
 	MCB::Vector3D rightVec;
 	MCB::Vector3D UpVec;
-	void PlayerInit(MCB::Model* model, MCB::Model* bulletModel, MCB::Model* missileModel, MCB::Model* laserModel);
+	void PlayerInit(MCB::Model* model, MCB::Model* bulletModel, MCB::Model* missileModel, MCB::Model* laserModel, MCB::Model* bombModel);
 	void Update();
 	void Move();
 	void Rotasion();
@@ -60,6 +64,8 @@ public:
 	void LevelUp();
 	void SPAttack();
 	void AllDraw();
+	void AllMatrixUpdate(MCB::View viewmat, MCB::Projection projmat);
+	void EnemyBulletHit(int damege);
 	MCB::Object3d* GetTarget();
 	void SetHomingTarget(Object3d* target);
 	MCB::Object3d* GetHomingTarget();

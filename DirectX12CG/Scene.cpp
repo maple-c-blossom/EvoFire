@@ -15,7 +15,7 @@ MCB::Scene::~Scene()
 void MCB::Scene::Initialize()
 {
     matView.CreateMatrixView(XMFLOAT3(0.0f, 0.0f, -10.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 1.0f, 0.0f));
-    matProjection.CreateMatrixProjection(XMConvertToRadians(45.0f), (float)dxWindow->window_width / dxWindow->window_height, 0.1f, 10000.0f);
+    matProjection.CreateMatrixProjection(XMConvertToRadians(45.0f), (float)dxWindow->window_width / dxWindow->window_height, 0.1f, 100000.0f);
     LoadTexture();
     LoadModel();
     LoadSound();
@@ -34,11 +34,11 @@ void MCB::Scene::Object3DInit()
 {
     Skydorm.Init();
     Skydorm.model = skydomeModel.get();
-    Skydorm.scale = { 30,30,30 };
+    Skydorm.scale = { 60,60,60 };
 
     player.Init();
 
-    player.PlayerInit(testBoxModel.get(), testBoxModel.get(), testBoxModel.get(), testBoxModel.get());
+    player.PlayerInit(testBoxModel.get(), testBoxModel.get(), testBoxModel.get(), testBoxModel.get(), testSphereModel.get());
 
 }
 
@@ -82,11 +82,11 @@ void MCB::Scene::Update()
     }
     player.Update();
     enemys.Update();
-    if (enemys.enemys.size() > 0)
-    {
-        player.SetTarget(enemys.enemys.begin()->get());
-        player.SetHomingTarget(enemys.enemys.begin()->get());
-    }
+    //if (enemys.enemys.size() > 0)
+    //{
+    //    player.SetTarget(enemys.enemys.begin()->get());
+    //    player.SetHomingTarget(enemys.enemys.begin()->get());
+    //}
 
     if (input->IsKeyTrigger(DIK_O))
     {
@@ -98,6 +98,10 @@ void MCB::Scene::Update()
         player.laserCount++;
     }
 
+    if (input->IsKeyTrigger(DIK_U))
+    {
+        player.bombCount++;
+    }
 
     for (std::unique_ptr<Exp>& exp : exps)
     {
@@ -128,14 +132,32 @@ void MCB::Scene::Draw()
 
     debugText.Print(20, 60, 2, "exp:float->%f int->%d,NextLevelExp:%d,Level:%d",player.exp, (int)player.exp / 1,
                     player.nextLevelExp,player.Level);
-    //debugText.Print(20, 80, 2, "homingMissileCount:%d laserCount:%d bombCount;%d", player.homingMissileCount,
-    //    player.laserCount,player.bombCount);
+    debugText.Print(20, 80, 2, "homingMissileCount:%d laserCount:%d bombCount;%d", player.homingMissileCount,
+        player.laserCount,player.bombCount);
     debugText.AllDraw();
     draw.PostDraw();
 }
 
 void MCB::Scene::CheckAllColision()
 {
+    float mintargetDist = player.targetRay.range;
+    //ÉçÉbÉNÉIÉì
+    for (std::unique_ptr<Enemy>& enemy : enemys.enemys)
+    {
+        float nowtargetdist = 0.0f;
+        if (CalcRaySphere(player.targetRay, { enemy->position.x,enemy->position.y,
+            enemy->position.z }, enemy->r, &nowtargetdist))
+        {
+            if (nowtargetdist < mintargetDist && (player.GetTarget() == nullptr || input->IsKeyTrigger(DIK_R)))
+            {
+                player.SetTarget(enemy.get());
+                player.SetHomingTarget(enemy.get());
+                mintargetDist = nowtargetdist;
+            }
+            
+        }
+    }
+
 
     //ìGÇ∆é©íeÇÃìñÇΩÇËîªíË
     for (std::unique_ptr<PlayerBullet>& bullet : player.bullets)
@@ -146,13 +168,17 @@ void MCB::Scene::CheckAllColision()
                 { enemy->position.x,enemy->position.y,enemy->position.z }, enemy->r))
             {
                 bullet->BulletHit();
-                enemy->Deth();
-                for (int i = 0; i < 20; i++)
+                enemy->Deth(bullet.get()->damage);
+                if (enemy->deleteFlag)
                 {
-                    Sporn({ enemy->position.x,enemy->position.y,enemy->position.z }, enemy->expPoint);
-                    DeleteExp();
+                    for (int i = 0; i < 20; i++)
+                    {
+                        Sporn({ enemy->position.x,enemy->position.y,enemy->position.z }, enemy->expPoint);
+                        DeleteExp();
+                    }
+                    player.SetTarget(nullptr);
+                    player.SetHomingTarget(nullptr);
                 }
-                player.SetTarget(nullptr);
                 continue;
             }
 
@@ -182,14 +208,17 @@ void MCB::Scene::CheckAllColision()
                 {
                    
                     missile->BulletHit(i);
-                    enemy->Deth();
-                    for (int i = 0; i < 20; i++)
+                    enemy->Deth(missile.get()->damage);
+                    if (enemy->deleteFlag)
                     {
-                        Sporn({ enemy->position.x,enemy->position.y,enemy->position.z }, enemy->expPoint);
-                        DeleteExp();
+                        for (int i = 0; i < 20; i++)
+                        {
+                            Sporn({ enemy->position.x,enemy->position.y,enemy->position.z }, enemy->expPoint);
+                            DeleteExp();
+                        }
+                        player.SetHomingTarget(nullptr);
+                        player.SetTarget(nullptr);
                     }
-                    player.SetHomingTarget(enemys.enemys.begin()->get());
-                    player.SetTarget(nullptr);
                     continue;
                 }
 
@@ -234,14 +263,17 @@ void MCB::Scene::CheckAllColision()
         {
             if (CalcRaySphere(laser->laser, { enemy->position.x,enemy->position.y,enemy->position.z }, enemy->r))
             {
-                enemy->Deth();
-                for (int i = 0; i < 20; i++)
+                enemy->Deth(laser.get()->damage);
+                if (enemy->deleteFlag)
                 {
-                    Sporn({ enemy->position.x,enemy->position.y,enemy->position.z }, enemy->expPoint);
-                    DeleteExp();
+                    for (int i = 0; i < 20; i++)
+                    {
+                        Sporn({ enemy->position.x,enemy->position.y,enemy->position.z }, enemy->expPoint);
+                        DeleteExp();
+                    }
+                    player.SetTarget(nullptr);
+                    player.SetHomingTarget(nullptr);
                 }
-                player.SetTarget(nullptr);
-                player.SetHomingTarget(nullptr);
                 continue;
             }
           
@@ -249,6 +281,30 @@ void MCB::Scene::CheckAllColision()
     }
 
 
+    for (std::unique_ptr<Bomb>& bomb : player.bombs)
+    {
+
+        for (std::unique_ptr<Enemy>& enemy : enemys.enemys)
+        {
+            if (CalcSphere({ bomb.get()->position.x,
+                   bomb.get()->position.y,
+                    bomb.get()->position.z }, bomb.get()->r,
+                { enemy->position.x,enemy->position.y,enemy->position.z }, enemy->r) && !enemy->deleteFlag)
+            {
+                enemy->Deth(bomb.get()->damage);
+                if (enemy->deleteFlag)
+                {
+                    for (int i = 0; i < 20; i++)
+                    {
+                        Sporn({ enemy->position.x,enemy->position.y,enemy->position.z }, enemy->expPoint);
+                        DeleteExp();
+                    }
+                    player.SetHomingTarget(nullptr);
+                    player.SetTarget(nullptr);
+                }
+            }
+        }
+    }
     //ìGíeÇ∆ÉvÉåÉCÉÑÅ[ÇÃìñÇΩÇËîªíË
     for (std::unique_ptr<Enemy>& enemy : enemys.enemys)
     {
@@ -258,6 +314,7 @@ void MCB::Scene::CheckAllColision()
                 { player.position.x,player.position.y,player.position.z }, player.r))
             {
                 bullet->BulletHit();
+                player.EnemyBulletHit(bullet->damage);
                 continue;
             }
 
@@ -319,24 +376,8 @@ void MCB::Scene::MatrixUpdate()
     matView.FollowingFor3DObject(player.position,player.nowFrontVec,{100,50,100},player.UpVec);
     matView.UpDateMatrixView();
     Skydorm.MatrixUpdata(matView, matProjection);
-    player.MatrixUpdata(matView, matProjection,player.playerQ);
     enemys.UpdateMatrix(matView, matProjection);
-    for (std::unique_ptr<PlayerBullet>& bullet : player.bullets)
-    {
-        bullet->MatrixUpdata(matView, matProjection);
-    }
-
-    for (std::unique_ptr<HomingMissile>& missile : player.homingMissile)
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            missile->homingMissiles[i].MatrixUpdata(matView, matProjection);
-        }
-    }
-    for (std::unique_ptr<Laser>& laser : player.lasers)
-    {
-        laser->MatrixUpdata(matView, matProjection, player.playerQ);
-    }
+    player.AllMatrixUpdate(matView, matProjection);
     for (std::unique_ptr<Exp>& exp : exps)
     {
         exp->MatrixUpdata(matView, matProjection);

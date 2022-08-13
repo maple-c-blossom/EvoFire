@@ -4,10 +4,10 @@
 class Laser : public MCB::Object3d
 {
 private:
-	int damage = 50;
 	int lifeTime = 0;
 	int maxLifeTime = 120;
 public:
+	int damage = 50;
 	MCB::Ray laser;
 	bool deleteFlag = false;
 	float maxRange = 500.0f;

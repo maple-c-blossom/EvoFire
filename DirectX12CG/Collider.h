@@ -36,7 +36,7 @@ namespace MCB
 	};
 
 	bool CalcRaySphere(Ray ray,Sphere sphere);
-	bool CalcRaySphere(Ray ray, Float3 sphereA, float radiusA);
+	bool CalcRaySphere(Ray ray, Float3 sphereA, float radiusA,float* hitRenge = nullptr);
 	bool CalcSphere(Sphere sphereA,Sphere sphereB);
 	bool CalcSphere(Float3 sphereA,float radiusA, Float3 sphereB,float rudiusB);
 }

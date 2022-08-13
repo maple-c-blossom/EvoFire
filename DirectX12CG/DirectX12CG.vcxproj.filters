@@ -309,8 +309,11 @@
     <ClCompile Include="HomingMissile.cpp">
       <Filter>ソース ファイル\Game\Player</Filter>
     </ClCompile>
+    <ClCompile Include="Bomb.cpp">
+      <Filter>ソース ファイル\Game\Player</Filter>
+    </ClCompile>
     <ClCompile Include="Laser.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Game\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -497,7 +500,10 @@
       <Filter>ヘッダー ファイル\Game\Player</Filter>
     </ClInclude>
     <ClInclude Include="Laser.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\Game\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Bomb.h">
+      <Filter>ヘッダー ファイル\Game\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

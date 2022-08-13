@@ -63,9 +63,10 @@ void Enemy::Init(MCB::Object3d* target, MCB::Float3 position, MCB::Model* model,
 	scale = { 10,10,10 };
 }
 
-void Enemy::Deth()
+void Enemy::Deth(int Damage)
 {
-	deleteFlag = true;
+	hp -= Damage;
+	if(hp < 0) deleteFlag = true;
 }
 
 void Enemy::AllMatrixUpdate(MCB::View view, MCB::Projection proj)

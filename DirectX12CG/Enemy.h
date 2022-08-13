@@ -17,8 +17,10 @@ private:
 	int attacktime = 0;
 	float Angle = 0;
 	Object3d* target;
+	int maxhp = 2;
+	int hp = maxhp;
 public:
-	float expPoint = 0.05f;
+	float expPoint = 2 / 20.0f;
 	float r = 10;
 	bool deleteFlag = false;
 	MCB::Model* bulletModel = nullptr;
@@ -31,7 +33,7 @@ public:
 	void Rotasion();
 	void Attack();
 	void Init(MCB::Object3d* target,MCB::Float3 position,MCB::Model* model,MCB::Model* bulletModel);
-	void Deth();
+	void Deth(int Damage);
 	void AllMatrixUpdate(MCB::View view, MCB::Projection proj);
 	void AllDraw();
 };

@@ -61,7 +61,7 @@ bool MCB::CalcRaySphere(Ray ray, Sphere sphere)
 	return a < sphere.radius + ray.radius;
 }
 
-bool MCB::CalcRaySphere(Ray ray, Float3 sphereA, float radiusA)
+bool MCB::CalcRaySphere(Ray ray, Float3 sphereA, float radiusA, float* hitRenge)
 {
 	//Vector3D rayToSphere(ray.StartPosition, sphereA);
 	//ray.rayVec.V3Norm();
@@ -98,7 +98,13 @@ bool MCB::CalcRaySphere(Ray ray, Float3 sphereA, float radiusA)
 	if (tempPos > ray.range) return false;
 	Vector3D a(tempRayPos.vec, sphereA);
 	float rayAndSphereR = radiusA + ray.radius;
-	return a.V3Len() < rayAndSphereR;
+	float ren = a.V3Len();
+	if (ren < rayAndSphereR)
+	{
+		if (hitRenge) hitRenge = &ren;
+		return true;
+	}
+	return false;
 
 
 

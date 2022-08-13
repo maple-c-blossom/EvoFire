@@ -4,13 +4,13 @@
 class EnemyBullet: public MCB::Object3d
 {
 private:
-	int damage = 1;
 	MCB::Vector3D velocity = {};
 	float speedOffSet = 5;
 	int lifeTime = 0;
 	int maxLifeTime = 120;
 	MCB::Object3d* target = nullptr;
 public:
+	int damage = 1;
 	int t = 2;
 	const int defoT = 2;
 	int tUpdateMaxTime = 10;

@@ -5,7 +5,7 @@
 using namespace MCB;
 using namespace std;
 
-void Player::PlayerInit(Model* model, Model* bulletModel, Model* missileModel, MCB::Model* laserModel)
+void Player::PlayerInit(Model* model, Model* bulletModel, Model* missileModel, MCB::Model* laserModel, MCB::Model* bombModel)
 {
 	speedFront = 0.0f;
 	speedRight = 0.0f;
@@ -29,7 +29,14 @@ void Player::PlayerInit(Model* model, Model* bulletModel, Model* missileModel, M
 	this->bulletModel = bulletModel;
 	this->missileModel = missileModel;
 	this->laserModel = laserModel;
+	this->bombModel = bombModel;
 	scale = { 4,4,4 };
+	targetRay.radius = 50;
+	targetRay.rayVec = nowFrontVec;
+	targetRay.StartPosition.x = position.x;
+	targetRay.StartPosition.y = position.y;
+	targetRay.StartPosition.z = position.z;
+	targetRay.range = 50000.0f;
 	for (std::unique_ptr<PlayerBullet>& bullet : bullets)
 	{
 		bullet->deleteFlag = true;
@@ -55,6 +62,11 @@ void Player::Update()
 	Move();
 	Attack();
 	SPAttack();
+	targetRay.rayVec = nowFrontVec;
+	targetRay.StartPosition.x = position.x;
+	targetRay.StartPosition.y = position.y;
+	targetRay.StartPosition.z = position.z;
+
 	for (std::unique_ptr<HomingMissile>& missile : homingMissile)
 	{
 		missile->SetTarget(target);
@@ -82,6 +94,12 @@ void Player::Update()
 		laser->Update({ position.x,position.y,position.z }, nowFrontVec);
 	}
 	lasers.remove_if([](std::unique_ptr<Laser>& laser) {return laser->deleteFlag; });
+
+	for (std::unique_ptr<Bomb>& bomb : bombs)
+	{
+		bomb->Update();
+	}
+	bombs.remove_if([](std::unique_ptr<Bomb>& bomb) {return bomb->deleteFlag; });
 }
 
 void Player::Move()
@@ -354,6 +372,20 @@ void Player::SPAttack()
 			attackTime = 0;
 		}
 	}
+
+	if ((input->IsKeyDown(DIK_LSHIFT) && input->IsKeyTrigger(DIK_B)) ||
+		(input->gamePad->IsButtonDown(GAMEPAD_LB) && input->gamePad->IsButtonTrigger(GAMEPAD_Y)))
+	{
+		if (bombCount > 0)
+		{
+			bombCount--;
+			std::unique_ptr<Bomb> BM = std::make_unique<Bomb>();
+			BM->Fire(nowFrontVec,{ position.x,position.y,position.z }, bombModel);
+			bombs.push_back(std::move(BM));
+			attackTime = 0;
+		}
+	}
+
 }
 
 void Player::AllDraw()
@@ -368,6 +400,39 @@ void Player::AllDraw()
 		}
 	}
 	for (std::unique_ptr<Laser>& laser : lasers) { laser->Draw(); }
+	for (std::unique_ptr<Bomb>& bomb : bombs) { bomb->Draw(); }
+}
+
+void Player::AllMatrixUpdate(MCB::View viewmat, MCB::Projection projmat)
+{
+	MatrixUpdata(viewmat, projmat,playerQ);
+
+	for (std::unique_ptr<PlayerBullet>& bullet : bullets)
+	{
+		bullet->MatrixUpdata(viewmat, projmat);
+	}
+
+	for (std::unique_ptr<HomingMissile>& missile : homingMissile)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			missile->homingMissiles[i].MatrixUpdata(viewmat, projmat);
+		}
+	}
+	for (std::unique_ptr<Laser>& laser : lasers)
+	{
+		laser->MatrixUpdata(viewmat, projmat, playerQ);
+	}
+
+	for (std::unique_ptr<Bomb>& bomb : bombs)
+	{
+		bomb->MatrixUpdata(viewmat, projmat);
+	}
+}
+
+void Player::EnemyBulletHit(int damege)
+{
+	hp -= damege;
 }
 
 MCB::Object3d* Player::GetTarget()
