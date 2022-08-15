@@ -3,7 +3,7 @@
 
 class EnemyBullet: public MCB::Object3d
 {
-private:
+protected:
 	MCB::Vector3D velocity = {};
 	float speedOffSet = 5;
 	int lifeTime = 0;
@@ -20,10 +20,10 @@ public:
 	float slerpStopR = 30 + r;
 	bool deleteFlag = false;
 	bool SlerpStop = false;
-	void VelocityUpdate();
-	void Update();
+	//void VelocityUpdate();
+	virtual void Update() = 0;
 	void BulletHit();
 	void SlerpHit();
-	void Fire(MCB::Float3 startPosition, MCB::Vector3D frontVec, Object3d* target);
+	virtual void Fire(MCB::Float3 startPosition, MCB::Vector3D frontVec, Object3d* target) = 0;
 };
 

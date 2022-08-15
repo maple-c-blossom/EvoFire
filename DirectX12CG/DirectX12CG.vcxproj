@@ -36,6 +36,7 @@
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MaxSpeed</Optimization>
     </ClCompile>
     <ClCompile Include="GamePad.cpp" />
+    <ClCompile Include="HomingEnemyBullet.cpp" />
     <ClCompile Include="HomingMissile.cpp" />
     <ClCompile Include="IScene.cpp" />
     <ClCompile Include="Laser.cpp" />
@@ -48,6 +49,7 @@
     </ClCompile>
     <ClCompile Include="MCBMatrix.cpp" />
     <ClCompile Include="MipMap.cpp" />
+    <ClCompile Include="NoHomingEnemyBullet.cpp" />
     <ClCompile Include="Object3d.cpp" />
     <ClCompile Include="ObjectMaterial.cpp" />
     <ClCompile Include="Model.cpp" />
@@ -73,6 +75,7 @@
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureBuffer.cpp" />
     <ClCompile Include="TextureFile.cpp" />
+    <ClCompile Include="TurretEnemy.cpp" />
     <ClCompile Include="Util.cpp" />
     <ClCompile Include="Vector3D.cpp" />
     <ClCompile Include="Vertex.cpp" />
@@ -169,6 +172,7 @@
     <ClInclude Include="exp.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GamePad.h" />
+    <ClInclude Include="HomingEnemyBullet.h" />
     <ClInclude Include="HomingMissile.h" />
     <ClInclude Include="IScene.h" />
     <ClInclude Include="Laser.h" />
@@ -178,6 +182,7 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="MCBMatrix.h" />
     <ClInclude Include="MipMap.h" />
+    <ClInclude Include="NoHomingEnemyBullet.h" />
     <ClInclude Include="Object3d.h" />
     <ClInclude Include="ObjectMaterial.h" />
     <ClInclude Include="Model.h" />
@@ -203,6 +208,7 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureBuffer.h" />
     <ClInclude Include="TextureFile.h" />
+    <ClInclude Include="TurretEnemy.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="Vector3D.h" />
     <ClInclude Include="Vertex.h" />

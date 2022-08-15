@@ -148,6 +148,24 @@
     <Filter Include="ソース ファイル\Game\Enemy">
       <UniqueIdentifier>{90da33e6-9c38-4a5a-a8b8-a715caf4676e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Enemy\Bullet">
+      <UniqueIdentifier>{706ca993-26c1-4316-98bd-b07d21b51a90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Enemy\Enemys">
+      <UniqueIdentifier>{3c18d249-cced-49e8-bccd-281245e71dc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Aney">
+      <UniqueIdentifier>{e3f22a05-d962-4293-9897-0ddeb46fae95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Enemy\Enemys">
+      <UniqueIdentifier>{2eaa1efa-d86b-496b-a325-4af3176c9ccb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Enemy\Bullet">
+      <UniqueIdentifier>{7005e945-461b-4833-95f8-3fecd00eb71b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Aney">
+      <UniqueIdentifier>{13a82470-f80c-464f-8a0f-6568c7348ad2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Object3d.cpp">
@@ -252,12 +270,6 @@
     <ClCompile Include="Util.cpp">
       <Filter>ソース ファイル\Engin</Filter>
     </ClCompile>
-    <ClCompile Include="RayObject.cpp">
-      <Filter>ソース ファイル\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="SphereObj.cpp">
-      <Filter>ソース ファイル\Game</Filter>
-    </ClCompile>
     <ClCompile Include="Collider.cpp">
       <Filter>ソース ファイル\Engin\3D</Filter>
     </ClCompile>
@@ -288,16 +300,7 @@
     <ClCompile Include="GamePad.cpp">
       <Filter>ソース ファイル\Engin\Input</Filter>
     </ClCompile>
-    <ClCompile Include="exp.cpp">
-      <Filter>ソース ファイル\Game\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>ソース ファイル\Game\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="Boss.cpp">
-      <Filter>ソース ファイル\Game\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyBullet.cpp">
       <Filter>ソース ファイル\Game\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="EnemyManager.cpp">
@@ -314,6 +317,30 @@
     </ClCompile>
     <ClCompile Include="Laser.cpp">
       <Filter>ソース ファイル\Game\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>ソース ファイル\Game\Enemy\Enemys</Filter>
+    </ClCompile>
+    <ClCompile Include="TurretEnemy.cpp">
+      <Filter>ソース ファイル\Game\Enemy\Enemys</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyBullet.cpp">
+      <Filter>ソース ファイル\Game\Enemy\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="HomingEnemyBullet.cpp">
+      <Filter>ソース ファイル\Game\Enemy\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="exp.cpp">
+      <Filter>ソース ファイル\Game\Aney</Filter>
+    </ClCompile>
+    <ClCompile Include="RayObject.cpp">
+      <Filter>ソース ファイル\Game\Aney</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereObj.cpp">
+      <Filter>ソース ファイル\Game\Aney</Filter>
+    </ClCompile>
+    <ClCompile Include="NoHomingEnemyBullet.cpp">
+      <Filter>ソース ファイル\Game\Enemy\Bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -445,12 +472,6 @@
     <ClInclude Include="Util.h">
       <Filter>ヘッダー ファイル\Engin</Filter>
     </ClInclude>
-    <ClInclude Include="RayObject.h">
-      <Filter>ヘッダー ファイル\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="SphereObj.h">
-      <Filter>ヘッダー ファイル\Game</Filter>
-    </ClInclude>
     <ClInclude Include="Collider.h">
       <Filter>ヘッダー ファイル\Engin\3D</Filter>
     </ClInclude>
@@ -481,16 +502,7 @@
     <ClInclude Include="GamePad.h">
       <Filter>ヘッダー ファイル\Engin\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>ヘッダー ファイル\Game\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="exp.h">
-      <Filter>ヘッダー ファイル\Game\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="Boss.h">
-      <Filter>ヘッダー ファイル\Game\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyBullet.h">
       <Filter>ヘッダー ファイル\Game\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="EnemyManager.h">
@@ -504,6 +516,30 @@
     </ClInclude>
     <ClInclude Include="Bomb.h">
       <Filter>ヘッダー ファイル\Game\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyBullet.h">
+      <Filter>ヘッダー ファイル\Game\Enemy\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="HomingEnemyBullet.h">
+      <Filter>ヘッダー ファイル\Game\Enemy\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>ヘッダー ファイル\Game\Enemy\Enemys</Filter>
+    </ClInclude>
+    <ClInclude Include="TurretEnemy.h">
+      <Filter>ヘッダー ファイル\Game\Enemy\Enemys</Filter>
+    </ClInclude>
+    <ClInclude Include="RayObject.h">
+      <Filter>ヘッダー ファイル\Game\Aney</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereObj.h">
+      <Filter>ヘッダー ファイル\Game\Aney</Filter>
+    </ClInclude>
+    <ClInclude Include="exp.h">
+      <Filter>ヘッダー ファイル\Game\Aney</Filter>
+    </ClInclude>
+    <ClInclude Include="NoHomingEnemyBullet.h">
+      <Filter>ヘッダー ファイル\Game\Enemy\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

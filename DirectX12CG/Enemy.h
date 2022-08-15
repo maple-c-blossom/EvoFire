@@ -5,7 +5,8 @@
 
 class Enemy: public MCB::Object3d
 {
-private:
+protected:
+
 	float speedFront = 0.0f;
 	float speedRight = 0.0f;
 	float rotasionSpeed = 0.025f;
@@ -19,7 +20,13 @@ private:
 	Object3d* target;
 	int maxhp = 2;
 	int hp = maxhp;
+	int attackType = 0;
 public:
+	static enum AttaxkType
+	{
+		NoHoming,
+		Homing
+	};
 	float expPoint = 2 / 20.0f;
 	float r = 10;
 	bool deleteFlag = false;
@@ -28,13 +35,14 @@ public:
 	MCB::Quaternion enemyQ = { 0,0,0,1 };
 	MCB::Vector3D rightVec;
 	MCB::Vector3D UpVec;
-	void Update();
-	void Move();
-	void Rotasion();
-	void Attack();
-	void Init(MCB::Object3d* target,MCB::Float3 position,MCB::Model* model,MCB::Model* bulletModel);
+	virtual void Update() = 0;
+	//void Move();
+	//void Rotasion();
+	//void Attack();
+	virtual void Init(MCB::Object3d* target,MCB::Float3 position,MCB::Model* model,MCB::Model* bulletModel,int AttackType = NoHoming) = 0;
 	void Deth(int Damage);
 	void AllMatrixUpdate(MCB::View view, MCB::Projection proj);
 	void AllDraw();
+	
 };
 
