@@ -76,12 +76,12 @@ void MCB::Scene::Update()
     if (input->IsKeyTrigger(DIK_P))
     {
         //enemys.enemyPop(&player, { (float)GetRand(-500,500),(float)GetRand(-100,100),(float)GetRand(-20,20) }, testBoxModel.get(), testSphereModel.get());
-        enemys.enemyPop(&player, { (float)GetRand(-500,500),0,(float)GetRand(-100,100) }, testBoxModel.get(), testSphereModel.get(),Enemy::Homing);
+        enemys.enemyPop(&player, { (float)GetRand(-500,500),0,(float)GetRand(-100,100) }, testBoxModel.get(), testSphereModel.get(),EnemyManager::Turret,Enemy::Homing);
     }
 
     if (input->IsKeyTrigger(DIK_L))
     {
-        enemys.enemyPop(&player, { (float)GetRand(-500,500),0,(float)GetRand(-100,100) }, testBoxModel.get(), testSphereModel.get(), Enemy::NoHoming);
+        enemys.enemyPop(&player, { (float)GetRand(-500,500),0,(float)GetRand(-100,100) }, testBoxModel.get(), testSphereModel.get(), EnemyManager::Turret,Enemy::NoHoming);
     }
 
 

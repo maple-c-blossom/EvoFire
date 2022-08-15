@@ -1,14 +1,14 @@
 #include "EnemyManager.h"
 
-void EnemyManager::enemyPop(MCB::Object3d* target, MCB::Float3 position, MCB::Model* model, MCB::Model* bulletModel,int attackType)
+void EnemyManager::enemyPop(MCB::Object3d* target, MCB::Float3 position, MCB::Model* model, MCB::Model* bulletModel, int PopEnemy, int attackType)
 {
-	int PopEnemyNum = 0;
-	if (PopEnemyNum == 0)
+	std::unique_ptr<Enemy> enemy;
+	if (PopEnemy == Turret)
 	{
-		std::unique_ptr<TurretEnemy> enemy = std::make_unique<TurretEnemy>();
-		enemy->Init(target, position, model, bulletModel,attackType);
-		enemys.push_back(std::move(enemy));
+		enemy = std::make_unique<TurretEnemy>();
 	}
+	enemy->Init(target, position, model, bulletModel,attackType);
+	enemys.push_back(std::move(enemy));
 
 }
 
