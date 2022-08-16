@@ -84,6 +84,10 @@ void MCB::Scene::Update()
         enemys.enemyPop(&player, { (float)GetRand(-500,500),0,(float)GetRand(-100,100) }, testBoxModel.get(), testSphereModel.get(), EnemyManager::Turret,Enemy::NoHoming);
     }
 
+    if (input->IsKeyTrigger(DIK_M))
+    {
+       if(enemys.enemys.size() > 0) enemys.enemyPop(&player, {(float)GetRand(-100,100),(float)GetRand(-100,100),(float)GetRand(-100,100)}, testBoxModel.get(), testSphereModel.get(), EnemyManager::Guard, Enemy::NoHoming, enemys.enemys.begin()->get());
+    }
 
     player.Update();
     enemys.Update();

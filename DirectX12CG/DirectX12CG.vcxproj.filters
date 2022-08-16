@@ -343,7 +343,7 @@
       <Filter>ソース ファイル\Game\Enemy\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="GuardEnemy.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Game\Enemy\Enemys</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

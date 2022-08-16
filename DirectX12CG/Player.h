@@ -29,7 +29,7 @@ private:
 	Object3d* target = nullptr;
 	Object3d* homingTarget = nullptr;
 	int attackTime = 0;
-	int attackResponceTime = 20;
+	int attackResponceTime = 10;
 	int maxhp = 20;
 	int hp = maxhp;
 

@@ -168,7 +168,6 @@ void Dx12::SetSwapChain()
     swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
     result = dxgiFactory->CreateSwapChainForHwnd(commandQueue.Get(), dxWindow->hwnd, &swapChainDesc, nullptr, nullptr, &swapchain1);
-
     assert(SUCCEEDED(result));
 
     result = swapchain1.As(&swapchain);

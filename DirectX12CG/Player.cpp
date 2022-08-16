@@ -18,7 +18,7 @@ void Player::PlayerInit(Model* model, Model* bulletModel, Model* missileModel, M
 	bombCount = 0;
 	exp = 0;
 	target = nullptr;
-	attackTime = 0;
+	attackTime = attackResponceTime;
 	attackResponceTime = 20;
 	Level = 1;
 	nextLevelExp = 20;
