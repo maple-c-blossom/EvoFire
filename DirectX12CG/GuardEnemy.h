@@ -9,6 +9,7 @@ public:
 	MCB::Vector3D startPositionVec;
 	float distance= 80;
 	Enemy* guardPtr = nullptr;
+	bool SetRota = false;
 	void Update() override;
 	void Rotasion();
 	void Attack();

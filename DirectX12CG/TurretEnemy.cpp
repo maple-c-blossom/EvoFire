@@ -3,8 +3,14 @@
 #include "NoHomingEnemyBullet.h"
 using namespace MCB;
 
+#include "Input.h"
+
 void TurretEnemy::Update()
 {
+	prevPosition.x = position.x;
+	prevPosition.y = position.y;
+	prevPosition.z = position.z;
+	if(Input::GetInstance()->IsKeyDown(DIK_4))position.x++;
 	Rotasion();
 	Attack();
 	for (std::unique_ptr<EnemyBullet>& bullet : bullets)

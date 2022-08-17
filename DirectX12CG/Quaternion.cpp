@@ -63,7 +63,7 @@ Quaternion MCB::Quaternion::SetRotationQuaternion(Vector3D rotationAxisVec, Vect
 	position = GetCartesianProduct(RotationAngle, position);
 	position = GetCartesianProduct(position, GetReciprocal(RotationAngle));
 
-	//position.QuaternoinNorm();
+	position.QuaternoinNorm();
 	return position;
 }
 
