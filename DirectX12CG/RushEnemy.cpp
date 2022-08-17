@@ -95,5 +95,7 @@ void RushEnemy::Init(MCB::Object3d* target, MCB::Float3 position, MCB::Model* mo
 	this->model = model;
 	this->bulletModel = bulletModel;
 	this->attackType = AttackType;
+	this->maxhp = 2;
+	this->hp = maxhp;
 	scale = { 10,10,10 };
 }

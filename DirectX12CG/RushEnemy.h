@@ -5,7 +5,7 @@ class RushEnemy :public Enemy
 {
 public:
 	int lifeTime = 0;
-	int maxLifeTime = 600;
+	int maxLifeTime = 1200;
 	void Update() override;
 	void Move();
 	void Rotasion();

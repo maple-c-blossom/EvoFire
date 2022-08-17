@@ -5,11 +5,11 @@ class EnemyBullet: public MCB::Object3d
 {
 protected:
 	MCB::Vector3D velocity = {};
+	MCB::Object3d* target = nullptr;
+public:
 	float speedOffSet = 5;
 	int lifeTime = 0;
 	int maxLifeTime = 120;
-	MCB::Object3d* target = nullptr;
-public:
 	int damage = 1;
 	int t = 2;
 	const int defoT = 2;

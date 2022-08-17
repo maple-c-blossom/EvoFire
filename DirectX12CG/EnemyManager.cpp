@@ -24,10 +24,12 @@ void EnemyManager::enemyPop(MCB::Object3d* target, MCB::Float3 position, MCB::Mo
 
 void EnemyManager::Update()
 {
+	int deleted = 0;
 	for (std::unique_ptr<Enemy>& enemy : enemys)
 	{
-		if (enemys.size() > 30)
+		if (enemys.size() - deleted > 60)
 		{
+			deleted++;
 			enemy.get()->deleteFlag = true;
 			continue;
 		}
