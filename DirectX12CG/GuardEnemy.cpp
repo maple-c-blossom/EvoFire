@@ -1,6 +1,7 @@
 #include "GuardEnemy.h"
 #include "Util.h"
 #include "Quaternion.h"
+#include "NoHomingEnemyBullet.h"
 
 using namespace MCB;
 
@@ -11,7 +12,7 @@ GuardEnemy::GuardEnemy(Enemy* guardTarget)
 
 void GuardEnemy::Update()
 {
-
+	prevPosition.x = position.x, prevPosition.y = position.y, prevPosition.z = position.z;
 	if (guardPtr != nullptr)
 	{
 		if (guardPtr->deleteFlag)
@@ -20,16 +21,47 @@ void GuardEnemy::Update()
 		}
 	}
 	Move();
+	Rotasion();
+	Attack();
+	for (std::unique_ptr<EnemyBullet>& bullet : bullets)
+	{
+		bullet->Update();
+	}
+	bullets.remove_if([](std::unique_ptr<EnemyBullet>& bullet) {return bullet->deleteFlag; });
 }
 
 void GuardEnemy::Rotasion()
 {
 
+	if (guardPtr == nullptr) return;
+	nowFrontVec = NORM_FRONT_VEC;
+	Vector3D targetVec;
+	Vector3D DefoVec = { 0,0,1 };
+	targetVec = targetVec.V3Get({ prevPosition.x,prevPosition.y,prevPosition.z }, { guardPtr->prevPosition.x , guardPtr->prevPosition.y , guardPtr->prevPosition.z });
+	targetVec.V3Norm();
+	targetVec = -targetVec;
+	Vector3D RotasionAxis = RotasionAxis.GetV3Cross(DefoVec, targetVec);
+	RotasionAxis.V3Norm();
+	float angle = DefoVec.GetV3Dot(targetVec);
+	enemyQ.SetRota(RotasionAxis, angle);
+	nowFrontVec = enemyQ.Vector3DRotasion(nowFrontVec, enemyQ);
+	nowFrontVec = targetVec;
 }
 
 void GuardEnemy::Attack()
 {
-
+	attacktime++;
+	if (attacktime >= attackResponse)
+	{
+		std::unique_ptr<EnemyBullet> bullet;
+		bullet = std::make_unique<NoHomingEnemyBullet>();
+		bullet->Fire({ position.x,position.y,position.z }, nowFrontVec, nullptr);
+		bullet->model = bulletModel;
+		bullet->scale = { 6,6,6 };
+		bullet->rotasion = rotasion;
+		bullets.push_back(std::move(bullet));
+		attacktime = 0;
+	}
 }
 
 void GuardEnemy::Move()
@@ -79,6 +111,7 @@ void GuardEnemy::Init(MCB::Object3d* target, MCB::Float3 position, MCB::Model* m
 	startPositionVec.vec.y = this->position.y;
 	startPositionVec.vec.z = this->position.z;
 	rotationAngle = 0;
+	attackResponse = 20;
 	//startPositionVec.V3Norm();
 	if (guardPtr)
 	{

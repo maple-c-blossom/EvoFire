@@ -10,7 +10,6 @@ void TurretEnemy::Update()
 	prevPosition.x = position.x;
 	prevPosition.y = position.y;
 	prevPosition.z = position.z;
-	if(Input::GetInstance()->IsKeyDown(DIK_4))position.x++;
 	Rotasion();
 	Attack();
 	for (std::unique_ptr<EnemyBullet>& bullet : bullets)
@@ -23,13 +22,15 @@ void TurretEnemy::Update()
 
 void TurretEnemy::Rotasion()
 {
+	if (target == nullptr) return;
 	nowFrontVec = NORM_FRONT_VEC;
 	Vector3D targetVec;
-	Vector3D DefoVec = { 0,0,1 };
-	targetVec.V3Get({ position.x,position.y,position.z }, { target->position.x,target->position.y,target->position.z });
+	Vector3D DefoVec = NORM_FRONT_VEC;
+	targetVec = targetVec.V3Get({ position.x,position.y,position.z }, { target->position.x,target->position.y,target->position.z });
+	targetVec.V3Norm();
 	Vector3D RotasionAxis = RotasionAxis.GetV3Cross(DefoVec, targetVec);
+	RotasionAxis.V3Norm();
 	float angle = DefoVec.GetV3Dot(targetVec);
-
 	enemyQ.SetRota(RotasionAxis, angle);
 	nowFrontVec = enemyQ.Vector3DRotasion(nowFrontVec, enemyQ);
 }
