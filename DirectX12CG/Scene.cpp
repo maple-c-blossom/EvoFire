@@ -89,6 +89,12 @@ void MCB::Scene::Update()
        if(enemys.enemys.size() > 0) enemys.enemyPop(&player, {(float)GetRand(-100,100),(float)GetRand(-100,100),(float)GetRand(-100,100)}, testBoxModel.get(), testSphereModel.get(), EnemyManager::Guard, Enemy::NoHoming, enemys.enemys.begin()->get());
     }
 
+    if (input->IsKeyTrigger(DIK_K))
+    {
+        enemys.enemyPop(&player, { (float)GetRand(-100,100),(float)GetRand(-100,100),(float)GetRand(-100,100) }, testBoxModel.get(), testSphereModel.get(), EnemyManager::Rash);
+    }
+
+
     player.Update();
     enemys.Update();
     //if (enemys.enemys.size() > 0)
@@ -421,12 +427,19 @@ void MCB::Scene::Sporn(Float3 enemyPos,float expPoint)
 
 void MCB::Scene::DeleteExp()
 {
+    float tempExp = 0;
     for (std::unique_ptr<Exp>& exp : exps)
     {
         if (exps.size() <= 180)
         {
             break;
         }
-        exps.remove(exp);
+        else
+        {
+            tempExp += exp.get()->expPoint;
+            exps.remove(exp);
+        }
     }
+
+    exps.begin()->get()->expPoint += tempExp;
 }

@@ -169,6 +169,7 @@ namespace MCB
 		void DeleteExp();
 
 		void CheckAllColision();
+
 	};
 
 }

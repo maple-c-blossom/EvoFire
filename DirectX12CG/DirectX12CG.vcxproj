@@ -66,6 +66,7 @@
     <ClCompile Include="RayObject.cpp" />
     <ClCompile Include="RootParameter.cpp" />
     <ClCompile Include="RootSignature.cpp" />
+    <ClCompile Include="RushEnemy.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Sound.cpp" />
@@ -200,6 +201,7 @@
     <ClInclude Include="RayObject.h" />
     <ClInclude Include="RootParameter.h" />
     <ClInclude Include="RootSignature.h" />
+    <ClInclude Include="RushEnemy.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Sound.h" />

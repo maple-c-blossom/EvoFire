@@ -345,6 +345,9 @@
     <ClCompile Include="GuardEnemy.cpp">
       <Filter>ソース ファイル\Game\Enemy\Enemys</Filter>
     </ClCompile>
+    <ClCompile Include="RushEnemy.cpp">
+      <Filter>ソース ファイル\Game\Enemy\Enemys</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="ParticleGeometryShader.hlsl">
@@ -545,6 +548,9 @@
       <Filter>ヘッダー ファイル\Game\Enemy\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="GuardEnemy.h">
+      <Filter>ヘッダー ファイル\Game\Enemy\Enemys</Filter>
+    </ClInclude>
+    <ClInclude Include="RushEnemy.h">
       <Filter>ヘッダー ファイル\Game\Enemy\Enemys</Filter>
     </ClInclude>
   </ItemGroup>
