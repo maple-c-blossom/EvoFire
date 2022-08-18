@@ -59,7 +59,7 @@ void TurretEnemy::Attack()
 	}
 }
 
-void TurretEnemy::Init(MCB::Object3d* target, MCB::Float3 position, MCB::Model* model, MCB::Model* bulletModel, int AttackType)
+void TurretEnemy::Init(Player* target, MCB::Float3 position, MCB::Model* model, MCB::Model* bulletModel, int AttackType)
 {
 	this->target = target;
 	this->position.x = position.x;

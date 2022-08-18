@@ -85,7 +85,7 @@ void RushEnemy::Attack()
 	}
 }
 
-void RushEnemy::Init(MCB::Object3d* target, MCB::Float3 position, MCB::Model* model, MCB::Model* bulletModel, int AttackType)
+void RushEnemy::Init(Player* target, MCB::Float3 position, MCB::Model* model, MCB::Model* bulletModel, int AttackType)
 {
 
 	this->target = target;

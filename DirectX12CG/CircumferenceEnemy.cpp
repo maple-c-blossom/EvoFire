@@ -1,28 +1,25 @@
-#include "GuardEnemy.h"
+#include "CircumferenceEnemy.h"
 #include "Util.h"
 #include "Quaternion.h"
 #include "NoHomingEnemyBullet.h"
 
 using namespace MCB;
 
-GuardEnemy::GuardEnemy(Enemy* guardTarget)
-{
-	guardPtr = guardTarget;
-}
 
-void GuardEnemy::Update()
+void CircumferenceEnemy::Update()
 {
 	prevPosition.x = position.x, prevPosition.y = position.y, prevPosition.z = position.z;
-	if (guardPtr != nullptr)
+	lifeTime++;
+	if (lifeTime > maxLifeTime)
 	{
-		if (guardPtr->deleteFlag)
-		{
-			guardPtr = nullptr;
-		}
+		deleteFlag = true;
 	}
-	Move();
-	Rotasion();
-	Attack();
+	if (!deleteFlag)
+	{
+		Move();
+		Rotasion();
+		Attack();
+	}
 	for (std::unique_ptr<EnemyBullet>& bullet : bullets)
 	{
 		bullet->Update();
@@ -30,16 +27,15 @@ void GuardEnemy::Update()
 	bullets.remove_if([](std::unique_ptr<EnemyBullet>& bullet) {return bullet->deleteFlag; });
 }
 
-void GuardEnemy::Rotasion()
+void CircumferenceEnemy::Rotasion()
 {
 
-	if (guardPtr == nullptr) return;
+	if (target == nullptr) return;
 	nowFrontVec = NORM_FRONT_VEC;
 	Vector3D targetVec;
 	Vector3D DefoVec = { 0,0,1 };
-	targetVec = targetVec.V3Get({ prevPosition.x,prevPosition.y,prevPosition.z }, { guardPtr->prevPosition.x , guardPtr->prevPosition.y , guardPtr->prevPosition.z });
+	targetVec = targetVec.V3Get({ prevPosition.x,prevPosition.y,prevPosition.z }, { target->prevPosition.x , target->prevPosition.y , target->prevPosition.z });
 	targetVec.V3Norm();
-	targetVec = -targetVec;
 	Vector3D RotasionAxis = RotasionAxis.GetV3Cross(DefoVec, targetVec);
 	RotasionAxis.V3Norm();
 	float angle = DefoVec.GetV3Dot(targetVec);
@@ -48,7 +44,7 @@ void GuardEnemy::Rotasion()
 	nowFrontVec = targetVec;
 }
 
-void GuardEnemy::Attack()
+void CircumferenceEnemy::Attack()
 {
 	attacktime++;
 	if (attacktime >= attackResponse)
@@ -66,18 +62,18 @@ void GuardEnemy::Attack()
 	}
 }
 
-void GuardEnemy::Move()
+void CircumferenceEnemy::Move()
 {
-	rotationAngle += 0.01f;
-	if (guardPtr && !SetRota)
+	rotationAngle += 0.05f;
+	if (target && !SetRota)
 	{
 		Vector3D temp = rotationVec;
 		Vector3D tempVa;
-		if(guardPtr->position.x != guardPtr->prevPosition.x || guardPtr->position.y != guardPtr->prevPosition.y || guardPtr->position.z != guardPtr->prevPosition.z) tempVa = tempVa.V3Get({ position.x,position.y,position.z }, { guardPtr->prevPosition.x , guardPtr->prevPosition.y , guardPtr->prevPosition.z });
-		else tempVa = tempVa.V3Get({ position.x,position.y,position.z }, { guardPtr->position.x , guardPtr->position.y , guardPtr->position.z });
+		if (target->position.x != target->prevPosition.x || target->position.y != target->prevPosition.y || target->position.z != target->prevPosition.z) tempVa = tempVa.V3Get({ position.x,position.y,position.z }, { target->prevPosition.x , target->prevPosition.y , target->prevPosition.z });
+		else tempVa = tempVa.V3Get({ position.x,position.y,position.z }, { target->position.x , target->position.y , target->position.z });
 		tempVa.V3Norm();
 		rotationVec = rotationVec.GetUpVec({ 0,0,1 }, tempVa);
-		if(temp.vec.x != rotationVec.vec.x || temp.vec.y != rotationVec.vec.y || temp.vec.z != rotationVec.vec.z) SetRota = true;
+		if (temp.vec.x != rotationVec.vec.x || temp.vec.y != rotationVec.vec.y || temp.vec.z != rotationVec.vec.z) SetRota = true;
 	}
 	Quaternion positionQ;
 	positionQ = positionQ.SetRotationQuaternion(rotationVec, startPositionVec, rotationAngle);
@@ -85,21 +81,18 @@ void GuardEnemy::Move()
 	PositionVec.V3Norm();
 	Float3 tempPosition = { position.x,position.y,position.z };
 	//position.x = PositionVec.vec.x * distance, position.y = PositionVec.vec.y * distance, position.z = PositionVec.vec.z * distance;
-	if (guardPtr != nullptr)
+	if (target != nullptr)
 	{
-		position.x = PositionVec.vec.x * distance + guardPtr->position.x;
-		position.y = PositionVec.vec.y * distance + guardPtr->position.y;
-		position.z = PositionVec.vec.z * distance + guardPtr->position.z;
+		position.x = PositionVec.vec.x * distance + target->position.x;
+		position.y = PositionVec.vec.y * distance + target->position.y;
+		position.z = PositionVec.vec.z * distance + target->position.z;
 	}
-	else
-	{
-		deleteFlag = true;
-	}
+
 
 
 }
 
-void GuardEnemy::Init(Player* target, MCB::Float3 position, MCB::Model* model, MCB::Model* bulletModel, int AttackType)
+void CircumferenceEnemy::Init(Player* target, MCB::Float3 position, MCB::Model* model, MCB::Model* bulletModel, int AttackType)
 {
 	this->target = target;
 	this->position.x = position.x;
@@ -113,18 +106,13 @@ void GuardEnemy::Init(Player* target, MCB::Float3 position, MCB::Model* model, M
 	startPositionVec.vec.y = this->position.y;
 	startPositionVec.vec.z = this->position.z;
 	rotationAngle = 0;
-	attackResponse = 20;
+	attackResponse = 30;
 	//startPositionVec.V3Norm();
-	if (guardPtr)
+	if (target)
 	{
-		Vector3D tempVa = tempVa.V3Get({ startPositionVec.vec.x, startPositionVec.vec.y,startPositionVec.vec.z }, { guardPtr->position.x , guardPtr->position.y , guardPtr->position.z });
+		Vector3D tempVa = tempVa.V3Get({ startPositionVec.vec.x, startPositionVec.vec.y,startPositionVec.vec.z }, { target->position.x , target->position.y , target->position.z });
 		tempVa.V3Norm();
-		rotationVec = rotationVec.GetUpVec({0,0,1}, tempVa);
+		rotationVec = rotationVec.GetUpVec({ 0,0,1 }, tempVa);
 	}
 
-}
-
-void GuardEnemy::SetGuardTarget(Enemy* guardTarget)
-{
-	
 }

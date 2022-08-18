@@ -34,6 +34,7 @@ private:
 	int hp = maxhp;
 
 public:
+	MCB::Float3 prevPosition = {};
 	float exp = 0;
 	int Level = 1;
 	int nextLevelExp = 20;

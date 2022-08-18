@@ -58,6 +58,9 @@ void Player::PlayerInit(Model* model, Model* bulletModel, Model* missileModel, M
 
 void Player::Update()
 {
+	prevPosition.x = position.x;
+	prevPosition.y = position.y;
+	prevPosition.z = position.z;
 	Rotasion();
 	Move();
 	Attack();

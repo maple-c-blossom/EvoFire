@@ -10,7 +10,7 @@ public:
 	void Move();
 	void Rotasion();
 	void Attack();
-	void Init(MCB::Object3d* target, MCB::Float3 position, MCB::Model* model, MCB::Model* bulletModel, int AttackType = NoHoming) override;
+	void Init(Player* target, MCB::Float3 position, MCB::Model* model, MCB::Model* bulletModel, int AttackType = NoHoming) override;
 
 };
 

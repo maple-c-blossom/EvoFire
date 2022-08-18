@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="CircumferenceEnemy.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="DebugText.cpp" />
     <ClCompile Include="Depth.cpp" />
@@ -161,6 +162,7 @@
   <ItemGroup>
     <ClInclude Include="Bomb.h" />
     <ClInclude Include="Boss.h" />
+    <ClInclude Include="CircumferenceEnemy.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="DebugText.h" />
     <ClInclude Include="Depth.h" />

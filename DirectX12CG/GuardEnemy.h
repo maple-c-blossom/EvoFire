@@ -14,7 +14,7 @@ public:
 	void Rotasion();
 	void Attack();
 	void Move();
-	void Init(MCB::Object3d* target, MCB::Float3 position, MCB::Model* model, MCB::Model* bulletModel, int AttackType = NoHoming) override;
+	void Init(Player* target, MCB::Float3 position, MCB::Model* model, MCB::Model* bulletModel, int AttackType = NoHoming) override;
 	void SetGuardTarget(Enemy* guardTarget);
 };
 

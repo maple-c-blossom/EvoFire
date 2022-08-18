@@ -94,6 +94,10 @@ void MCB::Scene::Update()
         enemys.enemyPop(&player, { (float)GetRand(-100,100),(float)GetRand(-100,100),(float)GetRand(-100,100) }, testBoxModel.get(), testSphereModel.get(), EnemyManager::Rash);
     }
 
+    if (input->IsKeyTrigger(DIK_N))
+    {
+        enemys.enemyPop(&player, { (float)GetRand(-100,100),(float)GetRand(-100,100),(float)GetRand(-100,100) }, testBoxModel.get(), testSphereModel.get(), EnemyManager::Circumference);
+    }
 
     player.Update();
     enemys.Update();

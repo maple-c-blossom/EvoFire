@@ -1,6 +1,8 @@
 #include "EnemyManager.h"
+#include "CircumferenceEnemy.h"
 
-void EnemyManager::enemyPop(MCB::Object3d* target, MCB::Float3 position, MCB::Model* model, MCB::Model* bulletModel, int PopEnemy, int attackType, Enemy* guardTarget)
+
+void EnemyManager::enemyPop(Player* target, MCB::Float3 position, MCB::Model* model, MCB::Model* bulletModel, int PopEnemy, int attackType, Enemy* guardTarget)
 {
 
 	std::unique_ptr<Enemy> enemy;
@@ -16,6 +18,10 @@ void EnemyManager::enemyPop(MCB::Object3d* target, MCB::Float3 position, MCB::Mo
 	else if (PopEnemy == Rash)
 	{
 		enemy = std::make_unique<RushEnemy>();
+	}
+	else if (PopEnemy == Circumference)
+	{
+		enemy = std::make_unique<CircumferenceEnemy>();
 	}
 	enemy->Init(target, position, model, bulletModel,attackType);
 	enemys.push_back(std::move(enemy));

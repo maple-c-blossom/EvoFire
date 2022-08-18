@@ -1,7 +1,7 @@
 #pragma once
 #include "Object3d.h"
 #include "EnemyBullet.h"
-
+#include "Player.h"
 
 class Enemy: public MCB::Object3d
 {
@@ -16,7 +16,7 @@ protected:
 	int attackResponse = 60;
 	int attacktime = 0;
 	float Angle = 0;
-	Object3d* target;
+	Player* target;
 	int maxhp = 2;
 	int hp = maxhp;
 	int attackType = 0;
@@ -39,7 +39,7 @@ public:
 	//void Move();
 	//void Rotasion();
 	//void Attack();
-	virtual void Init(MCB::Object3d* target,MCB::Float3 position,MCB::Model* model,MCB::Model* bulletModel,int AttackType = NoHoming) = 0;
+	virtual void Init(Player* target,MCB::Float3 position,MCB::Model* model,MCB::Model* bulletModel,int AttackType = NoHoming) = 0;
 	void Deth(int Damage);
 	void AllMatrixUpdate(MCB::View view, MCB::Projection proj);
 	void AllDraw();
