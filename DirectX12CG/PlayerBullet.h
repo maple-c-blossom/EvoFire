@@ -1,6 +1,7 @@
 #pragma once
 #include "Object3d.h"
 #include "Collider.h"
+#include "Sprite.h"
 
 class PlayerBullet :public MCB::Object3d
 {
@@ -11,6 +12,7 @@ private:
 	int maxLifeTime = 120;
 	MCB::Object3d* target = nullptr;
 public:
+	
 	int damage = 1;
 	int t = 2;
 	const int defoT = 2;
@@ -21,6 +23,7 @@ public:
 	float slerpStopR = 15 + r;
 	bool deleteFlag = false;
 	bool SlerpStop = false;
+	MCB::Sprite sprite;
 	void VelocityUpdate();
 	void Update();
 	void BulletHit();

@@ -51,6 +51,7 @@ void HomingEnemyBullet::Update()
 	{
 		deleteFlag = true;
 	}
+
 }
 
 void HomingEnemyBullet::Fire(Float3 startPosition, Vector3D frontVec, Object3d* target)
@@ -64,4 +65,5 @@ void HomingEnemyBullet::Fire(Float3 startPosition, Vector3D frontVec, Object3d* 
 	this->target = target;
 	lifeTime = 0;
 	t = tUpdateMaxTime;
+	sprite = sprite.CreateSprite();
 }

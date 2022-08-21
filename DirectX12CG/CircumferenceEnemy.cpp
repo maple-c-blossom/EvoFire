@@ -2,7 +2,7 @@
 #include "Util.h"
 #include "Quaternion.h"
 #include "NoHomingEnemyBullet.h"
-
+#include <time.h>
 using namespace MCB;
 
 
@@ -13,6 +13,10 @@ void CircumferenceEnemy::Update()
 	if (lifeTime > maxLifeTime)
 	{
 		deleteFlag = true;
+		if (target->GetTarget() == this)
+		{
+			target->SetTarget(nullptr);
+		}
 	}
 	if (!deleteFlag)
 	{
@@ -25,6 +29,7 @@ void CircumferenceEnemy::Update()
 		bullet->Update();
 	}
 	bullets.remove_if([](std::unique_ptr<EnemyBullet>& bullet) {return bullet->deleteFlag; });
+
 }
 
 void CircumferenceEnemy::Rotasion()
@@ -57,6 +62,7 @@ void CircumferenceEnemy::Attack()
 		bullet->rotasion = rotasion;
 		bullet->maxLifeTime = 100;
 		bullet->speedOffSet = 30;
+		bullet->mapTexture = bulletMapTexture;
 		bullets.push_back(std::move(bullet));
 		attacktime = 0;
 	}
@@ -65,6 +71,7 @@ void CircumferenceEnemy::Attack()
 void CircumferenceEnemy::Move()
 {
 	rotationAngle += 0.05f;
+
 	if (target && !SetRota)
 	{
 		Vector3D temp = rotationVec;
@@ -83,9 +90,9 @@ void CircumferenceEnemy::Move()
 	//position.x = PositionVec.vec.x * distance, position.y = PositionVec.vec.y * distance, position.z = PositionVec.vec.z * distance;
 	if (target != nullptr)
 	{
-		position.x = PositionVec.vec.x * distance + target->position.x;
-		position.y = PositionVec.vec.y * distance + target->position.y;
-		position.z = PositionVec.vec.z * distance + target->position.z;
+		position.x = PositionVec.vec.x * (distance - sinf(rotationAngle) * 10) + target->position.x;
+		position.y = PositionVec.vec.y * (distance - sinf(rotationAngle) * 10) + target->position.y;
+		position.z = PositionVec.vec.z * (distance - sinf(rotationAngle) * 10) + target->position.z;
 	}
 
 
@@ -114,5 +121,5 @@ void CircumferenceEnemy::Init(Player* target, MCB::Float3 position, MCB::Model* 
 		tempVa.V3Norm();
 		rotationVec = rotationVec.GetUpVec({ 0,0,1 }, tempVa);
 	}
-
+	sprite = sprite.CreateSprite();
 }

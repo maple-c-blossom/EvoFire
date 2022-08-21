@@ -2,7 +2,7 @@
 #include "CircumferenceEnemy.h"
 
 
-void EnemyManager::enemyPop(Player* target, MCB::Float3 position, MCB::Model* model, MCB::Model* bulletModel, int PopEnemy, int attackType, Enemy* guardTarget)
+void EnemyManager::enemyPop(Player* target, MCB::Float3 position, MCB::Model* model,  MCB::Model* bulletModel, MCB::Texture* mapTexture, MCB::Texture* bulletmapTexture, int PopEnemy, int attackType, Enemy* guardTarget)
 {
 
 	std::unique_ptr<Enemy> enemy;
@@ -24,6 +24,8 @@ void EnemyManager::enemyPop(Player* target, MCB::Float3 position, MCB::Model* mo
 		enemy = std::make_unique<CircumferenceEnemy>();
 	}
 	enemy->Init(target, position, model, bulletModel,attackType);
+	enemy->mapTexture = mapTexture;
+	enemy->bulletMapTexture = bulletmapTexture;
 	enemys.push_back(std::move(enemy));
 
 }

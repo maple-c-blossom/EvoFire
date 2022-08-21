@@ -348,8 +348,11 @@
     <ClCompile Include="RushEnemy.cpp">
       <Filter>ソース ファイル\Game\Enemy\Enemys</Filter>
     </ClCompile>
+    <ClCompile Include="Drone.cpp">
+      <Filter>ソース ファイル\Game\Enemy\Bullet</Filter>
+    </ClCompile>
     <ClCompile Include="CircumferenceEnemy.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Game\Enemy\Enemys</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -556,8 +559,11 @@
     <ClInclude Include="RushEnemy.h">
       <Filter>ヘッダー ファイル\Game\Enemy\Enemys</Filter>
     </ClInclude>
+    <ClInclude Include="Drone.h">
+      <Filter>ヘッダー ファイル\Game\Enemy\Bullet</Filter>
+    </ClInclude>
     <ClInclude Include="CircumferenceEnemy.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\Game\Enemy\Enemys</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -28,6 +28,7 @@ void GuardEnemy::Update()
 		bullet->Update();
 	}
 	bullets.remove_if([](std::unique_ptr<EnemyBullet>& bullet) {return bullet->deleteFlag; });
+
 }
 
 void GuardEnemy::Rotasion()
@@ -61,6 +62,7 @@ void GuardEnemy::Attack()
 		bullet->rotasion = rotasion;
 		bullet->maxLifeTime = 100;
 		bullet->speedOffSet = 30;
+		bullet->mapTexture = bulletMapTexture;
 		bullets.push_back(std::move(bullet));
 		attacktime = 0;
 	}
@@ -94,6 +96,10 @@ void GuardEnemy::Move()
 	else
 	{
 		deleteFlag = true;
+		if (target->GetTarget() == this)
+		{
+			target->SetTarget(nullptr);
+		}
 	}
 
 
@@ -121,7 +127,7 @@ void GuardEnemy::Init(Player* target, MCB::Float3 position, MCB::Model* model, M
 		tempVa.V3Norm();
 		rotationVec = rotationVec.GetUpVec({0,0,1}, tempVa);
 	}
-
+	sprite = sprite.CreateSprite();
 }
 
 void GuardEnemy::SetGuardTarget(Enemy* guardTarget)

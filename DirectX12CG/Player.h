@@ -5,7 +5,6 @@
 #include "HomingMissile.h"
 #include "Laser.h"
 #include "Bomb.h"
-
 class Player:public MCB::Object3d
 {
 private:

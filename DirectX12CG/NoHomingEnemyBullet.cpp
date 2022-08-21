@@ -11,6 +11,7 @@ void NoHomingEnemyBullet::Update()
 	{
 		deleteFlag = true;
 	}
+
 }
 
 void NoHomingEnemyBullet::Fire(Float3 startPosition, Vector3D frontVec, Object3d* target)
@@ -32,4 +33,5 @@ void NoHomingEnemyBullet::Fire(Float3 startPosition, Vector3D frontVec, Object3d
 	}
 	lifeTime = 0;
 	t = tUpdateMaxTime;
+	sprite = sprite.CreateSprite();
 }

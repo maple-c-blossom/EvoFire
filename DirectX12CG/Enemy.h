@@ -2,6 +2,8 @@
 #include "Object3d.h"
 #include "EnemyBullet.h"
 #include "Player.h"
+#include "Sprite.h"
+#include "Texture.h"
 
 class Enemy: public MCB::Object3d
 {
@@ -21,7 +23,10 @@ protected:
 	int hp = maxhp;
 	int attackType = 0;
 public:
+	MCB::Sprite sprite;
 	MCB::Float3 prevPosition;
+	MCB::Texture* mapTexture;
+	MCB::Texture* bulletMapTexture;
 	static enum AttaxkType
 	{
 		NoHoming,

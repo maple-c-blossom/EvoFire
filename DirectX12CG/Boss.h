@@ -6,9 +6,15 @@ class Boss :public  MCB::Object3d
 private:
 	enum Status
 	{
-		HomingTurret,
-		HomingRush,
-		HomingCircumference
+		Turret,
+		Rush,
+		Circumference
+	};
+
+	enum AttaxkType
+	{
+		NoHoming,
+		Homing
 	};
 	int attackTime = 0;
 	int attackResponceTime = 20;
@@ -17,10 +23,12 @@ private:
 	int maxhp = 200;
 	int hp = maxhp;
 	MCB::Object3d* playerPtr = nullptr;
+	MCB::Model* bulletModel = nullptr;
+	MCB::Model* DroneModel = nullptr;
 public:
 	float r = 10;
 	std::list<std::unique_ptr<EnemyBullet>> bullets;
-	MCB::Quaternion enemyQ = { 0,0,0,1 };
+	MCB::Quaternion BossQ = { 0,0,0,1 };
 	MCB::Vector3D rightVec;
 	MCB::Vector3D UpVec;
 	void Update();

@@ -54,6 +54,7 @@ void TurretEnemy::Attack()
 		bullet->model = bulletModel;
 		bullet->scale = { 6,6,6 };
 		bullet->rotasion = rotasion;
+		bullet->mapTexture = bulletMapTexture;
 		bullets.push_back(std::move(bullet));
 		attacktime = 0;
 	}
@@ -69,4 +70,5 @@ void TurretEnemy::Init(Player* target, MCB::Float3 position, MCB::Model* model, 
 	this->bulletModel = bulletModel;
 	this->attackType = AttackType;
 	scale = { 10,10,10 };
+	sprite = sprite.CreateSprite();
 }

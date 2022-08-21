@@ -9,6 +9,10 @@ void RushEnemy::Update()
 	if (lifeTime > maxLifeTime)
 	{
 		deleteFlag = true;
+		if (target->GetTarget() == this)
+		{
+			target->SetTarget(nullptr);
+		}
 	}
 	if (!deleteFlag)
 	{
@@ -21,7 +25,7 @@ void RushEnemy::Update()
 		bullet->Update();
 	}
 	bullets.remove_if([](std::unique_ptr<EnemyBullet>& bullet) {return bullet->deleteFlag; });
-
+	
 }
 
 void RushEnemy::Rotasion()
@@ -80,6 +84,7 @@ void RushEnemy::Attack()
 		bullet->model = bulletModel;
 		bullet->scale = { 6,6,6 };
 		bullet->rotasion = rotasion;
+		bullet->mapTexture = bulletMapTexture;
 		bullets.push_back(std::move(bullet));
 		attacktime = 0;
 	}
@@ -98,4 +103,5 @@ void RushEnemy::Init(Player* target, MCB::Float3 position, MCB::Model* model, MC
 	this->maxhp = 2;
 	this->hp = maxhp;
 	scale = { 10,10,10 };
+	sprite = sprite.CreateSprite();
 }

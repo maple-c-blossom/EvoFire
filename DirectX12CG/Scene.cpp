@@ -50,13 +50,23 @@ void MCB::Scene::LoadModel()
 
 	skydomeModel = make_shared<Model>("skydome");
     testBoxModel = make_shared<Model>("Box");
-    testSphereModel = make_shared<Model>("sphere");
+    testSphereModel = make_shared<Model>("sphere",true);
 }
 
 void MCB::Scene::LoadTexture()
 {
     debugTextTexture = make_shared<Texture>();
     debugTextTexture->CreateTexture(L"Resources\\debugfont.png");
+    mapBackTexture = make_shared<Texture>();
+    mapBackTexture->CreateTexture(L"Resources\\testMapBack.png"); 
+    mapPlayerTexture = make_shared<Texture>();
+    mapPlayerTexture->CreateTexture(L"Resources\\reimu.png");
+    mapPlayerBTexture = make_shared<Texture>();
+    mapPlayerBTexture->CreateTexture(L"Resources\\reimu.png");
+    mapEnemyTexture = make_shared<Texture>();
+    mapEnemyTexture->CreateTexture(L"Resources\\reimu.png");
+    mapEnemyBTexture = make_shared<Texture>();
+    mapEnemyBTexture->CreateTexture(L"Resources\\reimu.png");
 }
 
 void MCB::Scene::LoadSound()
@@ -66,6 +76,10 @@ void MCB::Scene::LoadSound()
 void MCB::Scene::SpriteInit()
 {
     debugText.Init(debugTextTexture.get());
+    mapBack = mapBack.CreateSprite();
+    mapBack.InitMatProje();
+    mapPlayer = mapPlayer.CreateSprite();
+    mapPlayer.InitMatProje();
     
 
 }
@@ -76,27 +90,27 @@ void MCB::Scene::Update()
     if (input->IsKeyTrigger(DIK_P))
     {
         //enemys.enemyPop(&player, { (float)GetRand(-500,500),(float)GetRand(-100,100),(float)GetRand(-20,20) }, testBoxModel.get(), testSphereModel.get());
-        enemys.enemyPop(&player, { (float)GetRand(-500,500),0,(float)GetRand(-100,100) }, testBoxModel.get(), testSphereModel.get(),EnemyManager::Turret,Enemy::Homing);
+        enemys.enemyPop(&player, { (float)GetRand(-500,500),0,(float)GetRand(-100,100) }, testBoxModel.get(), testSphereModel.get(),mapEnemyTexture.get(),mapEnemyBTexture.get(), EnemyManager::Turret, Enemy::Homing);
     }
 
     if (input->IsKeyTrigger(DIK_L))
     {
-        enemys.enemyPop(&player, { (float)GetRand(-500,500),0,(float)GetRand(-100,100) }, testBoxModel.get(), testSphereModel.get(), EnemyManager::Turret,Enemy::NoHoming);
+        enemys.enemyPop(&player, { (float)GetRand(-500,500),0,(float)GetRand(-100,100) }, testBoxModel.get(), testSphereModel.get(), mapEnemyTexture.get(), mapEnemyBTexture.get(), EnemyManager::Turret,Enemy::NoHoming);
     }
 
     if (input->IsKeyTrigger(DIK_M))
     {
-       if(enemys.enemys.size() > 0) enemys.enemyPop(&player, {(float)GetRand(-100,100),(float)GetRand(-100,100),(float)GetRand(-100,100)}, testBoxModel.get(), testSphereModel.get(), EnemyManager::Guard, Enemy::NoHoming, enemys.enemys.begin()->get());
+       if(enemys.enemys.size() > 0) enemys.enemyPop(&player, {(float)GetRand(-100,100),(float)GetRand(-100,100),(float)GetRand(-100,100)}, testBoxModel.get(), testSphereModel.get(), mapEnemyTexture.get(), mapEnemyBTexture.get(), EnemyManager::Guard, Enemy::NoHoming, enemys.enemys.begin()->get());
     }
 
     if (input->IsKeyTrigger(DIK_K))
     {
-        enemys.enemyPop(&player, { (float)GetRand(-100,100),(float)GetRand(-100,100),(float)GetRand(-100,100) }, testBoxModel.get(), testSphereModel.get(), EnemyManager::Rash);
+        enemys.enemyPop(&player, { (float)GetRand(-100,100),(float)GetRand(-100,100),(float)GetRand(-100,100) }, testBoxModel.get(), testSphereModel.get(), mapEnemyTexture.get(), mapEnemyBTexture.get(), EnemyManager::Rash);
     }
 
     if (input->IsKeyTrigger(DIK_N))
     {
-        enemys.enemyPop(&player, { (float)GetRand(-100,100),(float)GetRand(-100,100),(float)GetRand(-100,100) }, testBoxModel.get(), testSphereModel.get(), EnemyManager::Circumference);
+        enemys.enemyPop(&player, { (float)GetRand(-100,100),(float)GetRand(-100,100),(float)GetRand(-100,100) }, testBoxModel.get(), testSphereModel.get(), mapEnemyTexture.get(), mapEnemyBTexture.get(), EnemyManager::Circumference);
     }
 
     player.Update();
@@ -144,6 +158,29 @@ void MCB::Scene::Draw()
     for (std::unique_ptr<Exp>& exp : exps) { exp->ExpDraw(); }
     //スプライト
     Sprite::SpriteCommonBeginDraw(*spritePipelinePtr);
+
+    mapBack.SpriteDraw(mapBack, *mapBackTexture.get(), mapPosition.x, mapPosition.y, mapSize, mapSize);
+    mapPlayer.rotation = player.rotasion.y;
+    mapPlayer.SpriteUpdate(mapPlayer);
+    mapPlayer.SpriteDraw(mapPlayer, *mapPlayerTexture.get(),mapPosition.x, mapPosition.y
+                            , 20, 20);
+    for (std::unique_ptr<PlayerBullet>& bullet : player.bullets)
+    {
+        MiniMapDraw(bullet->sprite, { bullet->position.x,bullet->position.z }, { player.position.x,player.position.z }, mapPlayerBTexture.get());
+    }
+    for (std::unique_ptr<Enemy>& enemy : enemys.enemys)
+    {
+        MiniMapDraw(enemy->sprite, { enemy->position.x,enemy->position.z }, { player.position.x,player.position.z }, enemy->mapTexture);
+    }
+    for (std::unique_ptr<Enemy>& enemy : enemys.enemys)
+    {
+        for (std::unique_ptr<EnemyBullet>& bullet : enemy->bullets)
+        {
+            MiniMapDraw(bullet->sprite, { bullet->position.x,bullet->position.z }, { player.position.x,player.position.z }, bullet->mapTexture);
+        }
+    }
+
+
     debugText.Print(20, 20,2, "fps:%f",fps->GetFPS());
     if(exps.size() > 0) debugText.Print(20, 40, 2, "positin:%f,%f,%f", 
                         exps.begin()->get()->position.x, exps.begin()->get()->position.y,
@@ -155,6 +192,19 @@ void MCB::Scene::Draw()
         player.laserCount,player.bombCount);
     debugText.AllDraw();
     draw.PostDraw();
+}
+
+void MCB::Scene::MiniMapDraw(Sprite sprite ,Float2 objectPos, Float2 playerPos,Texture* maptex)
+{
+    float spriteSize = 20;
+    Float2 spritePos = { (objectPos.x - playerPos.x) / mapOffSet + mapPosition.x,
+                        mapPosition.y - (objectPos.y - playerPos.y) / mapOffSet };
+    if (spritePos.x - spriteSize < 0 || spritePos.x + spriteSize > mapSize || spritePos.y - spriteSize < mapPosition.y - mapSize / 2 || spritePos.y + spriteSize > mapPosition.y + mapSize / 2)
+    {
+        return;
+    }
+   sprite.SpriteDraw(sprite, *maptex, spritePos.x, spritePos.y
+        , spriteSize, spriteSize);
 }
 
 void MCB::Scene::CheckAllColision()

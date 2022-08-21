@@ -19,7 +19,7 @@ void Player::PlayerInit(Model* model, Model* bulletModel, Model* missileModel, M
 	exp = 0;
 	target = nullptr;
 	attackTime = attackResponceTime;
-	attackResponceTime = 20;
+	attackResponceTime = 10;
 	Level = 1;
 	nextLevelExp = 20;
 	maxhp = 20;
@@ -103,6 +103,7 @@ void Player::Update()
 		bomb->Update();
 	}
 	bombs.remove_if([](std::unique_ptr<Bomb>& bomb) {return bomb->deleteFlag; });
+
 }
 
 void Player::Move()
@@ -249,11 +250,13 @@ void Player::Rotasion()
 			if (input->IsKeyDown(DIK_E))
 			{
 				angle.y += rotasionSpeed;
+				rotasion.y += rotasionSpeed;
 			}
 
 			if (input->IsKeyDown(DIK_Q))
 			{
 				angle.y -= rotasionSpeed;
+				rotasion.y -= rotasionSpeed;
 			}
 			if (input->gamePad->RStick.x)
 			{
@@ -288,6 +291,8 @@ void Player::Attack()
 		bullet->scale = {6,6,6};
 		bullet->rotasion = rotasion;
 		bullets.push_back(std::move(bullet));
+
+
 		attackTime = 0;
 	}
 }

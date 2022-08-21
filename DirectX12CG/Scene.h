@@ -118,6 +118,11 @@ namespace MCB
 		//テクスチャ
 		#pragma region テクスチャ
 		std::shared_ptr <Texture> debugTextTexture;
+		std::shared_ptr <Texture> mapEnemyTexture;
+		std::shared_ptr <Texture> mapEnemyBTexture;
+		std::shared_ptr <Texture> mapPlayerTexture;
+		std::shared_ptr <Texture> mapPlayerBTexture;
+		std::shared_ptr <Texture> mapBackTexture;
 #pragma endregion テクスチャ
 
 		//サウンド
@@ -141,10 +146,15 @@ namespace MCB
 
 		DebugText debugText;
 		Sprite test;
+		Sprite mapBack;
+		Sprite mapPlayer;
+
 #pragma endregion スプライト
-
+		
 		#pragma region 通常変数
-
+		MCB::Float2 mapPosition = { (float)200.0f, (float)dxWindow->window_height - 200 };
+		float mapOffSet = 5;
+		float mapSize = 400;
 #pragma endregion 通常変数
 
 	public:
@@ -168,6 +178,7 @@ namespace MCB
 
 		void DeleteExp();
 
+		void MiniMapDraw(Sprite sprite, Float2 objectPos, Float2 playerPos, Texture* maptex);
 		void CheckAllColision();
 
 	};

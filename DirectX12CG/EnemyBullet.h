@@ -1,5 +1,7 @@
 #pragma once
 #include "Object3d.h"
+#include "Sprite.h"
+#include "Texture.h"
 
 class EnemyBullet: public MCB::Object3d
 {
@@ -7,6 +9,8 @@ protected:
 	MCB::Vector3D velocity = {};
 	MCB::Object3d* target = nullptr;
 public:
+	MCB::Texture* mapTexture;
+	MCB::Sprite sprite;
 	float speedOffSet = 5;
 	int lifeTime = 0;
 	int maxLifeTime = 120;
