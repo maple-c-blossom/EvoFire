@@ -443,6 +443,11 @@ void Player::EnemyBulletHit(int damege)
 	hp -= damege;
 }
 
+int Player::GetHp()
+{
+	return hp;
+}
+
 MCB::Object3d* Player::GetTarget()
 {
 	return target;

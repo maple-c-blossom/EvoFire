@@ -4,6 +4,7 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include "Scene.h"
+#include "TitleScene.h"
 #include "FPS.h"
 using namespace MCB;
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine,
@@ -50,10 +51,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     PipelineRootSignature spritePipeline = spritePipeline.CreateSpritePipeline(depth, rootparams);
     Scene scene(&rootparams,&depth ,&obj3dPipeline, &spritePipeline);
     scene.Initialize();
+    IScene* iscene = &scene;
     FPS fpsControll;
     fpsControll.Initialize(60);
     scene.fps = &fpsControll;
-
 
 #pragma region ƒQ[ƒ€ƒ‹[ƒv
     while (true)
@@ -61,8 +62,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
         input->UpDateInit();
         dxWindow->messageUpdate();
         if (input->IsKeyDown(DIK_ESCAPE) || dxWindow->breakFlag) break;
-        scene.Update();
-        scene.Draw();
+        iscene->Update();
+        iscene->Draw();
+        iscene->ChengeScene();
         fpsControll.GetFPS();
         fpsControll.FPSFixed();
     }

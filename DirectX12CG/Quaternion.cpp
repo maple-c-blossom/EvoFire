@@ -46,7 +46,7 @@ float MCB::Quaternion::Dot(Quaternion a, Quaternion b)
 
 float MCB::Quaternion::GetAngle(Quaternion a, Quaternion b)
 {
-	return acosf(Dot(a, b));;
+	return SafeAcos(Dot(a, b));;
 }
 
 Quaternion MCB::Quaternion::SetRotationQuaternion(Vector3D rotationAxisVec, Vector3D PositionVec, float angle)

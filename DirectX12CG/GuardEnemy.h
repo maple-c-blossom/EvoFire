@@ -7,7 +7,7 @@ public:
 	MCB::Vector3D rotationVec;
 	float rotationAngle;
 	MCB::Vector3D startPositionVec;
-	float distance= 80;
+	float distance= 200;
 	Enemy* guardPtr = nullptr;
 	bool SetRota = false;
 	void Update() override;

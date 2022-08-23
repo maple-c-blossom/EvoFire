@@ -8,7 +8,7 @@ public:
 	MCB::Vector3D rotationVec;
 	float rotationAngle;
 	MCB::Vector3D startPositionVec;
-	float distance = 500;
+	float distance = 1000;
 	bool SetRota = false;
 	void Update() override;
 	void Rotasion();

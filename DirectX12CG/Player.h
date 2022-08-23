@@ -66,6 +66,7 @@ public:
 	void AllDraw();
 	void AllMatrixUpdate(MCB::View viewmat, MCB::Projection projmat);
 	void EnemyBulletHit(int damege);
+	int GetHp();
 	MCB::Object3d* GetTarget();
 	void SetHomingTarget(Object3d* target);
 	MCB::Object3d* GetHomingTarget();

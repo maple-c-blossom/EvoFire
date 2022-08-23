@@ -17,7 +17,7 @@ public:
 	int t = 2;
 	const int defoT = 2;
 	int tUpdateMaxTime = 10;
-	int tUpdateTime = 5;
+	int tUpdateTime = 50;
 	int tUpdateNowTime = 0;
 	float r = 10;
 	float slerpStopR = 15 + r;

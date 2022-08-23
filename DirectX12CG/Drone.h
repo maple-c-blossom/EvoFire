@@ -15,7 +15,8 @@ public:
 	float speedFront = 0.0f;
 	float speedRight = 0.0f;
 	float rotasionSpeed = 0.025f;
-	float speed = 6.0f;
+	float maxSpeed = 50.0f;
+	float speed = maxSpeed;
 	int attackResponse = 60;
 	int attacktime = 0;
 	float Angle = 0;
@@ -34,13 +35,16 @@ public:
 	MCB::Vector3D rotationVec;
 	MCB::Vector3D startPositionVec;
 	bool SetRota = false;
-	float distance = 60;
+	float distance = 250;
 	bool FireFlag;
+	bool prevFire;
 	bool goFlag;
 	bool backFlag;
+	int timer = 0;
 	int shootTimer = 0;
 	int maxShootTime = 60;
-
+	MCB::Sprite sprite;
+	MCB::Texture* mapTexture;
 	MCB::Float3 startPosition;
 	MCB::Float3 targetPosition;
 	MCB::Vector3D velosity;
@@ -49,6 +53,8 @@ public:
 	int tUpdateMaxTime = 60;
 	int tUpdateTime = 5;
 	int tUpdateNowTime = 0;
+	bool yourFront = true;
+
 
 	void VelosityUpdate();
 	void Update();

@@ -12,6 +12,7 @@ namespace MCB
 		virtual void LoadSound() = 0;
 		virtual void Object3DInit() = 0;
 		virtual void SpriteInit() = 0;
+		virtual void ChengeScene() = 0;
 	};
 
 }

@@ -40,6 +40,11 @@ void MCB::Scene::Object3DInit()
 
     player.PlayerInit(testBoxModel.get(), testBoxModel.get(), testBoxModel.get(), testBoxModel.get(), testSphereModel.get());
 
+    boss.Object3d::Init();
+    boss.sprite = boss.sprite.CreateSprite();
+    boss.Init(&player, { (player.nowFrontVec * boss.distance).vec },
+        testBoxModel.get(), testBoxModel.get(), testBoxModel.get(), testSphereModel.get(),
+        mapEnemyTexture.get(), mapEnemyTexture.get(), mapEnemyTexture.get(), mapEnemyBTexture.get());
 }
 
 #pragma endregion 通常変数の初期化
@@ -62,11 +67,11 @@ void MCB::Scene::LoadTexture()
     mapPlayerTexture = make_shared<Texture>();
     mapPlayerTexture->CreateTexture(L"Resources\\reimu.png");
     mapPlayerBTexture = make_shared<Texture>();
-    mapPlayerBTexture->CreateTexture(L"Resources\\reimu.png");
+    mapPlayerBTexture->CreateTexture(L"Resources\\testplayerB.png");
     mapEnemyTexture = make_shared<Texture>();
-    mapEnemyTexture->CreateTexture(L"Resources\\reimu.png");
+    mapEnemyTexture->CreateTexture(L"Resources\\testenemy.png");
     mapEnemyBTexture = make_shared<Texture>();
-    mapEnemyBTexture->CreateTexture(L"Resources\\reimu.png");
+    mapEnemyBTexture->CreateTexture(L"Resources\\testEnemyB.png");
 }
 
 void MCB::Scene::LoadSound()
@@ -83,6 +88,9 @@ void MCB::Scene::SpriteInit()
     
 
 }
+void MCB::Scene::ChengeScene()
+{
+}
 #pragma endregion 各種リソースの読み込みと初期化
 
 void MCB::Scene::Update()
@@ -90,17 +98,17 @@ void MCB::Scene::Update()
     if (input->IsKeyTrigger(DIK_P))
     {
         //enemys.enemyPop(&player, { (float)GetRand(-500,500),(float)GetRand(-100,100),(float)GetRand(-20,20) }, testBoxModel.get(), testSphereModel.get());
-        enemys.enemyPop(&player, { (float)GetRand(-500,500),0,(float)GetRand(-100,100) }, testBoxModel.get(), testSphereModel.get(),mapEnemyTexture.get(),mapEnemyBTexture.get(), EnemyManager::Turret, Enemy::Homing);
+        enemys.enemyPop(&player, { (float)GetRand(-500,500),0,(float)GetRand(-100,100) }, testBoxModel.get(), testSphereModel.get(), mapEnemyTexture.get(), mapEnemyBTexture.get(), EnemyManager::Turret, Enemy::Homing);
     }
 
     if (input->IsKeyTrigger(DIK_L))
     {
-        enemys.enemyPop(&player, { (float)GetRand(-500,500),0,(float)GetRand(-100,100) }, testBoxModel.get(), testSphereModel.get(), mapEnemyTexture.get(), mapEnemyBTexture.get(), EnemyManager::Turret,Enemy::NoHoming);
+        enemys.enemyPop(&player, { (float)GetRand(-500,500),0,(float)GetRand(-100,100) }, testBoxModel.get(), testSphereModel.get(), mapEnemyTexture.get(), mapEnemyBTexture.get(), EnemyManager::Turret, Enemy::NoHoming);
     }
 
     if (input->IsKeyTrigger(DIK_M))
     {
-       if(enemys.enemys.size() > 0) enemys.enemyPop(&player, {(float)GetRand(-100,100),(float)GetRand(-100,100),(float)GetRand(-100,100)}, testBoxModel.get(), testSphereModel.get(), mapEnemyTexture.get(), mapEnemyBTexture.get(), EnemyManager::Guard, Enemy::NoHoming, enemys.enemys.begin()->get());
+        if (enemys.enemys.size() > 0) enemys.enemyPop(&player, { (float)GetRand(-100,100),(float)GetRand(-100,100),(float)GetRand(-100,100) }, testBoxModel.get(), testSphereModel.get(), mapEnemyTexture.get(), mapEnemyBTexture.get(), EnemyManager::Guard, Enemy::NoHoming, enemys.enemys.begin()->get());
     }
 
     if (input->IsKeyTrigger(DIK_K))
@@ -113,8 +121,31 @@ void MCB::Scene::Update()
         enemys.enemyPop(&player, { (float)GetRand(-100,100),(float)GetRand(-100,100),(float)GetRand(-100,100) }, testBoxModel.get(), testSphereModel.get(), mapEnemyTexture.get(), mapEnemyBTexture.get(), EnemyManager::Circumference);
     }
 
+    if (input->IsKeyTrigger(DIK_J))
+    {
+        if (enemys.enemys.size() > 0)
+        {
+            unique_ptr<Drone> d = make_unique<Drone>();
+            d->BossPtr = enemys.enemys.begin()->get();
+            d->Init(&player, { player.nowFrontVec.vec.x,player.nowFrontVec.vec.y,player.nowFrontVec.vec.z }, testBoxModel.get());
+            d->mapTexture = mapEnemyTexture.get();
+            testD.push_back(move(d));
+        }
+    }
+
+    if (input->IsKeyTrigger(DIK_G))
+    {
+        testD.begin()->get()->Shot();
+    }
+    boss.Update();
     player.Update();
     enemys.Update();
+
+    for (std::unique_ptr<Drone>& d : testD)
+    {
+        d->Update();
+    }
+    testD.remove_if([](std::unique_ptr<Drone>& d) {return d->deleteFlag; });
     //if (enemys.enemys.size() > 0)
     //{
     //    player.SetTarget(enemys.enemys.begin()->get());
@@ -141,7 +172,10 @@ void MCB::Scene::Update()
         exp->Update();
     }
     exps.remove_if([](std::unique_ptr<Exp>& exp) {return exp->deleteFlag; });
+    
 
+    
+    
     CheckAllColision();
     light->Updata();
     //行列変換
@@ -154,49 +188,62 @@ void MCB::Scene::Draw()
     //3Dオブジェクト
     Skydorm.Draw();
     player.AllDraw();
+    boss.AllDraw();
     enemys.Draw();
+    for (std::unique_ptr<Drone>& d : testD)
+    {
+        d->Draw();
+    }
     for (std::unique_ptr<Exp>& exp : exps) { exp->ExpDraw(); }
     //スプライト
     Sprite::SpriteCommonBeginDraw(*spritePipelinePtr);
 
     mapBack.SpriteDraw(mapBack, *mapBackTexture.get(), mapPosition.x, mapPosition.y, mapSize, mapSize);
     mapPlayer.rotation = player.rotasion.y;
-    mapPlayer.SpriteUpdate(mapPlayer);
+
     mapPlayer.SpriteDraw(mapPlayer, *mapPlayerTexture.get(),mapPosition.x, mapPosition.y
                             , 20, 20);
     for (std::unique_ptr<PlayerBullet>& bullet : player.bullets)
     {
         MiniMapDraw(bullet->sprite, { bullet->position.x,bullet->position.z }, { player.position.x,player.position.z }, mapPlayerBTexture.get());
     }
-    for (std::unique_ptr<Enemy>& enemy : enemys.enemys)
+    for (std::unique_ptr<Enemy>& enemy : boss.enemys.enemys)
     {
         MiniMapDraw(enemy->sprite, { enemy->position.x,enemy->position.z }, { player.position.x,player.position.z }, enemy->mapTexture);
     }
-    for (std::unique_ptr<Enemy>& enemy : enemys.enemys)
+    for (std::unique_ptr<Enemy>& enemy : boss.enemys.enemys)
     {
         for (std::unique_ptr<EnemyBullet>& bullet : enemy->bullets)
         {
             MiniMapDraw(bullet->sprite, { bullet->position.x,bullet->position.z }, { player.position.x,player.position.z }, bullet->mapTexture);
         }
     }
+    for (std::unique_ptr<Drone>& d : boss.drones)
+    {
+        MiniMapDraw(d->sprite, { d->position.x,d->position.z }, { player.position.x, player.position.z }, d->mapTexture);
+    }
+    MiniMapDraw(boss.sprite, { boss.position.x,boss.position.z }, { player.position.x, player.position.z }, boss.bossMapTex,40);
+    MiniMapDraw(boss.sprite, { boss.BaseRotationPos.x,boss.BaseRotationPos.z }, { player.position.x, player.position.z }, boss.bossMapTex,20);
+    MiniMapDraw(boss.sprite, { boss.nextRotationPos.x,boss.nextRotationPos.z }, { player.position.x, player.position.z }, boss.bossMapTex,20);
 
 
-    debugText.Print(20, 20,2, "fps:%f",fps->GetFPS());
-    if(exps.size() > 0) debugText.Print(20, 40, 2, "positin:%f,%f,%f", 
-                        exps.begin()->get()->position.x, exps.begin()->get()->position.y,
-                        exps.begin()->get()->position.z);
+    debugText.Print(20, 200,2, "fps:%f",fps->GetFPS());
+    debugText.Print(20, 400,2, "bossBaseRotaMoveTimer:%d time:%d",boss.rotationPosMoveTimer,boss.maxRotationPosMoveTimer);
+    //if(exps.size() > 0) debugText.Print(20, 40, 2, "positin:%f,%f,%f", 
+    //                    exps.begin()->get()->position.x, exps.begin()->get()->position.y,
+    //                    exps.begin()->get()->position.z);
 
-    debugText.Print(20, 60, 2, "exp:float->%f int->%d,NextLevelExp:%d,Level:%d",player.exp, (int)player.exp / 1,
-                    player.nextLevelExp,player.Level);
+    debugText.Print(20, 0, 2, "exp:float->%f int->%d,NextLevelExp:%d,Level:%d,hp:%d",player.exp, (int)player.exp / 1,
+                    player.nextLevelExp,player.Level,player.GetHp());
     debugText.Print(20, 80, 2, "homingMissileCount:%d laserCount:%d bombCount;%d", player.homingMissileCount,
         player.laserCount,player.bombCount);
     debugText.AllDraw();
     draw.PostDraw();
 }
 
-void MCB::Scene::MiniMapDraw(Sprite sprite ,Float2 objectPos, Float2 playerPos,Texture* maptex)
+void MCB::Scene::MiniMapDraw(Sprite sprite ,Float2 objectPos, Float2 playerPos,Texture* maptex,float SpriteSize)
 {
-    float spriteSize = 20;
+    float spriteSize = SpriteSize;
     Float2 spritePos = { (objectPos.x - playerPos.x) / mapOffSet + mapPosition.x,
                         mapPosition.y - (objectPos.y - playerPos.y) / mapOffSet };
     if (spritePos.x - spriteSize < 0 || spritePos.x + spriteSize > mapSize || spritePos.y - spriteSize < mapPosition.y - mapSize / 2 || spritePos.y + spriteSize > mapPosition.y + mapSize / 2)
@@ -209,29 +256,50 @@ void MCB::Scene::MiniMapDraw(Sprite sprite ,Float2 objectPos, Float2 playerPos,T
 
 void MCB::Scene::CheckAllColision()
 {
-    float mintargetDist = player.targetRay.range;
-    //ロックオン
-    for (std::unique_ptr<Enemy>& enemy : enemys.enemys)
+    //エリア外侵入阻止
+    if (!CalcSphere({ player.position.x,player.position.y,player.position.z }, player.r, { 0.f,0.f,0.f }, 5500))
     {
-        float nowtargetdist = 0.0f;
-        if (CalcRaySphere(player.targetRay, { enemy->position.x,enemy->position.y,
-            enemy->position.z }, enemy->r, &nowtargetdist))
-        {
-            if (nowtargetdist < mintargetDist && (player.GetTarget() == nullptr || input->IsKeyTrigger(DIK_R)))
-            {
-                player.SetTarget(enemy.get());
-                player.SetHomingTarget(enemy.get());
-                mintargetDist = nowtargetdist;
-            }
-            
-        }
+        player.position.x = player.prevPosition.x;
+        player.position.y = player.prevPosition.y;
+        player.position.z = player.prevPosition.z;
     }
 
+    float mintargetDist = player.targetRay.range;
+    {
+        float nowtargetdist = 0.0f;
+        //ロックオン
+        for (std::unique_ptr<Enemy>& enemy : boss.enemys.enemys)
+        {
+            if (CalcRaySphere(player.targetRay, { enemy->position.x,enemy->position.y,
+                enemy->position.z }, enemy->r, &nowtargetdist))
+            {
+                if (nowtargetdist < mintargetDist)
+                {
+                    player.SetTarget(enemy.get());
+                    player.SetHomingTarget(enemy.get());
+                    mintargetDist = nowtargetdist;
+                }
+
+            }
+
+        }
+        if (CalcRaySphere(player.targetRay, { boss.position.x,boss.position.y,
+            boss.position.z }, boss.r, &nowtargetdist))
+        {
+            if (nowtargetdist < mintargetDist)
+            {
+                player.SetTarget(&boss);
+                player.SetHomingTarget(&boss);
+                mintargetDist = nowtargetdist;
+            }
+
+        }
+    }
 
     //敵と自弾の当たり判定
     for (std::unique_ptr<PlayerBullet>& bullet : player.bullets)
     {
-        for (std::unique_ptr<Enemy>& enemy : enemys.enemys)
+        for (std::unique_ptr<Enemy>& enemy : boss.enemys.enemys)
         {
             if (CalcSphere({ bullet.get()->position.x,bullet.get()->position.y,bullet.get()->position.z }, bullet.get()->r,
                 { enemy->position.x,enemy->position.y,enemy->position.z }, enemy->r))
@@ -264,7 +332,7 @@ void MCB::Scene::CheckAllColision()
     //敵とホーミングミサイルの当たり判定
     for (std::unique_ptr<HomingMissile>& missile : player.homingMissile)
     {
-        for (std::unique_ptr<Enemy>& enemy : enemys.enemys)
+        for (std::unique_ptr<Enemy>& enemy : boss.enemys.enemys)
         {
             for (int i = 0; i < 3; i++)
             {
@@ -328,7 +396,7 @@ void MCB::Scene::CheckAllColision()
     //敵とレーザーの当たり判定
     for (std::unique_ptr<Laser>& laser : player.lasers)
     {
-        for (std::unique_ptr<Enemy>& enemy : enemys.enemys)
+        for (std::unique_ptr<Enemy>& enemy : boss.enemys.enemys)
         {
             if (CalcRaySphere(laser->laser, { enemy->position.x,enemy->position.y,enemy->position.z }, enemy->r))
             {
@@ -353,7 +421,7 @@ void MCB::Scene::CheckAllColision()
     for (std::unique_ptr<Bomb>& bomb : player.bombs)
     {
 
-        for (std::unique_ptr<Enemy>& enemy : enemys.enemys)
+        for (std::unique_ptr<Enemy>& enemy : boss.enemys.enemys)
         {
             if (CalcSphere({ bomb.get()->position.x,
                    bomb.get()->position.y,
@@ -375,7 +443,7 @@ void MCB::Scene::CheckAllColision()
         }
     }
     //敵弾とプレイヤーの当たり判定
-    for (std::unique_ptr<Enemy>& enemy : enemys.enemys)
+    for (std::unique_ptr<Enemy>& enemy : boss.enemys.enemys)
     {
         for (std::unique_ptr<EnemyBullet>& bullet : enemy->bullets)
         {
@@ -451,8 +519,12 @@ void MCB::Scene::MatrixUpdate()
     {
         exp->MatrixUpdata(matView, matProjection);
     }
+    for (std::unique_ptr<Drone>& d : testD)
+    {
+        d->MatrixUpdata(matView, matProjection);
+    }
 
-
+    boss.AllMatrixUpdate(matView, matProjection);
 
 }
 

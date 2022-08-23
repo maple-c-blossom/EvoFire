@@ -1,4 +1,5 @@
 #include "Drone.h"
+#include "Collider.h"
 using namespace MCB;
 using namespace std;
 
@@ -12,7 +13,7 @@ void Drone::VelosityUpdate()
 	Quaternion velocityQ = { velosity.vec.x,velosity.vec.y,velosity.vec.z,0 };
 	Quaternion toPlayerQ = { toPlayer.vec.x,toPlayer.vec.y,toPlayer.vec.z,0 };
 	velocityQ = velocityQ.Slerp(velocityQ, toPlayerQ, t, tUpdateMaxTime);
-
+	speed = InQuad(maxSpeed, 1, maxShootTime, shootTimer);
 	if ((isfinite(velocityQ.x)) || (isfinite(velocityQ.y)) || (isfinite(velocityQ.z)) || (isfinite(velocityQ.w)))
 	{
 		velosity.vec = { velocityQ.x,velocityQ.y,velocityQ.z };
@@ -24,17 +25,29 @@ void Drone::VelosityUpdate()
 		velosity.V3Norm();
 	}
 
+	if (shootTimer > 120)
+	{
+		velosity.vec = { toPlayer.vec.x,toPlayer.vec.y,toPlayer.vec.z };
+		velosity.V3Norm();
+	}
+
 }
 
 void Drone::Update()
 {
-
+	prevFire = FireFlag;
+	if (BossPtr == nullptr)
+	{
+		deleteFlag = true;
+	}
+	Move();
 }
 
 void Drone::Move()
 {
-	
-	rotationAngle += 0.01f;
+
+	rotationAngle += 0.05f;
+
 	Quaternion positionQ;
 	positionQ = positionQ.SetRotationQuaternion(rotationVec, startPositionVec, rotationAngle);
 	Vector3D PositionVec = { positionQ.x,positionQ.y,positionQ.z };
@@ -61,15 +74,19 @@ void Drone::Move()
 	startPosition.z = nearTheBossPosition.z;
 	if (FireFlag)
 	{
+		if (timer < maxShootTime)
+		{
+			timer++;
+		}
 		shootTimer++;
 		tUpdateNowTime++;
 		if (tUpdateNowTime >= tUpdateTime)
 		{
 
-			t--;
-			if (t < 1)
+			t++;
+			if (t > tUpdateMaxTime)
 			{
-				t = 1;
+				t = tUpdateMaxTime;
 			}
 			tUpdateNowTime = 0;
 		}
@@ -77,20 +94,26 @@ void Drone::Move()
 		position.x += velosity.vec.x * speed;
 		position.y += velosity.vec.y * speed;
 		position.z += velosity.vec.z * speed;
-		if (position.x == targetPosition.x && position.y == targetPosition.y && position.z == targetPosition.z || maxShootTime > maxShootTime)
+		if (!backFlag && (CalcSphere({position.x,position.y,position.z},10,{targetPosition.x,targetPosition.y,targetPosition.z},10) || (int)shootTimer >= (int)maxShootTime * 2))
 		{
+			shootTimer = 0;
 			backFlag = true;
 			targetPosition = nearTheBossPosition;
-
+			speed = maxSpeed;
+		}
+		if (backFlag)
+		{
+			targetPosition = nearTheBossPosition;
 		}
 
-		if (backFlag && position.x == nearTheBossPosition.x && position.y == nearTheBossPosition.y && position.z == nearTheBossPosition.z)
+		if (backFlag && (CalcSphere({ position.x,position.y,position.z }, 10, { targetPosition.x,targetPosition.y,targetPosition.z }, distance) || (int)shootTimer >= (int)maxShootTime * 4))
 		{
 			position.x = nearTheBossPosition.x;
 			position.y = nearTheBossPosition.y;
 			position.z = nearTheBossPosition.z;
 			FireFlag = false;
-			maxShootTime = 0;
+			backFlag = false;
+			shootTimer = 0;
 		}
 	}
 	else
@@ -112,7 +135,7 @@ void Drone::Init(Player* target, MCB::Float3 position, MCB::Model* model, int At
 	this->model = model;
 	this->attackType = AttackType;
 	scale = { 10,10,10 };
-
+	sprite = sprite.CreateSprite();
 	startPositionVec.vec.x = this->position.x;
 	startPositionVec.vec.y = this->position.y;
 	startPositionVec.vec.z = this->position.z;
@@ -121,7 +144,7 @@ void Drone::Init(Player* target, MCB::Float3 position, MCB::Model* model, int At
 	{
 		Vector3D bossFrontVec = BossPtr->nowFrontVec;
 		bossFrontVec.V3Norm();
-		rotationVec = rotationVec.GetUpVec({ 0,0,1 }, bossFrontVec);
+		rotationVec = rotationVec.GetUpVec({ 1,0,0 }, bossFrontVec);
 	}
 }
 
@@ -133,5 +156,11 @@ void Drone::Break(int Damage)
 
 void Drone::Shot()
 {
+	speed = maxSpeed;
 	FireFlag = true;
+	backFlag = false;
+	
+	this->targetPosition.x = target->position.x;
+	this->targetPosition.y = target->position.y;
+	this->targetPosition.z = target->position.z;
 }

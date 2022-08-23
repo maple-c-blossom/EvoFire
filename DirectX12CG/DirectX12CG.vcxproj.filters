@@ -354,6 +354,9 @@
     <ClCompile Include="CircumferenceEnemy.cpp">
       <Filter>ソース ファイル\Game\Enemy\Enemys</Filter>
     </ClCompile>
+    <ClCompile Include="TitleScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="ParticleGeometryShader.hlsl">
@@ -564,6 +567,9 @@
     </ClInclude>
     <ClInclude Include="CircumferenceEnemy.h">
       <Filter>ヘッダー ファイル\Game\Enemy\Enemys</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScene.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,8 +1,5 @@
 #pragma once
 #include "IScene.h"
-#define _USE_MATH_DEFINES
-#include <cmath>
-
 
 #pragma region 標準.h include
 
@@ -48,17 +45,6 @@
 #include "FPS.h"
 #pragma endregion 自作.h include
 
-#pragma region ゲーム系.h include
-
-#include "RayObject.h"
-#include "SphereObj.h"
-#include "Player.h"
-#include "EnemyManager.h"
-#include "exp.h"
-#include "Drone.h"
-#include "Boss.h"
-#pragma endregion ゲーム系.h include
-
 #pragma region pragma comment
 
 #pragma comment(lib,"d3d12.lib")
@@ -71,10 +57,10 @@
 
 namespace MCB
 {
-	class Scene :public IScene
+	class TitleScene :public IScene
 	{
 	private:
-		#pragma region DirectX基礎機能群
+#pragma region DirectX基礎機能群
 		DxWindow* dxWindow = DxWindow::GetInstance();
 		//DirectXクラス生成
 		Dx12* dx = Dx12::GetInstance();
@@ -101,90 +87,18 @@ namespace MCB
 		//クリアカラー
 		float clearColor[4] = { 0.0f,0.0f, 0.0f,0.0f }; // 青っぽい色
 #pragma endregion DirectX基礎機能群
-
-		#pragma region 変換行列
-		//変換行列
-		View matView;
-		Projection matProjection;
-#pragma endregion 変換行列
-		
-		#pragma region 各種リソース
-		//3Dモデル
-		#pragma region 3Dモデル
-		std::shared_ptr<Model> skydomeModel;
-		std::shared_ptr<Model> testBoxModel;
-		std::shared_ptr<Model> testSphereModel;
-#pragma endregion 3Dモデル
-
-		//テクスチャ
-		#pragma region テクスチャ
-		std::shared_ptr <Texture> debugTextTexture;
-		std::shared_ptr <Texture> mapEnemyTexture;
-		std::shared_ptr <Texture> mapEnemyBTexture;
-		std::shared_ptr <Texture> mapPlayerTexture;
-		std::shared_ptr <Texture> mapPlayerBTexture;
-		std::shared_ptr <Texture> mapBackTexture;
-#pragma endregion テクスチャ
-
-		//サウンド
-		#pragma region サウンド
-
-		int volume = 255;
-#pragma endregion サウンド
-
-#pragma endregion 各種リソース
-
-		#pragma region 3Dオブジェクト
-
-		Object3d Skydorm;
-		Player player;
-		EnemyManager enemys;
-		std::list<std::unique_ptr<Exp>> exps;
-
-#pragma endregion 3Dオブジェクト
-
-		#pragma region スプライト
-
-		DebugText debugText;
-		Sprite test;
-		Sprite mapBack;
-		Sprite mapPlayer;
-
-#pragma endregion スプライト
-		
-		#pragma region 通常変数
-		float mapSize = 300;
-		MCB::Float2 mapPosition = { (mapSize /2.0f), (float)dxWindow->window_height - (mapSize / 2.0f) };
-		float mapOffSet = 10;
-		std::list<std::unique_ptr<Drone>> testD;
-		Boss boss;
-#pragma endregion 通常変数
-
 	public:
-		Scene(RootParameter* root,Depth* depth, PipelineRootSignature* pipeline, PipelineRootSignature* pipeline1);
-		~Scene();
+		TitleScene(RootParameter* root, Depth* depth, PipelineRootSignature* pipeline, PipelineRootSignature* pipeline1);
 		void Initialize() override;
-		FPS* fps = nullptr;
-
 		//各初期化系関数群--------------------
 		void LoadModel()  override;
 		void LoadTexture()  override;
 		void LoadSound()  override;
 		void Object3DInit()  override;
 		void SpriteInit()  override;
-		//---------------
-		void ChengeScene() override;
-
-		void MatrixUpdate();
 		void Update() override;
 		void Draw() override;
-		void Sporn(Float3 enemyPos, float expPoint);
-
-		void DeleteExp();
-
-		void MiniMapDraw(Sprite sprite, Float2 objectPos, Float2 playerPos, Texture* maptex, float SpriteSize = 20);
-		void CheckAllColision();
-
+		void ChengeScene() override;
 	};
 
 }
