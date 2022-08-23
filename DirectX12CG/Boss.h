@@ -57,7 +57,7 @@ public:
 	float r = 10;
 	MCB::Float3 nextRotationPos;
 	MCB::Float3 prevRotationPos;
-	MCB::Float3 rotationPos[9] = 
+	MCB::Float3 rotationPos[17] = 
 	{
 		{0,0,0},
 		{2500,0,2500},
@@ -67,7 +67,15 @@ public:
 		{1500,0,1500},
 		{-1500,0,-1500},
 		{1500,0,-1500},
-		{-1500,0,1500}
+		{-1500,0,1500},
+		{2500,1500,2500},
+		{-2500,1500,-2500},
+		{2500,1500,-2500},
+		{-2500,1500,2500},
+		{1500,-1500,1500},
+		{-1500,-1500,-1500},
+		{1500,-1500,-1500},
+		{-1500,-1500,1500}
 	};
 	MCB::Float3 BaseRotationPos = rotationPos[0];
 	MCB::Quaternion BossQ = { 0,0,0,1 };

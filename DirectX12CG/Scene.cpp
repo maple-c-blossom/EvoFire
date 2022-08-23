@@ -35,6 +35,10 @@ void MCB::Scene::Object3DInit()
     Skydorm.Init();
     Skydorm.model = skydomeModel.get();
     Skydorm.scale = { 60,60,60 };
+    ground.Init();
+    ground.model = testGroundModel.get();
+    ground.position = {0,-1600,0};
+    ground.scale = { 60,60,60 };
 
     player.Init();
 
@@ -56,6 +60,7 @@ void MCB::Scene::LoadModel()
 	skydomeModel = make_shared<Model>("skydome");
     testBoxModel = make_shared<Model>("Box");
     testSphereModel = make_shared<Model>("sphere",true);
+    testGroundModel = make_shared<Model>("ground",true);
 }
 
 void MCB::Scene::LoadTexture()
@@ -187,6 +192,7 @@ void MCB::Scene::Draw()
     draw.PreDraw(*depth, *obj3dPipelinePtr, clearColor);
     //3Dオブジェクト
     Skydorm.Draw();
+    ground.Draw();
     player.AllDraw();
     boss.AllDraw();
     enemys.Draw();
@@ -513,6 +519,7 @@ void MCB::Scene::MatrixUpdate()
     matView.FollowingFor3DObject(player.position,player.nowFrontVec,{100,50,100},player.UpVec);
     matView.UpDateMatrixView();
     Skydorm.MatrixUpdata(matView, matProjection);
+    ground.MatrixUpdata(matView, matProjection);
     enemys.UpdateMatrix(matView, matProjection);
     player.AllMatrixUpdate(matView, matProjection);
     for (std::unique_ptr<Exp>& exp : exps)

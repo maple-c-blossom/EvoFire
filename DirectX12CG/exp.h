@@ -14,7 +14,7 @@ public:
 	bool deleteFlag = false;
 	MCB::Vector3D velocity = {0,0,1};
 	MCB::Object3d* playerPtr = nullptr;
-	float speedOffSet = 10;
+	float speedOffSet = 20;
 	float lifeTime = 0;
 	float maxLifeTime = 60 * 60;
 	bool stopSlerp = false;

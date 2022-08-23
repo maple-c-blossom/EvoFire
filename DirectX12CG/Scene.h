@@ -114,6 +114,7 @@ namespace MCB
 		std::shared_ptr<Model> skydomeModel;
 		std::shared_ptr<Model> testBoxModel;
 		std::shared_ptr<Model> testSphereModel;
+		std::shared_ptr<Model> testGroundModel;
 #pragma endregion 3Dモデル
 
 		//テクスチャ
@@ -137,6 +138,7 @@ namespace MCB
 		#pragma region 3Dオブジェクト
 
 		Object3d Skydorm;
+		Object3d ground;
 		Player player;
 		EnemyManager enemys;
 		std::list<std::unique_ptr<Exp>> exps;

@@ -68,7 +68,7 @@ void Exp::ExpApproach()
 		velocity.vec = { toPlayer.vec.x,toPlayer.vec.y,toPlayer.vec.z };
 		velocity.V3Norm();
 	}
-	float approachSpeed = (speedOffSet - toPlayerLenge / 100);
+	float approachSpeed = (speedOffSet - toPlayerLenge / 300);
 	if (approachSpeed < 0) approachSpeed = 1;
 	position.x += velocity.vec.x * approachSpeed;
 	position.y += velocity.vec.y * approachSpeed;

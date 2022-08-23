@@ -200,18 +200,18 @@ void Player::Rotasion()
 		{
 			if (input->IsKeyDown(DIK_UP))
 			{
-				angle.x += rotasionSpeed;
+				position.y += 25;
 			}
 
 			if (input->IsKeyDown(DIK_DOWN))
 			{
-				angle.x -= rotasionSpeed;
+				position.y -= 25;
 			}
 
 			if (input->gamePad->RStick.y)
 			{
-				float angleSpeed = rotasionSpeed * input->gamePad->RStick.y;
-				angle.x += angleSpeed;
+				float angleSpeed = 25 * input->gamePad->RStick.y;
+				position.y += angleSpeed;
 			}
 
 			PitchQ.SetRota(rightVec, angle.x);

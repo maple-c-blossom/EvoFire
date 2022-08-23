@@ -207,14 +207,14 @@ void Boss::Move()
 	if (rotationPosMoveTimer > maxRotationPosMoveTimer)
 	{
 		rotationPosMoveTimer = 0;
-		int i = hitCount % 9;
+		int i = hitCount % 17;
 		if (hitCount <= 0)
 		{
-			i = GetRand(0, 8);
+			i = GetRand(0, 16);
 		}
-		if (i >= 9)
+		if (i >= 17)
 		{
-			i = 8;
+			i = 0;
 		}
 		prevRotationPos = BaseRotationPos;
 		nextRotationPos = rotationPos[i];
