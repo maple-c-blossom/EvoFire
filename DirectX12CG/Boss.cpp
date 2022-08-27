@@ -31,6 +31,11 @@ void Boss::AllDraw()
 
 void Boss::Update()
 {
+	imotalTimer--;
+	if (imotalTimer <= 0)
+	{
+		imotalFlag = false;
+	}
 	Move();
 	Rotasion();
 	Attack();
@@ -282,10 +287,13 @@ void Boss::Attack()
 
 void Boss::Deth(int damege)
 {
-	hp -= damege;
+
+	if (!imotalFlag)
+	{
+		hp -= damege;
+		imotalFlag = true;
+	}
 	hitCount++;
-	imotalFlag = true;
-	imotalTimer = 0;
 	if (hp <= 0)
 	{
 		dethFlag = true;
@@ -312,7 +320,7 @@ void Boss::Init(Player* target, MCB::Float3 position,
 	EnemyBMapTex = enemyBmap;
 	bossMapTex = bossmap;
 	droneMapTex = dronemap;
-	enemyPopTimer = 195;
+	enemyPopTimer = 160;
 	enemyPopTime = 200;
 	enemysPopNum = 5;
 	dromeAttacktimer = 299;
@@ -329,7 +337,7 @@ void Boss::Init(Player* target, MCB::Float3 position,
 	rotationPosMoveTimer = 0;
 	maxRotationPosMoveTimer = 300 + moveTime;
 	rotasionSpeed = 0.025f;
-	r = 10;
+	r = 50;
 	enemys.enemys.clear();
 	BaseRotationPos = rotationPos[0];
 	BossQ = { 0,0,0,1 };
@@ -343,5 +351,10 @@ void Boss::Init(Player* target, MCB::Float3 position,
 	moveTimer = 0;
 	nextRotationPos = BaseRotationPos;
 	prevRotationPos = BaseRotationPos;
+	attackTime = 0;
+	attackResponceTime = 20;
+	maxhp = 1000;
+	hp = maxhp;
+	dethFlag = false;
 }
 

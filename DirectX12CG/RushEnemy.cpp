@@ -4,6 +4,7 @@ using namespace MCB;
 
 void RushEnemy::Update()
 {
+
 	prevPosition.x = position.x, prevPosition.y = position.y, prevPosition.z = position.z;
 	lifeTime++;
 	if (lifeTime > maxLifeTime)

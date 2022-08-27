@@ -7,6 +7,11 @@ using namespace MCB;
 
 void TurretEnemy::Update()
 {
+	lifeTime++;
+	if (maxTime < lifeTime)
+	{
+		deleteFlag = true;
+	}
 	prevPosition.x = position.x;
 	prevPosition.y = position.y;
 	prevPosition.z = position.z;

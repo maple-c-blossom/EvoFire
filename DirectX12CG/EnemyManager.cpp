@@ -24,6 +24,7 @@ void EnemyManager::enemyPop(Player* target, MCB::Float3 position, MCB::Model* mo
 		enemy = std::make_unique<CircumferenceEnemy>();
 	}
 	enemy->Init(target, position, model, bulletModel,attackType);
+	enemy->scale = { 10,10,10 };
 	enemy->mapTexture = mapTexture;
 	enemy->bulletMapTexture = bulletmapTexture;
 	enemys.push_back(std::move(enemy));

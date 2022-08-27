@@ -27,7 +27,8 @@ public:
 	int attackType = 0;
 	MCB::Float3 prevPosition;
 	float expPoint = 2 / 20.0f;
-	float r = 10;
+	float r = 15;
+	float damage = 5;
 	bool deleteFlag = false;
 	MCB::Quaternion enemyQ = { 0,0,0,1 };
 	MCB::Vector3D rightVec;

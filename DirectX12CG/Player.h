@@ -33,6 +33,12 @@ private:
 	int hp = maxhp;
 
 public:
+	bool dethFlag = false;
+	int score = 0;
+	int HiScore = 0;
+	int imotalTimer = 0;
+	int imotalTime = 30;
+	bool imotalFlag = false;
 	MCB::Float3 prevPosition = {};
 	float exp = 0;
 	int Level = 1;
@@ -46,6 +52,7 @@ public:
 	MCB::Model* missileModel = nullptr;
 	MCB::Model* laserModel = nullptr;
 	MCB::Model* bombModel = nullptr;
+	MCB::Model* rockOnlaserModel = nullptr;
 	std::list<std::unique_ptr<PlayerBullet>> bullets;
 	std::list<std::unique_ptr<HomingMissile>> homingMissile;
 	std::list<std::unique_ptr<Laser>> lasers;
@@ -53,7 +60,9 @@ public:
 	MCB::Quaternion playerQ = {0,0,0,1};
 	MCB::Vector3D rightVec;
 	MCB::Vector3D UpVec;
-	void PlayerInit(MCB::Model* model, MCB::Model* bulletModel, MCB::Model* missileModel, MCB::Model* laserModel, MCB::Model* bombModel);
+	MCB::Object3d rockOnlaser;
+	void PlayerInit(MCB::Model* model, MCB::Model* bulletModel, MCB::Model* missileModel, MCB::Model* laserModel, MCB::Model* bombModel
+		,MCB::Model* rockOnlaserModel);
 	void Update();
 	void Move();
 	void Rotasion();

@@ -45,7 +45,7 @@ void Drone::Update()
 
 void Drone::Move()
 {
-
+	rotasion.y += 0.05f;
 	rotationAngle += 0.05f;
 
 	Quaternion positionQ;
@@ -134,7 +134,7 @@ void Drone::Init(Player* target, MCB::Float3 position, MCB::Model* model, int At
 	this->position.z = position.z;
 	this->model = model;
 	this->attackType = AttackType;
-	scale = { 10,10,10 };
+	scale = { 15,15,15 };
 	sprite = sprite.CreateSprite();
 	startPositionVec.vec.x = this->position.x;
 	startPositionVec.vec.y = this->position.y;

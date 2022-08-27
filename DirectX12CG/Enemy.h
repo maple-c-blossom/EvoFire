@@ -22,6 +22,8 @@ protected:
 	int maxhp = 2;
 	int hp = maxhp;
 	int attackType = 0;
+	int lifeTime = 0;
+	int maxTime = 1200;
 public:
 	MCB::Sprite sprite;
 	MCB::Float3 prevPosition;

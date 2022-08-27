@@ -303,9 +303,6 @@
     <ClCompile Include="Boss.cpp">
       <Filter>ソース ファイル\Game\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyManager.cpp">
-      <Filter>ソース ファイル\Game\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -319,9 +316,6 @@
       <Filter>ソース ファイル\Game\Player</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
-      <Filter>ソース ファイル\Game\Enemy\Enemys</Filter>
-    </ClCompile>
-    <ClCompile Include="TurretEnemy.cpp">
       <Filter>ソース ファイル\Game\Enemy\Enemys</Filter>
     </ClCompile>
     <ClCompile Include="EnemyBullet.cpp">
@@ -356,6 +350,12 @@
     </ClCompile>
     <ClCompile Include="TitleScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyManager.cpp">
+      <Filter>ソース ファイル\Game\Enemy\Enemys</Filter>
+    </ClCompile>
+    <ClCompile Include="TurretEnemy.cpp">
+      <Filter>ソース ファイル\Game\Enemy\Enemys</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
