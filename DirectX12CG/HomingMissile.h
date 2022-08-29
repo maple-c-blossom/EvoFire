@@ -16,7 +16,7 @@ private:
 	MCB::Object3d* target[MissileCount] = {nullptr,nullptr,nullptr};
 	int maxSpeed[MissileCount] = { maxDefaultSpeed,maxDefaultSpeed,maxDefaultSpeed };
 public:
-	int damage = 40;
+	int damage = 10;
 	static const int maxDefaultSpeed = 5 + maxLifeTime;
 	int prevMaxSpeed[MissileCount] = { maxSpeed[0],maxSpeed[1],maxSpeed[2] };
 	MCB::Object3d homingMissiles[MissileCount];

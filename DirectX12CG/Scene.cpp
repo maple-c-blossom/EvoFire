@@ -93,6 +93,85 @@ void MCB::Scene::LoadTexture()
     mapEnemyBTexture->CreateTexture(L"Resources\\testEnemyB.png");
     titleName = make_shared<Texture>();
     titleName->CreateTexture(L"Resources\\TitleName.png");
+    moveText = make_shared<Texture>();
+    moveText->CreateTexture(L"Resources\\Tutorial\\MoveText.png");
+    moveTuto = make_shared<Texture>();
+    moveTuto->CreateTexture(L"Resources\\Tutorial\\MoveTuto.png");
+    RockOnText = make_shared<Texture>();
+    RockOnText->CreateTexture(L"Resources\\Tutorial\\RockOntuto.png");
+    RotaTuto = make_shared<Texture>();
+    RotaTuto->CreateTexture(L"Resources\\Tutorial\\RotaTuto.png");
+    attackText = make_shared<Texture>();
+    attackText->CreateTexture(L"Resources\\Tutorial\\AttackText.png");
+    attackTuto = make_shared<Texture>();
+    attackTuto->CreateTexture(L"Resources\\Tutorial\\AttackTuto.png");
+    expTuto = make_shared<Texture>();
+    expTuto->CreateTexture(L"Resources\\Tutorial\\ExpText.png");
+    expText = make_shared<Texture>();
+    expText->CreateTexture(L"Resources\\UI\\Exp.png");
+    GazeSpace = make_shared<Texture>();
+    GazeSpace->CreateTexture(L"Resources\\UI\\gazeSpace.png");
+    Gaze = make_shared<Texture>();
+    Gaze->CreateTexture(L"Resources\\UI\\Gaze.png");
+    level = make_shared<Texture>();
+    level->CreateTexture(L"Resources\\UI\\Level.png");
+    homingMissileTex = make_shared<Texture>();
+    homingMissileTex->CreateTexture(L"Resources\\UI\\HomingMissileTex.png");
+    laserTex = make_shared<Texture>();
+    laserTex->CreateTexture(L"Resources\\UI\\LaserTex.png");
+    bombTex = make_shared<Texture>();
+    bombTex->CreateTexture(L"Resources\\UI\\bombTex.png");
+
+    homingMissileTuto = make_shared<Texture>();
+    homingMissileTuto->CreateTexture(L"Resources\\Tutorial\\HomingMissileTuto.png");
+    laserTuto = make_shared<Texture>();
+    laserTuto->CreateTexture(L"Resources\\Tutorial\\LaserTuto.png");
+    bombTuto = make_shared<Texture>();
+    bombTuto->CreateTexture(L"Resources\\Tutorial\\BombTuto.png");
+
+    homingMissileTutoC = make_shared<Texture>();
+    homingMissileTutoC->CreateTexture(L"Resources\\Tutorial\\HomingMissileTutoC.png");
+    laserTutoC = make_shared<Texture>();
+    laserTutoC->CreateTexture(L"Resources\\Tutorial\\LaserTutoC.png");
+    bombTutoC = make_shared<Texture>();
+    bombTutoC->CreateTexture(L"Resources\\Tutorial\\BombTutoC.png");
+
+    hpGazeSpace = make_shared<Texture>();
+    hpGazeSpace->CreateTexture(L"Resources\\UI\\gazeSpace.png");
+    hpGaze = make_shared<Texture>();
+    hpGaze->CreateTexture(L"Resources\\UI\\Gaze.png");
+
+    BossGazeSpace = make_shared<Texture>();
+    BossGazeSpace->CreateTexture(L"Resources\\UI\\bossHpGazeSpace.png");
+    BossGaze = make_shared<Texture>();
+    BossGaze->CreateTexture(L"Resources\\UI\\Gaze.png");
+
+    hpTex = make_shared<Texture>();
+    hpTex->CreateTexture(L"Resources\\UI\\HpText.png");
+
+    pHpTex = make_shared<Texture>();
+    pHpTex->CreateTexture(L"Resources\\UI\\HpText.png");
+
+    ScoreTex = make_shared<Texture>();
+    ScoreTex->CreateTexture(L"Resources\\UI\\ScoreText.png");
+
+    HiScoreTex = make_shared<Texture>();
+    HiScoreTex->CreateTexture(L"Resources\\UI\\HiScoreText.png");
+
+    bombText = make_shared<Texture>();
+    bombText->CreateTexture(L"Resources\\Tutorial\\BombText.png");
+
+    homingMissileText = make_shared<Texture>();
+    homingMissileText->CreateTexture(L"Resources\\Tutorial\\HomingMisileText.png");
+
+    laserText = make_shared<Texture>();
+    laserText->CreateTexture(L"Resources\\Tutorial\\LaserText.png");
+
+    endText = make_shared<Texture>();
+    endText->CreateTexture(L"Resources\\Tutorial\\EndText.png");
+
+    noTexture = make_shared<Texture>();
+    noTexture->CreateNoTextureFileIsTexture();
 }
 
 void MCB::Scene::LoadSound()
@@ -108,7 +187,58 @@ void MCB::Scene::SpriteInit()
     mapPlayer.InitMatProje();
     boss.sprite = boss.sprite.CreateSprite();
     titleNameSprite = titleNameSprite.CreateSprite();
+    moveTextSprite = moveTextSprite.CreateSprite();
+    moveTutoSprite = moveTutoSprite.CreateSprite();
+    RockOnTextSprite = RockOnTextSprite.CreateSprite();
+    RotaTutoSprite = RotaTutoSprite.CreateSprite();
+    attackTextSprite = attackTextSprite.CreateSprite();
+    attackTutoSprite = attackTutoSprite.CreateSprite();
+    expTutoSprite = expTutoSprite.CreateSprite();
+    expTextSprite = expTextSprite.CreateSprite();
+    GazeSprite = GazeSprite.CreateSprite();
+    GazeSprite.anchorPoint = { 0,0 };
+    GazeSpaceSprite = GazeSpaceSprite.CreateSprite();
+    GazeSpaceSprite.anchorPoint = { 0,0 };
+    levelSprite = levelSprite.CreateSprite();
+    hommingMissileSprite = hommingMissileSprite.CreateSprite();
+    laserSprite = laserSprite.CreateSprite();
+    bombSprite = bombSprite.CreateSprite();
+    homingMissileTutoSprite = homingMissileTutoSprite.CreateSprite();
+    laserTutoSprite = laserTutoSprite.CreateSprite();
+    bombTutoSprite = bombTutoSprite.CreateSprite();
+    homingMissileTutoCSprite = homingMissileTutoCSprite.CreateSprite();
+    laserTutoCSprite = laserTutoCSprite.CreateSprite();
+    bombTutoCSprite = bombTutoCSprite.CreateSprite();
 
+    bosshpGazeSprite = bosshpGazeSprite.CreateSprite();
+    bosshpGazeSprite.anchorPoint = { 0,0 };
+    bosshpGazeSprite.color = { 1,0,0,0.3f };
+
+    bosshpGazeSpaceSprite = bosshpGazeSpaceSprite.CreateSprite();
+    bosshpGazeSpaceSprite.anchorPoint = { 0,0 };
+    bosshpGazeSpaceSprite.color = { 1,1,1,1 };
+
+    hpGazeSprite = hpGazeSprite.CreateSprite();
+    hpGazeSprite.anchorPoint = { 0,0 };
+    hpGazeSprite.color = { 0.5,0.8,0.5,0.4f };
+    hpGazeSpaceSprite = hpGazeSpaceSprite.CreateSprite();
+    hpGazeSpaceSprite.anchorPoint = { 0,0 };
+
+    hpTextSprite = hpTextSprite.CreateSprite();
+    pHpTextSprite = pHpTextSprite.CreateSprite();
+
+    ScoreSprite = ScoreSprite.CreateSprite();
+    ScoreSprite.anchorPoint = { 0,0 };
+    HiScoreSprite = HiScoreSprite.CreateSprite();
+    HiScoreSprite.anchorPoint = { 0,0 };
+
+    bombTextSprite  = bombTextSprite.CreateSprite();
+    homingMissileTextSprite = homingMissileTextSprite.CreateSprite();
+    laserTextSprite = laserTextSprite.CreateSprite();
+    endTextSprite = endTextSprite.CreateSprite();
+
+    SceneChengeSprite = SceneChengeSprite.CreateSprite();
+    SceneChengeSprite.color = { 0,0,0,0 };
 }
 void MCB::Scene::ChengeScene()
 {
@@ -121,6 +251,11 @@ void MCB::Scene::GameSceneInit()
 {
     Object3DInit();
     exps.clear();
+    GameTimer = 0;
+    GameMaxTime = 120;
+    StartPos = -3000;
+    boss.position.y = StartPos;
+    GameStartFlag = false;
 }
 void MCB::Scene::TitleSceneInit()
 {
@@ -136,6 +271,24 @@ void MCB::Scene::TitleSceneInit()
     exps.clear();
     SPAttackTutoEnd = false;
     titleMove = false;
+    moveTutoPos = { (float)dxWindow->window_width / 2, 32 * 3 + 70 };
+    moveTutoSize = { 288 * 2, 64 * 2 };
+    moveTutoTimer = 0;
+    moveTutoMaxTime = 60;
+    moveTutoFlag = false;
+
+    rotaTutoPos = { (float)dxWindow->window_width / 2, 32 * 3 + 70 };
+    rotaTutoSize = { 112 * 3, 64 * 2 };
+    rotaTutoTimer = 0;
+    rotaTutoMaxTime = 60;
+    rotaTutoFlag = false;
+
+    attackTutoPos = { (float)dxWindow->window_width / 2, 32 * 3 + 120 };
+    attackTutoSize = { 112 * 3, 64 * 2 };
+    attackTutoTimer = 0;
+    attackTutoMaxTime = 60;
+    attackTutoFlag = false;
+    sinTimer = -1;
 }
 void MCB::Scene::ClearSceneInit()
 {
@@ -218,22 +371,65 @@ void MCB::Scene::GameSceneDraw()
     {
         MiniMapDraw(d->sprite, { d->position.x,d->position.z }, { player.position.x, player.position.z }, d->mapTexture);
     }
-    MiniMapDraw(boss.sprite, { boss.BaseRotationPos.x,boss.BaseRotationPos.z }, { player.position.x, player.position.z }, boss.bossMapTex,20);
-    MiniMapDraw(boss.sprite, { boss.nextRotationPos.x,boss.nextRotationPos.z }, { player.position.x, player.position.z }, boss.bossMapTex,20);
-    MiniMapDraw(boss.sprite, { boss.position.x,boss.position.z }, { player.position.x, player.position.z }, boss.bossMapTex,40);
+    //MiniMapDraw(boss.sprite, { boss.BaseRotationPos.x,boss.BaseRotationPos.z }, { player.position.x, player.position.z }, boss.bossMapTex,20);
+    //MiniMapDraw(boss.sprite, { boss.nextRotationPos.x,boss.nextRotationPos.z }, { player.position.x, player.position.z }, boss.bossMapTex,20);
+    MiniMapDraw(boss.sprite, { boss.position.x,boss.position.z }, { player.position.x, player.position.z }, boss.bossMapTex,40,true);
+
+#pragma region  UI
+    moveTutoSprite.SpriteDraw(moveTutoSprite, *moveTuto, moveTutoPos.x, moveTutoPos.y, moveTutoSize.x, moveTutoSize.y);
+    RotaTutoSprite.SpriteDraw(RotaTutoSprite, *RotaTuto, rotaTutoPos.x, rotaTutoPos.y, rotaTutoSize.x, rotaTutoSize.y);
+    attackTutoSprite.SpriteDraw(attackTutoSprite, *attackTuto, attackTutoPos.x, attackTutoPos.y, attackTutoSize.x, attackTutoSize.y);
+
+    GazeSpaceSprite.SpriteDraw(GazeSpaceSprite, *GazeSpace, gazePos.x, gazePos.y, gazeSize.x * 20, gazeSize.y);
+    GazeSprite.SpriteDraw(GazeSprite, *Gaze, gazePos.x, gazePos.y, (gazeSize.x * 20) * player.exp / player.nextLevelExp, gazeSize.y);
+    expTextSprite.SpriteDraw(expTextSprite, *expText, gazePos.x + gazeSize.x * 2, gazePos.y + gazeSize.y / 2);
+    debugText.Print(gazePos.x + gazeSize.x * 4, gazePos.y + gazeSize.y / 2 - 32 / 2, 2, "%d / %d", player.exp, player.nextLevelExp);
+
+    levelSprite.SpriteDraw(levelSprite, *level, gazePos.x + 32 / 2 + 20, gazePos.y - 32, 64, 32);
+    debugText.Print(gazePos.x + 32 / 2 + 32 + 30, gazePos.y - 50, 2, "%d", player.Level);
+
+    homingMissileTutoSprite.SpriteDraw(homingMissileTutoSprite, *homingMissileTuto, dxWindow->window_width / 2 - 158, dxWindow->window_height * 5 / 7 + 28);
+    homingMissileTutoCSprite.SpriteDraw(homingMissileTutoCSprite, *homingMissileTutoC, dxWindow->window_width / 2 - 158, dxWindow->window_height * 7 / 8 + 64);
+    hommingMissileSprite.SpriteDraw(hommingMissileSprite, *homingMissileTex, dxWindow->window_width / 2 - 158, dxWindow->window_height * 5 / 6, 128, 128);
+    debugText.Print(dxWindow->window_width / 2 - 202, dxWindow->window_height * 5 / 6 + (128 * 1 / 8 - 16), 2, "%d / %d", player.homingMissileCount, player.maxHomingMissileCount);
+
+    laserTutoSprite.SpriteDraw(laserTutoSprite, *laserTuto, dxWindow->window_width / 2, dxWindow->window_height * 5 / 7 + 28);
+    laserTutoCSprite.SpriteDraw(laserTutoCSprite, *laserTutoC, dxWindow->window_width / 2, dxWindow->window_height * 7 / 8 + 64);
+    laserSprite.SpriteDraw(laserSprite, *laserTex, dxWindow->window_width / 2, dxWindow->window_height * 5 / 6, 128, 128);
+    debugText.Print(dxWindow->window_width / 2 - 44, dxWindow->window_height * 5 / 6 + (128 * 1 / 8 - 16), 2, "%d / %d", player.laserCount, player.maxLaserCount);
+
+    bombTutoSprite.SpriteDraw(bombTutoSprite, *bombTuto, dxWindow->window_width / 2 + 158, dxWindow->window_height * 5 / 7 + 28);
+    bombTutoCSprite.SpriteDraw(bombTutoCSprite, *bombTutoC, dxWindow->window_width / 2 + 158, dxWindow->window_height * 7 / 8 + 64);
+    bombSprite.SpriteDraw(bombSprite, *bombTex, dxWindow->window_width / 2 + 158, dxWindow->window_height * 5 / 6, 128, 128);
+    debugText.Print(dxWindow->window_width / 2 + 106, dxWindow->window_height * 5 / 6 + (128 * 1 / 8 - 16), 2, "%d / %d", player.bombCount, player.maxBombCount);
+
+    bosshpGazeSpaceSprite.SpriteDraw(bosshpGazeSpaceSprite,*BossGazeSpace,dxWindow->window_width * 1/6 + 60,10,gazeSize.x * 60,gazeSize.y * 1.5);
+    bosshpGazeSprite.SpriteDraw(bosshpGazeSprite,*BossGaze,dxWindow->window_width * 1/6 + 60,10,gazeSize.x * 60 * boss.hp / boss.maxhp,gazeSize.y * 1.5);
+    debugText.Print((dxWindow->window_width * 1 / 6) + gazeSize.x * 20 + 60, 10 + gazeSize.y / 2 - 32 / 2, 2, "%d / %d", boss.hp, boss.maxhp);
+    hpTextSprite.SpriteDraw(hpTextSprite,*hpTex, (dxWindow->window_width * 1 / 6) + gazeSize.x * 18, 32 + gazeSize.y / 2 - 32 / 2);
+
+    hpGazeSpaceSprite.SpriteDraw(hpGazeSpaceSprite, *hpGazeSpace, mapPosition.x - mapSize / 2, mapPosition.y - mapSize / 2 - 40, gazeSize.x * 20, gazeSize.y);
+    hpGazeSprite.SpriteDraw(hpGazeSprite, *hpGaze, mapPosition.x - mapSize / 2, mapPosition.y - mapSize / 2 - 40, (gazeSize.x * 20) * player.GetHp() / player.maxhp, gazeSize.y);
+    pHpTextSprite.SpriteDraw(pHpTextSprite, *pHpTex, mapPosition.x - mapSize / 2 + 30, mapPosition.y - mapSize / 2 - 40 + gazeSize.y / 2);
+    debugText.Print(mapPosition.x - mapSize / 2 + 60, mapPosition.y - mapSize / 2 - 40, 2, "%d / %d", player.hp, player.maxhp);
+
+    ScoreSprite.SpriteDraw(ScoreSprite,*ScoreTex,20,20);
+    debugText.Print(100, 20, 2, "%d", player.score);
 
 
+    HiScoreSprite.SpriteDraw(HiScoreSprite, *HiScoreTex, 20, 60);
+    debugText.Print(120, 60, 2, "%d", player.HiScore);
+#pragma endregion UI
+    //debugText.Print(20, 200,2, "score:%d BossHp:%d",player.score,boss.hp);
+    //debugText.Print(20, 400,2, "bossBaseRotaMoveTimer:%d time:%d hp:%d",boss.rotationPosMoveTimer,boss.maxRotationPosMoveTimer,boss.hp);
+    ////if(exps.size() > 0) debugText.Print(20, 40, 2, "positin:%f,%f,%f", 
+    ////                    exps.begin()->get()->position.x, exps.begin()->get()->position.y,
+    ////                    exps.begin()->get()->position.z);
 
-    debugText.Print(20, 200,2, "score:%d BossHp:%d",player.score,boss.hp);
-    debugText.Print(20, 400,2, "bossBaseRotaMoveTimer:%d time:%d hp:%d",boss.rotationPosMoveTimer,boss.maxRotationPosMoveTimer,boss.hp);
-    //if(exps.size() > 0) debugText.Print(20, 40, 2, "positin:%f,%f,%f", 
-    //                    exps.begin()->get()->position.x, exps.begin()->get()->position.y,
-    //                    exps.begin()->get()->position.z);
-
-    debugText.Print(20, 0, 2, "exp:float->%f int->%d,NextLevelExp:%d,Level:%d,hp:%d",player.exp, (int)player.exp / 1,
-                    player.nextLevelExp,player.Level,player.GetHp());
-    debugText.Print(20, 80, 2, "homingMissileCount:%d laserCount:%d bombCount;%d", player.homingMissileCount,
-        player.laserCount,player.bombCount);
+    //debugText.Print(20, 0, 2, "exp:float->%f int->%d,NextLevelExp:%d,Level:%d,hp:%d",player.exp, (int)player.exp / 1,
+    //                player.nextLevelExp,player.Level,player.GetHp());
+    //debugText.Print(20, 80, 2, "homingMissileCount:%d laserCount:%d bombCount;%d", player.homingMissileCount,
+    //    player.laserCount,player.bombCount);
     debugText.AllDraw();
 }
 
@@ -247,6 +443,10 @@ void MCB::Scene::TitleSceneDraw()
     for (std::unique_ptr<Exp>& exp : exps) { exp->ExpDraw(); }
     //スプライト
     Sprite::SpriteCommonBeginDraw(*spritePipelinePtr);
+    ScoreSprite.SpriteDraw(ScoreSprite, *ScoreTex, 20, 20);
+    debugText.Print(100, 20, 2, "%d", player.score);
+    HiScoreSprite.SpriteDraw(HiScoreSprite, *HiScoreTex, 20, 60);
+    debugText.Print(120, 60, 2, "%d", player.HiScore);
 
     mapBack.SpriteDraw(mapBack, *mapBackTexture.get(), mapPosition.x, mapPosition.y, mapSize, mapSize);
     mapPlayer.rotation = player.rotasion.y;
@@ -270,11 +470,91 @@ void MCB::Scene::TitleSceneDraw()
     }
     titleNameSprite.SpriteDraw(titleNameSprite, *titleName, titlePos.x, titlePos.y, titleSize.x , titleSize.y);
 
-    debugText.Print(20, 200, 2, "TitleScene HiScore:%d Score:%d",player.HiScore, player.score);
-    debugText.Print(20, 0, 2, "exp:float->%f int->%d,NextLevelExp:%d,Level:%d,hp:%d", player.exp, (int)player.exp / 1,
-        player.nextLevelExp, player.Level, player.GetHp());
-    debugText.Print(20, 80, 2, "homingMissileCount:%d laserCount:%d bombCount;%d", player.homingMissileCount,
-        player.laserCount, player.bombCount);
+    switch (nowTutorial)
+    {
+    case None:
+        break;
+    case Move:
+        moveTextSprite.SpriteDraw(moveTextSprite,*moveText,dxWindow->window_width / 2, 64,288 * 2, 32 * 2);
+        break;
+    case RockOn:
+        RockOnTextSprite.SpriteDraw(RockOnTextSprite, *RockOnText, dxWindow->window_width / 2, 64, 288 * 2, 32 * 2);
+
+        break;
+    case Attack:
+        attackTextSprite.SpriteDraw(attackTextSprite, *attackText, dxWindow->window_width / 2, 64, 288 * 2, 64 * 2);
+        break;
+    case ExpTuto:
+        expTutoSprite.SpriteDraw(expTutoSprite, *expTuto, dxWindow->window_width / 2, 64, 288 * 2, 64 * 2);
+
+        break;
+    case SPAttack:
+    
+        switch (nowSPAttackTuto)
+        {
+        case HomingMisilleTuto:
+            homingMissileTextSprite.SpriteDraw(homingMissileTextSprite, *homingMissileText, dxWindow->window_width / 2, 64, 288 * 4, 64 * 4);
+            break;
+        case LaserTuto:
+            laserTextSprite.SpriteDraw(laserTextSprite, *laserText, dxWindow->window_width / 2, 64, 288 * 4, 64 * 4);
+            break;
+        case BombTuto:
+            bombTextSprite.SpriteDraw(bombTextSprite, *bombText, dxWindow->window_width / 2, 64, 288 * 4, 64 * 4);
+
+            break;
+        default:
+            break;
+        }
+
+        break;
+    case End:
+        endTextSprite.SpriteDraw(endTextSprite, *endText, dxWindow->window_width / 2, 64, 288 * 2, 64 * 2);
+        break;
+    default:
+        break;
+    }
+
+
+    if(nowTutorial >= Move)moveTutoSprite.SpriteDraw(moveTutoSprite, *moveTuto, moveTutoPos.x, moveTutoPos.y, moveTutoSize.x, moveTutoSize.y);
+    if(nowTutorial >= RockOn)RotaTutoSprite.SpriteDraw(RotaTutoSprite, *RotaTuto, rotaTutoPos.x, rotaTutoPos.y, rotaTutoSize.x, rotaTutoSize.y);
+    if(nowTutorial >= Attack)attackTutoSprite.SpriteDraw(attackTutoSprite, *attackTuto, attackTutoPos.x, attackTutoPos.y, attackTutoSize.x, attackTutoSize.y);
+    if (nowTutorial >= ExpTuto)
+    {
+        GazeSpaceSprite.SpriteDraw(GazeSpaceSprite, *GazeSpace, gazePos.x, gazePos.y, gazeSize.x * 20, gazeSize.y);
+        GazeSprite.SpriteDraw(GazeSprite, *Gaze, gazePos.x, gazePos.y, (gazeSize.x * 20) * player.exp / player.nextLevelExp, gazeSize.y);
+        expTextSprite.SpriteDraw(expTextSprite, *expText, gazePos.x + gazeSize.x * 2, gazePos.y + gazeSize.y / 2);
+        debugText.Print(gazePos.x + gazeSize.x * 4, gazePos.y + gazeSize.y / 2 - 32 / 2, 2, "%d / %d", player.exp,player.nextLevelExp);
+        levelSprite.SpriteDraw(levelSprite, *level, gazePos.x + 32 / 2 + 20, gazePos.y - 32, 64, 32);
+        debugText.Print(gazePos.x + 32 / 2 + 32 + 30, gazePos.y - 50, 2, "%d", player.Level);
+         
+    }
+    if ((nowTutorial >= SPAttack && nowSPAttackTuto >= HomingMisilleTuto) || nowTutorial >= End)
+    {
+        homingMissileTutoSprite.SpriteDraw(homingMissileTutoSprite, *homingMissileTuto, dxWindow->window_width / 2 - 158, dxWindow->window_height * 5 / 7 + 28);
+        homingMissileTutoCSprite.SpriteDraw(homingMissileTutoCSprite, *homingMissileTutoC, dxWindow->window_width / 2 - 158, dxWindow->window_height * 7 / 8 + 64);
+        hommingMissileSprite.SpriteDraw(hommingMissileSprite, *homingMissileTex, dxWindow->window_width / 2 - 158, dxWindow->window_height * 5 / 6, 128, 128);
+        debugText.Print(dxWindow->window_width / 2 - 202, dxWindow->window_height * 5 / 6 + (128 * 1/8 - 16), 2, "%d / %d", player.homingMissileCount, player.maxHomingMissileCount);
+    }
+    if ((nowTutorial >= SPAttack && nowSPAttackTuto >= LaserTuto) || nowTutorial >= End)
+    {
+        laserTutoSprite.SpriteDraw(laserTutoSprite, *laserTuto, dxWindow->window_width / 2, dxWindow->window_height * 5 / 7 + 28);
+        laserTutoCSprite.SpriteDraw(laserTutoCSprite, *laserTutoC, dxWindow->window_width / 2, dxWindow->window_height * 7 / 8 + 64);
+        laserSprite.SpriteDraw(laserSprite, *laserTex, dxWindow->window_width / 2, dxWindow->window_height * 5 / 6, 128, 128);
+        debugText.Print(dxWindow->window_width / 2 - 44, dxWindow->window_height * 5 / 6 + (128 * 1 / 8 - 16), 2, "%d / %d", player.laserCount, player.maxLaserCount);
+    }
+    if ((nowTutorial >= SPAttack && nowSPAttackTuto >= BombTuto) || nowTutorial >= End)
+    {
+        bombTutoSprite.SpriteDraw(bombTutoSprite, *bombTuto, dxWindow->window_width / 2 + 158, dxWindow->window_height * 5 / 7 + 28);
+        bombTutoCSprite.SpriteDraw(bombTutoCSprite, *bombTutoC, dxWindow->window_width / 2 + 158, dxWindow->window_height * 7 / 8 + 64);
+        bombSprite.SpriteDraw(bombSprite, *bombTex, dxWindow->window_width / 2 + 158, dxWindow->window_height * 5 / 6, 128, 128);
+        debugText.Print(dxWindow->window_width / 2 + 106, dxWindow->window_height * 5 / 6 + (128 * 1 / 8 - 16), 2, "%d / %d", player.bombCount, player.maxBombCount);
+    }
+
+    //debugText.Print(20, 200, 2, "TitleScene HiScore:%d Score:%d",player.HiScore, player.score);
+    //debugText.Print(20, 0, 2, "exp:float->%f int->%d,NextLevelExp:%d,Level:%d,hp:%d", player.exp, (int)player.exp / 1,
+    //    player.nextLevelExp, player.Level, player.GetHp());
+    //debugText.Print(20, 80, 2, "homingMissileCount:%d laserCount:%d bombCount;%d", player.homingMissileCount,
+    //    player.laserCount, player.bombCount);
     debugText.AllDraw();
 }
 
@@ -373,29 +653,54 @@ void MCB::Scene::GameSceneUpdate()
 
     }
 
-    boss.Update();
-    player.Update();
-    enemys.Update();
-
-    for (std::unique_ptr<Exp>& exp : exps)
+    if (GameStartFlag)
     {
-        exp->Update();
-    }
-    exps.remove_if([](std::unique_ptr<Exp>& exp) {return exp->deleteFlag; });
 
-    if(boss.dethFlag)
-    {
-        nextScene = Clear;
-        ClearSceneInit();
-    }
-    else if (player.dethFlag)
-    {
-        nextScene = GameOver;
-        OverSceneInit();
+
+        boss.Update();
+        player.Update();
+        enemys.Update();
+
+        for (std::unique_ptr<Exp>& exp : exps)
+        {
+            exp->Update();
+        }
+        exps.remove_if([](std::unique_ptr<Exp>& exp) {return exp->deleteFlag; });
+
+        if (boss.dethFlag)
+        {
+            nextScene = Clear;
+            ClearSceneInit();
+        }
+        else if (player.dethFlag)
+        {
+            nextScene = GameOver;
+            OverSceneInit();
+        }
+
+        CheckAllColision();
+        if (player.GetTarget())rockOnleticle.position = player.GetTarget()->position;
     }
 
-    CheckAllColision();
-    if (player.GetTarget())rockOnleticle.position = player.GetTarget()->position;
+    if (!GameStartFlag)
+    {
+        if (GameTimer < GameMaxTime)
+        {
+            GameTimer++;
+            boss.position.y = Lerp(StartPos, player.nowFrontVec.vec.y * boss.distance, GameMaxTime, GameTimer);
+        
+        }
+        else if (GameTimer < GameMaxTime + 10)
+        {
+            GameTimer++;
+        }
+        else
+        {
+            GameStartFlag = true;
+            Object3DInit();
+            exps.clear();
+        }
+    }
 
 }
 void MCB::Scene::TitleSceneUpdate()
@@ -404,7 +709,11 @@ void MCB::Scene::TitleSceneUpdate()
     switch (nowTutorial)
     {
     case None:
-        if (input->IsKeyTrigger(DIK_SPACE))
+        if (sinTimer > 2147483000) sinTimer = 0;
+        sinTimer++;
+        player.position.y = sinf(ConvertRadius(sinTimer)) * 20;
+        player.rockOnlaser.position = { player.position.x, player.position.y,player.position.z };
+        if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_X))
         {
             titleMove = true;
         }
@@ -424,28 +733,88 @@ void MCB::Scene::TitleSceneUpdate()
             titleMove == false;
             nowTutorial = Move;
             player.Level = 0;
+            player.position.y = 0;
         }
         break;
     case Move:
         player.Update();
         if (player.prevPosition.x != player.position.x || player.prevPosition.y != player.position.y || player.prevPosition.z != player.position.z)
         {
-            nowTutorial = RockOn;
+            moveTutoFlag = true;
         }
+        if (moveTutoFlag)
+        {
+            moveTutoTimer++;
+            if (moveTutoTimer >= 0)
+            {
+                moveTutoSize.x = InOutQuad(288 * 2, 288 * 1, moveTutoMaxTime, moveTutoTimer);
+                moveTutoSize.y = InOutQuad(64 * 2, 64 * 1, moveTutoMaxTime, moveTutoTimer);
+                moveTutoPos.x = InOutQuad((float)dxWindow->window_width / 2,   (float)dxWindow->window_width - 288 / 2 - 12, moveTutoMaxTime, moveTutoTimer);
+                moveTutoPos.y = InOutQuad(32 * 3 + 70, 64 / 2 + 64, moveTutoMaxTime, moveTutoTimer);
+            }
+        }
+        if (moveTutoTimer >= moveTutoMaxTime)
+        {
+            moveTutoFlag == false;
+            nowTutorial = RockOn;
+            player.Level = 0;
+        }
+        
         break;
     case RockOn:
         player.Update();
         if (player.bullets.size() > 0) player.bullets.clear();
-        if(enemys.enemys.size() < 1)enemys.enemyPop(&player, { (float)GetRand(-100,100),0,(float)GetRand(30,100) }, enemyModel.get(), testSphereModel.get(), mapEnemyTexture.get(), mapEnemyBTexture.get(), EnemyManager::Turret, Enemy::NoHoming);
-        if (player.GetTarget() != nullptr) nowTutorial = Attack;
+        if(enemys.enemys.size() < 1)enemys.enemyPop(&player, { -player.nowFrontVec.vec.x + 100 + player.position.x ,0 , player.nowFrontVec.vec.z * -100 + player.position.z }, enemyModel.get(), testSphereModel.get(), mapEnemyTexture.get(), mapEnemyBTexture.get(), EnemyManager::Turret, Enemy::NoHoming);
+       if (player.GetTarget() != nullptr)
+        {
+            rotaTutoFlag = true;
+        }
+        if (rotaTutoFlag)
+        {
+            rotaTutoTimer++;
+            if (rotaTutoTimer >= 0)
+            {
+                rotaTutoSize.x = InOutQuad(112 * 3, 112 * 1, rotaTutoMaxTime, rotaTutoTimer);
+                rotaTutoSize.y = InOutQuad(64 * 2, 64 * 1, rotaTutoMaxTime, rotaTutoTimer);
+                rotaTutoPos.x = InOutQuad((float)dxWindow->window_width / 2, (float)dxWindow->window_width - 112 / 2 - 12, rotaTutoMaxTime, rotaTutoTimer);
+                rotaTutoPos.y = InOutQuad(32 * 3 + 70, 64 / 2 + 64 * 2 + 10, rotaTutoMaxTime, rotaTutoTimer);
+            }
+        }
+        if (rotaTutoTimer >= rotaTutoMaxTime)
+        {
+            rotaTutoFlag == false;
+            nowTutorial = Attack;
+            player.Level = 0;
+        }
         break;
     case Attack:
-        player.Update();
         if (enemys.enemys.size() < 1)enemys.enemyPop(&player, { (float)GetRand(-100,100),0,(float)GetRand(30,100) }, enemyModel.get(), testSphereModel.get(), mapEnemyTexture.get(), mapEnemyBTexture.get(), EnemyManager::Turret, Enemy::NoHoming);
+        player.Update();
+
+        if (attackTutoFlag)
+        {
+            attackTutoTimer++;
+            if (attackTutoTimer >= 0)
+            {
+                attackTutoSize.x = InOutQuad(176 * 1.25, 176 * 1, attackTutoMaxTime, attackTutoTimer);
+                attackTutoSize.y = InOutQuad(64 * 3, 64 * 1, attackTutoMaxTime, attackTutoTimer);
+                attackTutoPos.x = InOutQuad((float)dxWindow->window_width / 2, (float)dxWindow->window_width - 176 / 2 + 32, attackTutoMaxTime, attackTutoTimer);
+                attackTutoPos.y = InOutQuad(32 * 3 + 90, 64 / 2 + 64 * 3 + 10 * 2, attackTutoMaxTime, attackTutoTimer);
+            }
+        }
+        if (attackTutoTimer >= attackTutoMaxTime)
+        {
+            attackTutoFlag == false;
+            nowTutorial = ExpTuto;
+            player.Level = 0;
+        }
+
         break;
     case ExpTuto:
         if (enemys.enemys.size() < 1)enemys.enemyPop(&player, { (float)GetRand(-100,100),0,(float)GetRand(30,100) }, enemyModel.get(), testSphereModel.get(), mapEnemyTexture.get(), mapEnemyBTexture.get(), EnemyManager::Turret, Enemy::NoHoming);
         player.Update();
+
+
         break;
     case SPAttack:
         if (enemys.enemys.size() < 1)enemys.enemyPop(&player, { (float)GetRand(-100,100),0,(float)GetRand(30,100) }, enemyModel.get(), testSphereModel.get(), mapEnemyTexture.get(), mapEnemyBTexture.get(), EnemyManager::Turret, Enemy::NoHoming);
@@ -486,7 +855,7 @@ void MCB::Scene::TitleSceneUpdate()
         }
         exps.remove_if([](std::unique_ptr<Exp>& exp) {return exp->deleteFlag; });
 
-        if (player.exp >= 10)
+        if (player.exp >= 10 * 20)
         {
             player.Level = 1;
         }
@@ -497,6 +866,11 @@ void MCB::Scene::TitleSceneUpdate()
             enemys.enemys.clear();;
             exps.clear();
             GameSceneInit();
+        }
+
+        if (nowTutorial < Attack)
+        {
+            player.bullets.clear();
         }
         break;
     default:
@@ -558,15 +932,36 @@ void MCB::Scene::Draw()
     draw.PostDraw();
 }
 
-void MCB::Scene::MiniMapDraw(Sprite sprite ,Float2 objectPos, Float2 playerPos,Texture* maptex,float SpriteSize)
+void MCB::Scene::MiniMapDraw(Sprite sprite ,Float2 objectPos, Float2 playerPos,Texture* maptex,float SpriteSize,bool flag)
 {
     float spriteSize = SpriteSize;
     Float2 spritePos = { (objectPos.x - playerPos.x) / mapOffSet + mapPosition.x,
                         mapPosition.y - (objectPos.y - playerPos.y) / mapOffSet };
-    if (spritePos.x - spriteSize < 0 || spritePos.x + spriteSize > mapSize || spritePos.y - spriteSize < mapPosition.y - mapSize / 2 || spritePos.y + spriteSize > mapPosition.y + mapSize / 2)
+    if (!flag && (spritePos.x - spriteSize < 0 || spritePos.x + spriteSize > mapSize || spritePos.y - spriteSize < mapPosition.y - mapSize / 2 || spritePos.y + spriteSize > mapPosition.y + mapSize / 2))
     {
         return;
     }
+
+    if (spritePos.x - spriteSize < 0 && flag)
+    {
+        spritePos.x = 0;
+    }
+    
+    if (spritePos.x + spriteSize > mapSize && flag)
+    {
+        spritePos.x = mapSize;
+    }
+
+    if (spritePos.y - spriteSize < mapPosition.y - mapSize / 2)
+    {
+        spritePos.y = mapPosition.y - mapSize / 2;
+    }
+
+    if (spritePos.y + spriteSize > mapPosition.y + mapSize / 2)
+    {
+        spritePos.y = mapPosition.y + mapSize / 2;
+    }
+
    sprite.SpriteDraw(sprite, *maptex, spritePos.x, spritePos.y
         , spriteSize, spriteSize);
 }
@@ -656,8 +1051,9 @@ void MCB::Scene::CheckAllColision()
         {
             bullet->BulletHit();
             boss.Deth(bullet.get()->damage);
-            boss.imotalTimer = 0;
             player.GetExp(1.0f);
+            player.GetSPAttack();
+            player.LevelUp();
             player.score += bullet.get()->damage * player.Level;
             continue;
         }
@@ -743,9 +1139,10 @@ void MCB::Scene::CheckAllColision()
             {
 
                 missile->BulletHit(i);
-                boss.imotalTimer = 0;
                 boss.Deth(missile.get()->damage);
                 player.GetExp(1.0f);
+                player.GetSPAttack();
+                player.LevelUp();
                 player.score += missile.get()->damage * player.Level;
             }
 
@@ -805,8 +1202,14 @@ void MCB::Scene::CheckAllColision()
         if (CalcRaySphere(laser->laser, {boss.position.x,boss.position.y,boss.position.z }, boss.r))
         {
             boss.Deth(laser.get()->damage);
-            boss.imotalTimer = 10;
+            if (!boss.imotalFlag)
+            {
+                boss.imotalTimer = 10;
+                boss.imotalFlag = true;
+            }
             player.GetExp(1.0f);
+            player.GetSPAttack();
+            player.LevelUp();
             player.score += laser.get()->damage * player.Level;
         }
 
@@ -843,8 +1246,9 @@ void MCB::Scene::CheckAllColision()
             { boss.position.x,boss.position.y,boss.position.z }, boss.r) && !boss.deleteFlag)
         {
             boss.Deth(bomb.get()->damage);
-            boss.imotalTimer = 90;
             player.GetExp(1.0f);
+            player.GetSPAttack();
+            player.LevelUp();
             player.score += bomb.get()->damage * player.Level;
         }
     }
@@ -983,7 +1387,7 @@ void MCB::Scene::TutorialCheckAllColision()
                         DeleteExp();
                         if (nowTutorial == Attack)
                         {
-                            nowTutorial = ExpTuto;
+                            attackTutoFlag = true;
                         }
                     }
                     player.SetTarget(nullptr);
@@ -1179,7 +1583,7 @@ void MCB::Scene::MatrixUpdate()
 {
 
     matProjection.UpdataMatrixProjection();
-    if(nowScene  == Game || nowScene == Title) matView.FollowingFor3DObject(player.position,player.nowFrontVec,{100,50,100},player.UpVec);
+    if(nowScene  == Game || (nowScene == Title && sinTimer <= 0) || nowTutorial != None) matView.FollowingFor3DObject(player.position,player.nowFrontVec,{100,50,100},player.UpVec);
     matView.UpDateMatrixView();
 
     switch (nowScene)

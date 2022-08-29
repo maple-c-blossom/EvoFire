@@ -21,7 +21,11 @@ void Boss::AllMatrixUpdate(MCB::View& view, MCB::Projection& proj)
 
 void Boss::AllDraw()
 {
-	Draw();
+	if ( !(imotalTimer % 2) )
+	{
+		Draw();
+	}
+
 	enemys.Draw();
 	for (std::unique_ptr<Drone>& d : drones)
 	{
@@ -31,13 +35,16 @@ void Boss::AllDraw()
 
 void Boss::Update()
 {
-	imotalTimer--;
-	if (imotalTimer <= 0)
+	if(imotalTimer > 0)imotalTimer--;
+	if (imotalTimer <= 0 && imotalFlag)
 	{
 		imotalFlag = false;
 	}
-	Move();
-	Rotasion();
+	if (!isPop)
+	{
+		Move();
+		Rotasion();
+	}
 	Attack();
 	for (std::unique_ptr<Drone>& d : drones)
 	{
@@ -137,65 +144,77 @@ void Boss::PopEnemy()
 	enemyPopTimer++;
 	if (enemyPopTimer > enemyPopTime)
 	{
-		for (int k = 0; k < enemysPopNum; k++)
+		isPop = true;
+		if (isPop)
 		{
-			int EnemyBulletType = 0;
-			int EnemyType = 1;
-			Enemy* guradPtr = nullptr;
-			if (GetRand(0, 1))
-			{
-				EnemyBulletType = Enemy::Homing;
-			}
-			else
-			{
-				EnemyBulletType = Enemy::NoHoming;
-			}
-
-			switch (GetRand(1, 4))
-			{
-			case 1:
-				EnemyType = EnemyManager::Turret;
-
-				break;
-			case 2:
-				EnemyType = EnemyManager::Rash;
-
-				break;
-			case 3:
-				EnemyType = EnemyManager::Guard;
-				if (enemys.enemys.size() > 0)
-				{
-					int i = GetRand(0, enemys.enemys.size());
-					if (i >= enemys.enemys.size())
-					{
-						guradPtr = this;
-					}
-					else
-					{
-						auto itr = enemys.enemys.begin();
-						for (int a = 0; a < i; a++)
-						{
-							itr++;
-						}
-						guradPtr = itr->get();;
-					}
-				}
-				break;
-			case 4:
-				EnemyType = EnemyManager::Circumference;
-
-				break;
-
-			default:
-
-				break;
-			}
-			enemys.enemyPop(playerPtr, { (float)GetRand(-500,500) + position.x,0,(float)GetRand(-500,500) + position.z },
-				EnemyModel, EnemyBModel, EnemyMapTex, EnemyBMapTex, EnemyType, EnemyBulletType, guradPtr);
-
-
+			popTimer++;
+			model->material.constMapMaterial->color = { 1,0.5f,0.5f,1 };
 		}
-		enemyPopTimer = 0;
+		if (popTimer > popTime)
+		{
+			for (int k = 0; k < enemysPopNum; k++)
+			{
+				int EnemyBulletType = 0;
+				int EnemyType = 1;
+				Enemy* guradPtr = nullptr;
+				if (GetRand(0, 1))
+				{
+					EnemyBulletType = Enemy::Homing;
+				}
+				else
+				{
+					EnemyBulletType = Enemy::NoHoming;
+				}
+
+				switch (GetRand(1, 4))
+				{
+				case 1:
+					EnemyType = EnemyManager::Turret;
+
+					break;
+				case 2:
+					EnemyType = EnemyManager::Rash;
+
+					break;
+				case 3:
+					EnemyType = EnemyManager::Guard;
+					if (enemys.enemys.size() > 0)
+					{
+						int i = GetRand(0, enemys.enemys.size());
+						if (i >= enemys.enemys.size())
+						{
+							guradPtr = this;
+						}
+						else
+						{
+							auto itr = enemys.enemys.begin();
+							for (int a = 0; a < i; a++)
+							{
+								itr++;
+							}
+							guradPtr = itr->get();;
+						}
+					}
+					break;
+				case 4:
+					EnemyType = EnemyManager::Circumference;
+
+					break;
+
+				default:
+
+					break;
+				}
+				enemys.enemyPop(playerPtr, { (float)GetRand(-500,500) + position.x,0,(float)GetRand(-500,500) + position.z },
+					EnemyModel, EnemyBModel, EnemyMapTex, EnemyBMapTex, EnemyType, EnemyBulletType, guradPtr);
+
+
+			}
+			enemyPopTimer = 0;
+			popTimer = 0;
+			isPop = false;
+			model->material.constMapMaterial->color = { 1,1.f,1.f,1 };
+		}
 	}
 }
 void Boss::Move()
@@ -291,7 +310,7 @@ void Boss::Deth(int damege)
 	if (!imotalFlag)
 	{
 		hp -= damege;
-		imotalFlag = true;
+		imotalTimer = imotalTime;
 	}
 	hitCount++;
 	if (hp <= 0)
@@ -329,7 +348,7 @@ void Boss::Init(Player* target, MCB::Float3 position,
 	droneAttacked = false;
 	imotalTimer = 0;
 	imotalFlag = false;
-	imotalTime = 15;
+	imotalTime = 20;
 	drones.clear();
 	hitCount = 0;
 	countResetTimer = 0;
@@ -337,7 +356,7 @@ void Boss::Init(Player* target, MCB::Float3 position,
 	rotationPosMoveTimer = 0;
 	maxRotationPosMoveTimer = 300 + moveTime;
 	rotasionSpeed = 0.025f;
-	r = 50;
+	r = 60;
 	enemys.enemys.clear();
 	BaseRotationPos = rotationPos[0];
 	BossQ = { 0,0,0,1 };

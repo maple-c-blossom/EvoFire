@@ -21,8 +21,8 @@ private:
 	};
 	int attackTime = 0;
 	int attackResponceTime = 20;
-	int maxhp = 500;
 public:
+	int maxhp = 500;
 	int hp = maxhp;
 	bool dethFlag = false;
 	MCB::Model* DroneModel = nullptr;
@@ -46,6 +46,10 @@ public:
 	int imotalTime = 60;
 	std::list<std::unique_ptr<Drone>> drones;
 
+
+	int popTimer = 0;
+	int popTime = 60;
+	bool isPop = false;
 
 	EnemyManager enemys;
 	int hitCount = 0;

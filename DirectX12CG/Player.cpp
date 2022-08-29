@@ -31,7 +31,7 @@ void Player::PlayerInit(Model* model, Model* bulletModel, Model* missileModel, M
 	attackTime = attackResponceTime;
 	attackResponceTime = 10;
 	Level = 1;
-	nextLevelExp = 20;
+	nextLevelExp = 10 * 20;
 	maxhp = 20;
 	hp = maxhp;
 	r = 3;
@@ -56,11 +56,17 @@ void Player::PlayerInit(Model* model, Model* bulletModel, Model* missileModel, M
 	rockOnlaser.model = this->rockOnlaserModel;
 	rockOnlaser.scale = { 1,1, targetRay.range };
 	rockOnlaser.position = { position.x, position.y,position.z};
+	playerQ = { 0,0,0,1 };
 
 }
 
 void Player::Update()
 {
+	if (score > 100000000)
+	{
+		score = 99999999;
+	}
+
 	if(imotalFlag)imotalTimer--;
 	if (imotalTimer < 0)
 	{
@@ -222,6 +228,10 @@ void Player::Rotasion()
 			if (input->gamePad->RStick.y)
 			{
 				float angleSpeed = 25 * input->gamePad->RStick.y;
+				if (Abs(input->gamePad->RStick.x) >= 0.4)
+				{
+					angleSpeed = 0;
+				}
 				position.y += angleSpeed;
 			}
 
@@ -294,7 +304,7 @@ void Player::Rotasion()
 void Player::Attack()
 {
 	attackTime++;
-	if ((input->IsKeyDown(DIK_SPACE) || input->gamePad->IsButtonDown(GAMEPAD_X)) && attackTime >= attackResponceTime)
+	if ((input->IsKeyDown(DIK_SPACE) || input->gamePad->IsButtonDown(GAMEPAD_RB)) && attackTime >= attackResponceTime)
 	{
 		std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
 		bullet->Fire({ position.x,position.y,position.z }, nowFrontVec,target);
@@ -311,17 +321,17 @@ void Player::Attack()
 void Player::GetSPAttack()
 {
 
-		if (((int)exp == 20 || (int)exp == 40 || (int)exp == 60)&& homingMissileCount < maxHomingMissileCount && !homingMissileGet)
+		if (  exp > 0 && (int)exp % 100 == 0&& homingMissileCount < maxHomingMissileCount && !homingMissileGet)
 		{
 			homingMissileCount++;
 			homingMissileGet = true;
 		}
-		if (((int)exp == 40 || (int)exp == 60) && laserCount < maxLaserCount && !LaserGet)
+		if (exp > 0 && (int)exp % 200 == 0 && laserCount < maxLaserCount && !LaserGet)
 		{
 			laserCount++;
 			LaserGet = true;
 		}
-		if ((int)exp == 60 && bombCount < maxBombCount && !BombGet)
+		if (exp > 0 && exp % 300 == 0 && bombCount < maxBombCount && !BombGet)
 		{
 			bombCount++;
 			BombGet = true;
@@ -355,7 +365,7 @@ void Player::LevelUp()
 		Level++;
 		maxhp = maxhp + ((Level - 1) * 10);
 		hp = maxhp;
-		nextLevelExp = nextLevelExp + (20 * (Level - 1));
+		nextLevelExp = nextLevelExp + (10 * 20 * (Level - 1));
 	}
 }
 

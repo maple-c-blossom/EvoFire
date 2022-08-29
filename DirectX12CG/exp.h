@@ -16,7 +16,7 @@ public:
 	MCB::Object3d* playerPtr = nullptr;
 	float speedOffSet = 20;
 	float lifeTime = 0;
-	float maxLifeTime = 60 * 60;
+	float maxLifeTime = 60 * 20;
 	bool stopSlerp = false;
 	
 

@@ -159,6 +159,45 @@ namespace MCB
 		std::shared_ptr <Texture> mapBackTexture;
 		std::shared_ptr <Texture> rockOnreticle;
 		std::shared_ptr <Texture> titleName;
+		std::shared_ptr <Texture> moveText;
+		std::shared_ptr <Texture> moveTuto;
+		std::shared_ptr <Texture> RockOnText;
+		std::shared_ptr <Texture> RotaTuto;
+		std::shared_ptr <Texture> attackText;
+		std::shared_ptr <Texture> attackTuto;
+		std::shared_ptr <Texture> expTuto;
+		std::shared_ptr <Texture> expText;
+		std::shared_ptr <Texture> Gaze;
+		std::shared_ptr <Texture> GazeSpace;
+		std::shared_ptr <Texture> level;
+		std::shared_ptr <Texture> homingMissileTex;
+		std::shared_ptr <Texture> laserTex;
+		std::shared_ptr <Texture> bombTex;
+		std::shared_ptr <Texture> hpTex;
+		std::shared_ptr <Texture> pHpTex;
+
+		std::shared_ptr <Texture> homingMissileTuto;
+		std::shared_ptr <Texture> laserTuto;
+		std::shared_ptr <Texture> bombTuto;
+		std::shared_ptr <Texture> homingMissileTutoC;
+		std::shared_ptr <Texture> laserTutoC;
+		std::shared_ptr <Texture> bombTutoC;
+
+		std::shared_ptr <Texture> hpGazeSpace;
+		std::shared_ptr <Texture> hpGaze;
+
+		std::shared_ptr <Texture> BossGazeSpace;
+		std::shared_ptr <Texture> BossGaze;
+
+		std::shared_ptr <Texture> ScoreTex;
+		std::shared_ptr <Texture> HiScoreTex;
+
+		std::shared_ptr <Texture> bombText;
+		std::shared_ptr <Texture> homingMissileText;
+		std::shared_ptr <Texture> laserText;
+		std::shared_ptr <Texture> endText;
+
+		std::shared_ptr <Texture> noTexture;
 #pragma endregion テクスチャ
 
 		//サウンド
@@ -187,11 +226,49 @@ namespace MCB
 		Sprite mapBack;
 		Sprite mapPlayer;
 		Sprite titleNameSprite;
+		Sprite moveTextSprite;
+		Sprite moveTutoSprite;
+		Sprite RockOnTextSprite;
+		Sprite RotaTutoSprite;
+		Sprite attackTextSprite;
+		Sprite attackTutoSprite;
+		Sprite expTutoSprite;
+		Sprite expTextSprite;
+		Sprite GazeSprite;
+		Sprite GazeSpaceSprite;
+		Sprite levelSprite;
+		Sprite hommingMissileSprite;
+		Sprite laserSprite;
+		Sprite bombSprite;
+		Sprite hpTextSprite;
+		Sprite pHpTextSprite;
+
+		Sprite homingMissileTutoSprite;
+		Sprite laserTutoSprite;
+		Sprite bombTutoSprite;
+		Sprite homingMissileTutoCSprite;
+		Sprite laserTutoCSprite;
+		Sprite bombTutoCSprite;
+
+		Sprite hpGazeSpaceSprite;
+		Sprite bosshpGazeSpaceSprite;
+		Sprite bosshpGazeSprite;
+		Sprite hpGazeSprite;
+
+		Sprite ScoreSprite;
+		Sprite HiScoreSprite;
+
+		Sprite bombTextSprite;
+		Sprite homingMissileTextSprite;
+		Sprite laserTextSprite;
+		Sprite endTextSprite;
+
+		Sprite SceneChengeSprite;
 #pragma endregion スプライト
 		
 		#pragma region 通常変数
 		float mapSize = 300;
-		MCB::Float2 mapPosition = { (mapSize /2.0f), (float)dxWindow->window_height - (mapSize / 2.0f) };
+		MCB::Float2 mapPosition = { (mapSize /2.0f) + 10, (float)dxWindow->window_height - (mapSize / 2.0f)- 10 };
 		float mapOffSet = 5;
 		std::list<std::unique_ptr<Drone>> testD;
 		Boss boss;
@@ -204,9 +281,41 @@ namespace MCB
 		int titleTimer = 0;
 		int titleMaxTime = 300;
 		bool titleMove = false;
+
+		MCB::Float2 moveTutoPos = { (float)dxWindow->window_width / 2, 32 * 3 + 70 };
+		MCB::Float2 moveTutoSize = { 288 * 2, 64 * 2 };
+		int moveTutoTimer = 0;
+		int moveTutoMaxTime = 30;
+		bool moveTutoFlag = false;
+
+		MCB::Float2 rotaTutoPos = { (float)dxWindow->window_width / 2, 64 * 3 + 70 };
+		MCB::Float2 rotaTutoSize = { 112 * 3, 64 * 3 };
+		int rotaTutoTimer = 0;
+		int rotaTutoMaxTime = 30;
+		bool rotaTutoFlag = false;
+
+		MCB::Float2 attackTutoPos = { (float)dxWindow->window_width / 2, 64 * 3 + 70 };
+		MCB::Float2 attackTutoSize = { 173 * 1.25, 64 * 2 };
+		int attackTutoTimer = 0;
+		int attackTutoMaxTime = 30;
+		bool attackTutoFlag = false;
+
+		MCB::Float2 gazePos = { mapPosition.x - mapSize / 2, (mapPosition.y - mapSize / 2 - 90) };
+		MCB::Float2 gazeSize = { 32 / 2, 64 / 2 };
+
+		int GameTimer = 0;
+		int GameMaxTime = 120;
+		float StartPos = -1000;
+		bool GameStartFlag = false;
+
 		bool SPAttackTutoEnd = false;
 		int nowTutorial = None;
 		int nowSPAttackTuto = None;
+
+		int sinTimer = -1;
+
+		
+
 #pragma endregion 通常変数
 		
 	public:
@@ -245,7 +354,7 @@ namespace MCB
 
 		void DeleteExp();
 
-		void MiniMapDraw(Sprite sprite, Float2 objectPos, Float2 playerPos, Texture* maptex, float SpriteSize = 15);
+		void MiniMapDraw(Sprite sprite, Float2 objectPos, Float2 playerPos, Texture* maptex, float SpriteSize = 15,bool flag = false);
 		void CheckAllColision();
 
 		void TutorialCheckAllColision();

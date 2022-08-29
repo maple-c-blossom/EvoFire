@@ -7,7 +7,7 @@ private:
 	int lifeTime = 0;
 	int maxLifeTime = 300;
 public:
-	int damage = 500;
+	int damage = 50;
 	bool deleteFlag = false;
 	float maxRudius = 1000.0f;
 	int rudiusUpTime = 0;

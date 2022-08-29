@@ -34,7 +34,7 @@ public:
 		NoHoming,
 		Homing
 	};
-	float expPoint = 2 / 20.0f;
+	int expPoint = 2;
 	float r = 10;
 	bool deleteFlag = false;
 	MCB::Model* bulletModel = nullptr;

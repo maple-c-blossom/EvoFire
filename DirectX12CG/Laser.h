@@ -7,7 +7,7 @@ private:
 	int lifeTime = 0;
 	int maxLifeTime = 120;
 public:
-	int damage = 5;
+	int damage = 10;
 	MCB::Ray laser;
 	bool deleteFlag = false;
 	float maxRange = 100.0f;

@@ -21,18 +21,18 @@ public:
 	int laserCount = 0;
 	int bombCount = 0;
 
-private:
 	const int maxHomingMissileCount = 3;
 	const int maxLaserCount = 2;
 	const int maxBombCount = 1;
+private:
 	Object3d* target = nullptr;
 	Object3d* homingTarget = nullptr;
 	int attackTime = 0;
 	int attackResponceTime = 10;
-	int maxhp = 20;
-	int hp = maxhp;
 
 public:
+	int maxhp = 20;
+	int hp = maxhp;
 	bool dethFlag = false;
 	int score = 0;
 	int HiScore = 0;
@@ -40,7 +40,7 @@ public:
 	int imotalTime = 30;
 	bool imotalFlag = false;
 	MCB::Float3 prevPosition = {};
-	float exp = 0;
+	int exp = 0;
 	int Level = 1;
 	int nextLevelExp = 20;
 	float r = 10;
