@@ -5,6 +5,7 @@
 #include "HomingMissile.h"
 #include "Laser.h"
 #include "Bomb.h"
+#include "Sound.h"
 class Player:public MCB::Object3d
 {
 private:
@@ -24,6 +25,16 @@ public:
 	const int maxHomingMissileCount = 3;
 	const int maxLaserCount = 2;
 	const int maxBombCount = 1;
+
+	int lazerSound;
+	int bombSound;
+	int MissileSound;
+	int GetSPAttackSound;
+	int normalAttackSound;
+	int DethSound;
+	int damageArat;
+
+	MCB::SoundManager* soundmanager;
 private:
 	Object3d* target = nullptr;
 	Object3d* homingTarget = nullptr;

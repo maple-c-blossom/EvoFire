@@ -22,6 +22,7 @@ private:
 	int attackTime = 0;
 	int attackResponceTime = 20;
 public:
+	MCB::SoundManager* sound;
 	int maxhp = 500;
 	int hp = maxhp;
 	bool dethFlag = false;
@@ -45,7 +46,7 @@ public:
 	bool imotalFlag = false;
 	int imotalTime = 60;
 	std::list<std::unique_ptr<Drone>> drones;
-
+	int DethSound;
 
 	int popTimer = 0;
 	int popTime = 60;

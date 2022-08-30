@@ -215,14 +215,45 @@ void MCB::Scene::LoadTexture()
 
 void MCB::Scene::LoadSound()
 {
+    player.soundmanager = &soundManager;
+    boss.sound = &soundManager;
     selectSound = soundManager.LoadWaveSound("Resources\\sound\\select01.wav");
     titleBGM = soundManager.LoadWaveSound("Resources\\sound\\titleBGM.wav");
     gameBGM = soundManager.LoadWaveSound("Resources\\sound\\GameBGM.wav");
     enterSound = soundManager.LoadWaveSound("Resources\\sound\\Enter.wav");
+    bossDamageSound = soundManager.LoadWaveSound("Resources\\sound\\enemyDamage.wav");
+    playerDamageSound = soundManager.LoadWaveSound("Resources\\sound\\playerDamage.wav");
+    expGetSound = soundManager.LoadWaveSound("Resources\\sound\\Exp.wav");
+    player.MissileSound = soundManager.LoadWaveSound("Resources\\sound\\missile.wav");
+    player.bombSound = soundManager.LoadWaveSound("Resources\\sound\\bomb.wav");
+    player.lazerSound = soundManager.LoadWaveSound("Resources\\sound\\Laser.wav");
+    player.normalAttackSound = soundManager.LoadWaveSound("Resources\\sound\\normalAttack.wav");
+    player.GetSPAttackSound = soundManager.LoadWaveSound("Resources\\sound\\SPAttackGet.wav");
+    spAttackDamageSound = soundManager.LoadWaveSound("Resources\\sound\\SPAttckDamage.wav");
+    player.DethSound = soundManager.LoadWaveSound("Resources\\sound\\playerDeth.wav");
+    boss.DethSound = soundManager.LoadWaveSound("Resources\\sound\\BossDeth.wav");
+    player.damageArat = soundManager.LoadWaveSound("Resources\\sound\\damageArat.wav");
+    GameClearBGM = soundManager.LoadWaveSound("Resources\\sound\\GameCrearBGM.wav");
+    GameOverBGM = soundManager.LoadWaveSound("Resources\\sound\\GameOver.wav");
+    tutorialBGM = soundManager.LoadWaveSound("Resources\\sound\\Tutorial.wav");
+
     soundManager.SetVolume(5, titleBGM);
-    soundManager.SetVolume(5, gameBGM);
+    soundManager.SetVolume(3, gameBGM);
     soundManager.SetVolume(5, selectSound);
     soundManager.SetVolume(20, enterSound);
+    soundManager.SetVolume(5, bossDamageSound);
+    soundManager.SetVolume(25, playerDamageSound);
+    soundManager.SetVolume(5, expGetSound);
+    soundManager.SetVolume(5, player.MissileSound);
+    soundManager.SetVolume(5, player.bombSound);
+    soundManager.SetVolume(5, player.lazerSound);
+    soundManager.SetVolume(5, player.normalAttackSound);
+    soundManager.SetVolume(25, player.GetSPAttackSound);
+    soundManager.SetVolume(5, spAttackDamageSound);
+    soundManager.SetVolume(25, player.damageArat);
+    soundManager.SetVolume(3, GameClearBGM);
+    soundManager.SetVolume(3, GameOverBGM);
+    soundManager.SetVolume(3, tutorialBGM);
 }
 
 void MCB::Scene::SpriteInit()
@@ -1051,7 +1082,8 @@ void MCB::Scene::TitleSceneUpdate()
                     rotaTutoSize = { 112 * 3, 64 * 2 };
                     attackTutoPos = { (float)dxWindow->window_width / 2, 32 * 3 + 120 };
                     attackTutoSize = { 112 * 3, 64 * 2 };
-
+                    soundManager.StopSoundWave(titleBGM);
+                    soundManager.PlaySoundWave(tutorialBGM, true);
 
                 }
                 else
@@ -1061,6 +1093,7 @@ void MCB::Scene::TitleSceneUpdate()
                 }
                 soundManager.StopSoundWave(titleBGM); 
                 soundManager.PlaySoundWave(enterSound);
+
 
             }
             if (titleMove)
@@ -1210,6 +1243,7 @@ void MCB::Scene::TitleSceneUpdate()
             player.Level = 1;
             isChengeScene = true;
             player.exp = 0;
+            soundManager.StopSoundWave(tutorialBGM);
         }
         if (isChengeScene)
         {
@@ -1275,6 +1309,7 @@ void MCB::Scene::ClearSceneUpdate()
                 isChengeSceneTimer = 0;
                 isChengeScene = false;
                 SceneChengeSprite.color.w = 0;
+                soundManager.PlaySoundWave(GameClearBGM, true);
             }
         }
         else
@@ -1286,8 +1321,9 @@ void MCB::Scene::ClearSceneUpdate()
                 isChengeSceneTimer = 0;
                 prevScene = nowScene;
                 exps.clear();
-                GameSceneInit();
                 TitleSceneInit();
+                GameSceneInit();
+                soundManager.StopSoundWave(GameClearBGM);
             }
         }
     }
@@ -1342,6 +1378,7 @@ void MCB::Scene::OverSceneUpdate()
                 isChengeSceneTimer = 0;
                 isChengeScene = false;
                 SceneChengeSprite.color.w = 0;
+                soundManager.PlaySoundWave(GameOverBGM, true);
             }
         }
         else
@@ -1353,8 +1390,9 @@ void MCB::Scene::OverSceneUpdate()
                 isChengeSceneTimer = 0;
                 prevScene = nowScene;
                 exps.clear();
-                GameSceneInit();
                 TitleSceneInit();
+                GameSceneInit();
+                soundManager.StopSoundWave(GameOverBGM);
             }
         }
     }
@@ -1508,6 +1546,8 @@ void MCB::Scene::CheckAllColision()
             {
                 bullet->BulletHit();
                 enemy->Deth(bullet.get()->damage);
+                soundManager.StopSoundWave(bossDamageSound);
+                soundManager.PlaySoundWave(bossDamageSound);
                 player.score += bullet.get()->damage * player.Level;
                 if (enemy->deleteFlag)
                 {
@@ -1534,6 +1574,8 @@ void MCB::Scene::CheckAllColision()
         if (CalcSphere({ bullet.get()->position.x,bullet.get()->position.y,bullet.get()->position.z }, bullet.get()->r,
             { boss.position.x,boss.position.y,boss.position.z }, boss.r))
         {
+            soundManager.StopSoundWave(bossDamageSound);
+            soundManager.PlaySoundWave(bossDamageSound);
             bullet->BulletHit();
             boss.Deth(bullet.get()->damage);
             player.GetExp(1.0f);
@@ -1564,7 +1606,8 @@ void MCB::Scene::CheckAllColision()
                     missile.get()->homingMissiles[i].position.z }, missile.get()->r,
                     { enemy->position.x,enemy->position.y,enemy->position.z }, enemy->r) && !enemy->deleteFlag)
                 {
-                   
+                    soundManager.StopSoundWave(spAttackDamageSound);
+                    soundManager.PlaySoundWave(spAttackDamageSound);
                     missile->BulletHit(i);
                     enemy->Deth(missile.get()->damage);
                     player.score += missile.get()->damage * player.Level;
@@ -1622,7 +1665,8 @@ void MCB::Scene::CheckAllColision()
                 missile.get()->homingMissiles[i].position.z }, missile.get()->r,
                 { boss.position.x, boss.position.y, boss.position.z }, boss.r) && !boss.deleteFlag)
             {
-
+                soundManager.StopSoundWave(bossDamageSound);
+                soundManager.PlaySoundWave(bossDamageSound);
                 missile->BulletHit(i);
                 boss.Deth(missile.get()->damage);
                 player.GetExp(1.0f);
@@ -1668,6 +1712,8 @@ void MCB::Scene::CheckAllColision()
         {
             if (CalcRaySphere(laser->laser, { enemy->position.x,enemy->position.y,enemy->position.z }, enemy->r))
             {
+                soundManager.StopSoundWave(spAttackDamageSound);
+                soundManager.PlaySoundWave(spAttackDamageSound);
                 enemy->Deth(laser.get()->damage);
                 player.score += laser.get()->damage * player.Level;
                 if (enemy->deleteFlag)
@@ -1686,6 +1732,8 @@ void MCB::Scene::CheckAllColision()
         }
         if (CalcRaySphere(laser->laser, {boss.position.x,boss.position.y,boss.position.z }, boss.r))
         {
+            soundManager.StopSoundWave(bossDamageSound);
+            soundManager.PlaySoundWave(bossDamageSound);
             boss.Deth(laser.get()->damage);
             if (!boss.imotalFlag)
             {
@@ -1706,11 +1754,14 @@ void MCB::Scene::CheckAllColision()
 
         for (std::unique_ptr<Enemy>& enemy : boss.enemys.enemys)
         {
+
             if (CalcSphere({ bomb.get()->position.x,
                    bomb.get()->position.y,
                     bomb.get()->position.z }, bomb.get()->r,
                 { enemy->position.x,enemy->position.y,enemy->position.z }, enemy->r) && !enemy->deleteFlag)
             {
+                soundManager.StopSoundWave(spAttackDamageSound);
+                soundManager.PlaySoundWave(spAttackDamageSound);
                 enemy->Deth(bomb.get()->damage);
                 if (!boss.imotalFlag)
                 {
@@ -1735,6 +1786,8 @@ void MCB::Scene::CheckAllColision()
         bomb.get()->position.z }, bomb.get()->r,
             { boss.position.x,boss.position.y,boss.position.z }, boss.r) && !boss.deleteFlag)
         {
+            soundManager.StopSoundWave(bossDamageSound);
+            soundManager.PlaySoundWave(bossDamageSound);
             boss.Deth(bomb.get()->damage);
             player.GetExp(1.0f);
             player.GetSPAttack();
@@ -1750,6 +1803,8 @@ void MCB::Scene::CheckAllColision()
             if (CalcSphere({ bullet->position.x,bullet->position.y,bullet->position.z }, bullet->r,
                 { player.position.x,player.position.y,player.position.z }, player.r))
             {
+                soundManager.StopSoundWave(playerDamageSound);
+                soundManager.PlaySoundWave(playerDamageSound);
                 bullet->BulletHit();
                 player.EnemyBulletHit(bullet->damage);
                 continue;
@@ -1768,6 +1823,8 @@ void MCB::Scene::CheckAllColision()
         if (CalcSphere({ enemy->position.x,enemy->position.y,enemy->position.z }, enemy->r,
             { player.position.x,player.position.y,player.position.z }, player.r))
         {
+            soundManager.StopSoundWave(playerDamageSound);
+            soundManager.PlaySoundWave(playerDamageSound);
             player.EnemyBulletHit(1);
             enemy->deleteFlag = true;
         }
@@ -1779,6 +1836,8 @@ void MCB::Scene::CheckAllColision()
         if (CalcSphere({ d->position.x,d->position.y,d->position.z }, d->r,
             { player.position.x,player.position.y,player.position.z }, player.r))
         {
+            soundManager.StopSoundWave(playerDamageSound);
+            soundManager.PlaySoundWave(playerDamageSound);
             player.EnemyBulletHit(d->damage);
             continue;
         }
@@ -1790,6 +1849,8 @@ void MCB::Scene::CheckAllColision()
         if (CalcSphere({ exp->position.x,exp->position.y,exp->position.z }, exp->rudius,
             { player.position.x,player.position.y,player.position.z }, player.r))
         {
+            soundManager.StopSoundWave(expGetSound);
+            soundManager.PlaySoundWave(expGetSound);
             exp->GetExp();
             player.GetExp(exp->expPoint);
             
@@ -1881,6 +1942,8 @@ void MCB::Scene::TutorialCheckAllColision()
             if (CalcSphere({ bullet.get()->position.x,bullet.get()->position.y,bullet.get()->position.z }, bullet.get()->r,
                 { enemy->position.x,enemy->position.y,enemy->position.z }, enemy->r))
             {
+                soundManager.StopSoundWave(bossDamageSound);
+                soundManager.PlaySoundWave(bossDamageSound);
                 bullet->BulletHit();
                 enemy->Deth(bullet.get()->damage);
                 if (enemy->deleteFlag)
@@ -1926,6 +1989,8 @@ void MCB::Scene::TutorialCheckAllColision()
                     missile.get()->homingMissiles[i].position.z }, missile.get()->r,
                     { enemy->position.x,enemy->position.y,enemy->position.z }, enemy->r) && !enemy->deleteFlag)
                 {
+                    soundManager.StopSoundWave(spAttackDamageSound);
+                    soundManager.PlaySoundWave(spAttackDamageSound);
 
                     missile->BulletHit(i);
                     enemy->Deth(missile.get()->damage);
@@ -1985,6 +2050,8 @@ void MCB::Scene::TutorialCheckAllColision()
         {
             if (CalcRaySphere(laser->laser, { enemy->position.x,enemy->position.y,enemy->position.z }, enemy->r))
             {
+                soundManager.StopSoundWave(spAttackDamageSound);
+                soundManager.PlaySoundWave(spAttackDamageSound);
                 enemy->Deth(laser.get()->damage);
                 nowSPAttackTuto = BombTuto;
                 player.laserCount = 0;
@@ -2016,6 +2083,8 @@ void MCB::Scene::TutorialCheckAllColision()
                     bomb.get()->position.z }, bomb.get()->r,
                 { enemy->position.x,enemy->position.y,enemy->position.z }, enemy->r) && !enemy->deleteFlag)
             {
+                soundManager.StopSoundWave(spAttackDamageSound);
+                soundManager.PlaySoundWave(spAttackDamageSound);
                 enemy->Deth(bomb.get()->damage);
                 SPAttackTutoEnd = true;
 
@@ -2041,6 +2110,8 @@ void MCB::Scene::TutorialCheckAllColision()
             if (CalcSphere({ exp->position.x,exp->position.y,exp->position.z }, exp->rudius,
                 { player.position.x,player.position.y,player.position.z }, player.r))
             {
+                soundManager.StopSoundWave(expGetSound);
+                soundManager.PlaySoundWave(expGetSound);
                 exp->GetExp();
                 player.exp += exp.get()->expPoint;
                 if (nowTutorial == ExpTuto)

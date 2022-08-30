@@ -225,6 +225,14 @@ namespace MCB
 		int titleBGM;
 		int enterSound;
 		int gameBGM;
+		int bossDamageSound;
+		int playerDamageSound;
+		int expGetSound;
+		int spAttackDamageSound;
+		int GameClearBGM;
+		int GameOverBGM;
+		int tutorialBGM;
+
 #pragma endregion サウンド
 
 #pragma endregion 各種リソース

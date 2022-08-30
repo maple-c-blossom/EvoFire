@@ -285,6 +285,7 @@ void Player::Rotasion()
 			{
 				float angleSpeed = rotasionSpeed * input->gamePad->RStick.x;
 				angle.y += angleSpeed;
+				rotasion.y += angleSpeed;
 			}
 
 			YawQ.SetRota(UpVec, angle.y);
@@ -315,7 +316,8 @@ void Player::Attack()
 		bullet->rotasion = rotasion;
 		bullets.push_back(std::move(bullet));
 
-
+		soundmanager->StopSoundWave(normalAttackSound);
+		soundmanager->PlaySoundWave(normalAttackSound);
 		attackTime = 0;
 	}
 }
@@ -327,16 +329,22 @@ void Player::GetSPAttack()
 		{
 			homingMissileCount++;
 			homingMissileGet = true;
+			soundmanager->StopSoundWave(GetSPAttackSound);
+			soundmanager->PlaySoundWave(GetSPAttackSound);
 		}
 		if (exp > 0 && (int)exp % 200 == 0 && laserCount < maxLaserCount && !LaserGet)
 		{
 			laserCount++;
 			LaserGet = true;
+			soundmanager->StopSoundWave(GetSPAttackSound);
+			soundmanager->PlaySoundWave(GetSPAttackSound);
 		}
 		if (exp > 0 && exp % 300 == 0 && bombCount < maxBombCount && !BombGet)
 		{
 			bombCount++;
 			BombGet = true;
+			soundmanager->StopSoundWave(GetSPAttackSound);
+			soundmanager->PlaySoundWave(GetSPAttackSound);
 		}
 }
 
@@ -388,6 +396,8 @@ void Player::SPAttack()
 			}
 			homingMissile.push_back(std::move(HM));
 			attackTime = 0;
+			soundmanager->StopSoundWave(MissileSound);
+			soundmanager->PlaySoundWave(MissileSound);
 		}
 	}
 
@@ -401,6 +411,8 @@ void Player::SPAttack()
 			LS->Fire({ position.x,position.y,position.z }, nowFrontVec, laserModel);
 			lasers.push_back(std::move(LS));
 			attackTime = 0;
+			soundmanager->StopSoundWave(lazerSound);
+			soundmanager->PlaySoundWave(lazerSound);
 		}
 	}
 
@@ -414,6 +426,8 @@ void Player::SPAttack()
 			BM->Fire(nowFrontVec,{ position.x,position.y,position.z }, bombModel);
 			bombs.push_back(std::move(BM));
 			attackTime = 0;
+			soundmanager->StopSoundWave(bombSound);
+			soundmanager->PlaySoundWave(bombSound);
 		}
 	}
 
@@ -472,6 +486,10 @@ void Player::EnemyBulletHit(int damege)
 	if (!imotalFlag)
 	{
 		hp -= damege;
+		if (hp < 5 && hp > 0)
+		{
+			soundmanager->PlaySoundWave(damageArat);
+		}
 		imotalFlag = true;
 		imotalTimer = imotalTime;
 	}
@@ -479,6 +497,7 @@ void Player::EnemyBulletHit(int damege)
 	if (hp <= 0)
 	{
 		dethFlag = true;
+		soundmanager->PlaySoundWave(DethSound);
 	}
 }
 

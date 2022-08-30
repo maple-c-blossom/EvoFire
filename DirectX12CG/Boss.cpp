@@ -227,7 +227,14 @@ void Boss::Move()
 		hitCount = 0;
 	}
 	
-
+	if (rotationPosMoveTimer >= maxRotationPosMoveTimer * 2 / 3)
+	{
+		model->material.constMapMaterial->color = { 0.0,0.0,1.f,1 };
+	}
+	else
+	{
+		model->material.constMapMaterial->color = { 1,1.f,1.f,1 };
+	}
 	if (rotationPosMoveTimer > maxRotationPosMoveTimer)
 	{
 		rotationPosMoveTimer = 0;
@@ -254,6 +261,8 @@ void Boss::Clrcle()
 		{
 			moveTimer++;
 		}
+			model->material.constMapMaterial->color = { 0.0,0.0,1.f,1 };
+
 		if (moveTimer >= moveTime)
 		{
 			moveTimer = 0;
@@ -264,7 +273,11 @@ void Boss::Clrcle()
 		BaseRotationPos.y = Lerp(prevRotationPos.y, nextRotationPos.y, moveTime, moveTimer);
 		BaseRotationPos.z = Lerp(prevRotationPos.z, nextRotationPos.z, moveTime, moveTimer);
 	}
-
+	else if(!(rotationPosMoveTimer >= maxRotationPosMoveTimer * 2 / 3))
+	{
+		model->material.constMapMaterial->color = { 1,1.f,1.f,1 };
+	
+	}
 	if (nextRotationPos.x == BaseRotationPos.x && nextRotationPos.y == BaseRotationPos.y && nextRotationPos.z == BaseRotationPos.z)
 	{
 		rotationAngle += 0.015f;
@@ -316,6 +329,7 @@ void Boss::Deth(int damege)
 	if (hp <= 0)
 	{
 		dethFlag = true;
+		sound->PlaySoundWave(DethSound);
 	}
 
 }
@@ -372,7 +386,7 @@ void Boss::Init(Player* target, MCB::Float3 position,
 	prevRotationPos = BaseRotationPos;
 	attackTime = 0;
 	attackResponceTime = 20;
-	maxhp = 1000;
+	maxhp = 700;
 	hp = maxhp;
 	dethFlag = false;
 }
