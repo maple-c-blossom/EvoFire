@@ -1,5 +1,6 @@
 #include "Scene.h"
 
+
 using namespace MCB;
 using namespace DirectX;
 using namespace std;
@@ -42,16 +43,16 @@ void MCB::Scene::Initialize()
     light = Light::LightCreate();
     light->SetLightColor({ 0.7,0.7,0.7 });
     Object3d::SetLight(light);
-
+    soundManager.PlaySoundWave(titleBGM, true);
 
 }
 
 void MCB::Scene::Object3DInit()
 {
-    player.PlayerInit(playerModel.get(), testBoxModel.get(), testBoxModel.get(), rayModel.get(), bombModel.get(),rockOnRayModel.get());
+    player.PlayerInit(playerModel.get(), playerBulletModel.get(), playerBulletModel.get(), rayModel.get(), bombModel.get(),rockOnRayModel.get());
     boss.Init(&player, { (player.nowFrontVec * boss.distance).vec },
         bossModel.get(), enemyModel.get(), enemyModel.get(), testSphereModel.get(),
-        mapEnemyTexture.get(), mapEnemyTexture.get(), mapEnemyTexture.get(), mapEnemyBTexture.get());
+        mapBossTexture.get(), mapEnemyTexture.get(), mapEnemyTexture.get(), mapEnemyBTexture.get());
 
     exps.clear();
 }
@@ -65,6 +66,14 @@ void MCB::Scene::LoadModel()
 	skydomeModel = make_shared<Model>("skydome");
     testBoxModel = make_shared<Model>("Box");
     testSphereModel = make_shared<Model>("sphere",true);
+    testSphereModel->material.constMapMaterial->color = { 1.0,0.6,0.6,1 };
+    playerBulletModel = make_shared<Model>("sphere",true);
+    playerBulletModel->material.constMapMaterial->color = { 0.3,0.8,0.8,1 };
+    enemyExpModel = make_shared<Model>("Box");
+    enemyExpModel->material.constMapMaterial->color = { 0.3,0.9,0.9,0.6 };
+    playerExpModel = make_shared<Model>("Box");
+    playerExpModel->material.constMapMaterial->color = { 1.0,0.3,0.3,0.4 };
+
     testGroundModel = make_shared<Model>("ground",true);
     rayModel = make_shared<Model>("Ray");
     rayModel->material.constMapMaterial->color.w = 0.8f;
@@ -91,6 +100,8 @@ void MCB::Scene::LoadTexture()
     mapEnemyTexture->CreateTexture(L"Resources\\testenemy.png");
     mapEnemyBTexture = make_shared<Texture>();
     mapEnemyBTexture->CreateTexture(L"Resources\\testEnemyB.png");
+    mapBossTexture = make_shared<Texture>();
+    mapBossTexture->CreateTexture(L"Resources\\UI\\bossMap.png");
     titleName = make_shared<Texture>();
     titleName->CreateTexture(L"Resources\\TitleName.png");
     moveText = make_shared<Texture>();
@@ -170,12 +181,48 @@ void MCB::Scene::LoadTexture()
     endText = make_shared<Texture>();
     endText->CreateTexture(L"Resources\\Tutorial\\EndText.png");
 
+    StartTexture = make_shared<Texture>();
+    StartTexture->CreateTexture(L"Resources\\Tutorial\\Start.png");
+    
+
+    attensyonTexture = make_shared<Texture>();
+    attensyonTexture->CreateTexture(L"Resources\\Tutorial\\Atte.png");
+
     noTexture = make_shared<Texture>();
     noTexture->CreateNoTextureFileIsTexture();
+
+    GameClearTexture = make_shared<Texture>();
+    GameClearTexture->CreateTexture(L"Resources\\UI\\GameClearText.png");
+
+    GameOverTexture = make_shared<Texture>();
+    GameOverTexture->CreateTexture(L"Resources\\UI\\GameOverText.png");
+
+    GameSelectTexture = make_shared<Texture>();
+    GameSelectTexture->CreateTexture(L"Resources\\UI\\GameSelect.png");
+
+    TitleSelectTexture = make_shared<Texture>();
+    TitleSelectTexture->CreateTexture(L"Resources\\UI\\TitleSelect.png");
+
+    tutorialSelectTexture = make_shared<Texture>();
+    tutorialSelectTexture->CreateTexture(L"Resources\\UI\\tutorialSelect.png");
+
+    tutorialSkipTexture = make_shared<Texture>();
+    tutorialSkipTexture->CreateTexture(L"Resources\\UI\\tutorialSkip.png");
+
+    SelectTutoTexture = make_shared<Texture>();
+    SelectTutoTexture->CreateTexture(L"Resources\\Tutorial\\SelectTuto.png");
 }
 
 void MCB::Scene::LoadSound()
 {
+    selectSound = soundManager.LoadWaveSound("Resources\\sound\\select01.wav");
+    titleBGM = soundManager.LoadWaveSound("Resources\\sound\\titleBGM.wav");
+    gameBGM = soundManager.LoadWaveSound("Resources\\sound\\GameBGM.wav");
+    enterSound = soundManager.LoadWaveSound("Resources\\sound\\Enter.wav");
+    soundManager.SetVolume(5, titleBGM);
+    soundManager.SetVolume(5, gameBGM);
+    soundManager.SetVolume(5, selectSound);
+    soundManager.SetVolume(20, enterSound);
 }
 
 void MCB::Scene::SpriteInit()
@@ -209,6 +256,7 @@ void MCB::Scene::SpriteInit()
     homingMissileTutoCSprite = homingMissileTutoCSprite.CreateSprite();
     laserTutoCSprite = laserTutoCSprite.CreateSprite();
     bombTutoCSprite = bombTutoCSprite.CreateSprite();
+    BossMarkSprite = BossMarkSprite.CreateSprite();
 
     bosshpGazeSprite = bosshpGazeSprite.CreateSprite();
     bosshpGazeSprite.anchorPoint = { 0,0 };
@@ -236,9 +284,21 @@ void MCB::Scene::SpriteInit()
     homingMissileTextSprite = homingMissileTextSprite.CreateSprite();
     laserTextSprite = laserTextSprite.CreateSprite();
     endTextSprite = endTextSprite.CreateSprite();
+    StartSprite = StartSprite.CreateSprite();
+    Attensyon = Attensyon.CreateSprite();
+
+    GameOverSprite = GameOverSprite.CreateSprite();
+    GameClearSprite = GameClearSprite.CreateSprite();
 
     SceneChengeSprite = SceneChengeSprite.CreateSprite();
     SceneChengeSprite.color = { 0,0,0,0 };
+    SceneChengeSprite.anchorPoint = { 0,0 };
+
+    GameSelectSprite = GameSelectSprite.CreateSprite();
+    TitleSelectSprite = TitleSelectSprite.CreateSprite();
+    tutorialSelectSprite = tutorialSelectSprite.CreateSprite();
+    tutorialSkipSprite = tutorialSkipSprite.CreateSprite();
+    SelectTutoSprite = SelectTutoSprite.CreateSprite();
 }
 void MCB::Scene::ChengeScene()
 {
@@ -256,11 +316,25 @@ void MCB::Scene::GameSceneInit()
     StartPos = -3000;
     boss.position.y = StartPos;
     GameStartFlag = false;
+    moveTutoSize.x = InOutQuad(288 * 2, 288 * 1, 1, 1);
+    moveTutoSize.y = InOutQuad(64 * 2, 64 * 1, 1, 1);
+    moveTutoPos.x = InOutQuad((float)dxWindow->window_width / 2, (float)dxWindow->window_width - 288 / 2 - 12, 1, 1);
+    moveTutoPos.y = InOutQuad(32 * 3 + 70, 64 / 2 + 64, 1, 1);
+    rotaTutoSize.x = InOutQuad(112 * 3, 112 * 1, 1, 1);
+    rotaTutoSize.y = InOutQuad(64 * 2, 64 * 1, 1, 1);
+    rotaTutoPos.x = InOutQuad((float)dxWindow->window_width / 2, (float)dxWindow->window_width - 112 / 2 - 12, 1, 1);
+    rotaTutoPos.y = InOutQuad(32 * 3 + 70, 64 / 2 + 64 * 2 + 10, 1, 1);
+    attackTutoSize.x = InOutQuad(176 * 1.25, 176 * 1, 1, 1);
+    attackTutoSize.y = InOutQuad(64 * 3, 64 * 1, 1, 1);
+    attackTutoPos.x = InOutQuad((float)dxWindow->window_width / 2, (float)dxWindow->window_width - 176 / 2 + 32, 1, 1);
+    attackTutoPos.y = InOutQuad(32 * 3 + 90, 64 / 2 + 64 * 3 + 10 * 2, 1, 1);
+
+
 }
 void MCB::Scene::TitleSceneInit()
 {
-    player.PlayerInit(playerModel.get(), testBoxModel.get(), testBoxModel.get(), rayModel.get(), bombModel.get(), rockOnRayModel.get());
-    titlePos = { (float)dxWindow->window_width / 2, (float)dxWindow->window_height / 2 };
+    player.PlayerInit(playerModel.get(), playerBulletModel.get(), playerBulletModel.get(), rayModel.get(), bombModel.get(), rockOnRayModel.get());
+    titlePos = { (float)dxWindow->window_width / 2, (float)dxWindow->window_height / 2-100 };
     titleSize = { (float)160 * 6,(float)64 * 6 };
     titleTimer = 0;
     titleMaxTime = 120;
@@ -289,14 +363,20 @@ void MCB::Scene::TitleSceneInit()
     attackTutoMaxTime = 60;
     attackTutoFlag = false;
     sinTimer = -1;
+    TutorialSkip = false;
+    SelectTimer = 0;
 }
 void MCB::Scene::ClearSceneInit()
 {
-    player.PlayerInit(playerModel.get(), testBoxModel.get(), testBoxModel.get(), rayModel.get(), bombModel.get(), rockOnRayModel.get());
+    //player.PlayerInit(playerModel.get(), testBoxModel.get(), testBoxModel.get(), rayModel.get(), bombModel.get(), rockOnRayModel.get());
+    SelectScene = Title;
+    SelectTimer = 0;
 }
 void MCB::Scene::OverSceneInit()
 {
-    player.PlayerInit(playerModel.get(), testBoxModel.get(), testBoxModel.get(), rayModel.get(), bombModel.get(), rockOnRayModel.get());
+    //player.PlayerInit(playerModel.get(), testBoxModel.get(), testBoxModel.get(), rayModel.get(), bombModel.get(), rockOnRayModel.get());
+    SelectScene = Title;
+    SelectTimer = 0;
 }
 #pragma endregion 各種リソースの読み込みと初期化
 
@@ -351,7 +431,7 @@ void MCB::Scene::GameSceneDraw()
     mapPlayer.rotation = player.rotasion.y;
 
     mapPlayer.SpriteDraw(mapPlayer, *mapPlayerTexture.get(),mapPosition.x, mapPosition.y
-                            , 20, 20);
+                            , 30, 30);
     for (std::unique_ptr<PlayerBullet>& bullet : player.bullets)
     {
         MiniMapDraw(bullet->sprite, { bullet->position.x,bullet->position.z }, { player.position.x,player.position.z }, mapPlayerBTexture.get());
@@ -407,6 +487,7 @@ void MCB::Scene::GameSceneDraw()
     bosshpGazeSprite.SpriteDraw(bosshpGazeSprite,*BossGaze,dxWindow->window_width * 1/6 + 60,10,gazeSize.x * 60 * boss.hp / boss.maxhp,gazeSize.y * 1.5);
     debugText.Print((dxWindow->window_width * 1 / 6) + gazeSize.x * 20 + 60, 10 + gazeSize.y / 2 - 32 / 2, 2, "%d / %d", boss.hp, boss.maxhp);
     hpTextSprite.SpriteDraw(hpTextSprite,*hpTex, (dxWindow->window_width * 1 / 6) + gazeSize.x * 18, 32 + gazeSize.y / 2 - 32 / 2);
+    BossMarkSprite.SpriteDraw(BossMarkSprite, *mapBossTexture, dxWindow->window_width * 1 / 6 + 60 - gazeSize.x / 2, 10 + (gazeSize.y * 1.5) / 2);
 
     hpGazeSpaceSprite.SpriteDraw(hpGazeSpaceSprite, *hpGazeSpace, mapPosition.x - mapSize / 2, mapPosition.y - mapSize / 2 - 40, gazeSize.x * 20, gazeSize.y);
     hpGazeSprite.SpriteDraw(hpGazeSprite, *hpGaze, mapPosition.x - mapSize / 2, mapPosition.y - mapSize / 2 - 40, (gazeSize.x * 20) * player.GetHp() / player.maxhp, gazeSize.y);
@@ -431,6 +512,7 @@ void MCB::Scene::GameSceneDraw()
     //debugText.Print(20, 80, 2, "homingMissileCount:%d laserCount:%d bombCount;%d", player.homingMissileCount,
     //    player.laserCount,player.bombCount);
     debugText.AllDraw();
+    SceneChengeSprite.SpriteDraw(SceneChengeSprite, *noTexture, 0, 0, dxWindow->window_width, dxWindow->window_height);
 }
 
 void MCB::Scene::TitleSceneDraw()
@@ -448,11 +530,13 @@ void MCB::Scene::TitleSceneDraw()
     HiScoreSprite.SpriteDraw(HiScoreSprite, *HiScoreTex, 20, 60);
     debugText.Print(120, 60, 2, "%d", player.HiScore);
 
+
+
     mapBack.SpriteDraw(mapBack, *mapBackTexture.get(), mapPosition.x, mapPosition.y, mapSize, mapSize);
     mapPlayer.rotation = player.rotasion.y;
 
     mapPlayer.SpriteDraw(mapPlayer, *mapPlayerTexture.get(), mapPosition.x, mapPosition.y
-        , 20, 20);
+        , 30, 30);
     for (std::unique_ptr<PlayerBullet>& bullet : player.bullets)
     {
         MiniMapDraw(bullet->sprite, { bullet->position.x,bullet->position.z }, { player.position.x,player.position.z }, mapPlayerBTexture.get());
@@ -473,6 +557,26 @@ void MCB::Scene::TitleSceneDraw()
     switch (nowTutorial)
     {
     case None:
+        StartSprite.SpriteDraw(StartSprite,*StartTexture,(float)dxWindow->window_width / 2, (float)dxWindow->window_height / 2 + 300, 320 * 1.5, 32 * 1.5);
+        Attensyon.SpriteDraw(Attensyon,*attensyonTexture,(float)dxWindow->window_width / 2, (float)dxWindow->window_height / 2 - 400, 1388 * 1.5, 64 * 1.5);
+        if (TutorialSkip)
+        {
+            if (SelectTimer % 50 <= 25)tutorialSkipSprite.SpriteDraw(tutorialSkipSprite, *tutorialSkipTexture, (float)dxWindow->window_width * 2 / 3, (float)dxWindow->window_height / 2 + 400, 128 * 3, 32 * 3);
+            
+        }
+        else
+        {
+            tutorialSkipSprite.SpriteDraw(tutorialSkipSprite, *tutorialSkipTexture, (float)dxWindow->window_width * 2 / 3, (float)dxWindow->window_height / 2 + 400, 128 * 3, 32 * 3);
+        }
+        if (!TutorialSkip)
+        {
+          if(SelectTimer % 50 <= 25)  tutorialSelectSprite.SpriteDraw(tutorialSelectSprite, *tutorialSelectTexture, (float)dxWindow->window_width * 1 / 3, (float)dxWindow->window_height / 2 + 400, 128 * 3, 32 * 3);
+        }
+        else
+        {
+            tutorialSelectSprite.SpriteDraw(tutorialSelectSprite, *tutorialSelectTexture, (float)dxWindow->window_width * 1 / 3, (float)dxWindow->window_height / 2 + 400, 128 * 3, 32 * 3);
+        }
+        SelectTutoSprite.SpriteDraw(SelectTutoSprite, *SelectTutoTexture, (float)dxWindow->window_width / 2, (float)dxWindow->window_height / 2 + 200, 144 * 2, 64 * 2);
         break;
     case Move:
         moveTextSprite.SpriteDraw(moveTextSprite,*moveText,dxWindow->window_width / 2, 64,288 * 2, 32 * 2);
@@ -508,7 +612,7 @@ void MCB::Scene::TitleSceneDraw()
 
         break;
     case End:
-        endTextSprite.SpriteDraw(endTextSprite, *endText, dxWindow->window_width / 2, 64, 288 * 2, 64 * 2);
+       if(!TutorialSkip)  endTextSprite.SpriteDraw(endTextSprite, *endText, dxWindow->window_width / 2, 64, 288 * 2, 64 * 2);
         break;
     default:
         break;
@@ -550,26 +654,136 @@ void MCB::Scene::TitleSceneDraw()
         debugText.Print(dxWindow->window_width / 2 + 106, dxWindow->window_height * 5 / 6 + (128 * 1 / 8 - 16), 2, "%d / %d", player.bombCount, player.maxBombCount);
     }
 
+
+    debugText.AllDraw();
+    SceneChengeSprite.SpriteDraw(SceneChengeSprite, *noTexture, 0, 0, dxWindow->window_width, dxWindow->window_height);
+
     //debugText.Print(20, 200, 2, "TitleScene HiScore:%d Score:%d",player.HiScore, player.score);
     //debugText.Print(20, 0, 2, "exp:float->%f int->%d,NextLevelExp:%d,Level:%d,hp:%d", player.exp, (int)player.exp / 1,
     //    player.nextLevelExp, player.Level, player.GetHp());
     //debugText.Print(20, 80, 2, "homingMissileCount:%d laserCount:%d bombCount;%d", player.homingMissileCount,
     //    player.laserCount, player.bombCount);
-    debugText.AllDraw();
 }
 
 void MCB::Scene::ClearSceneDraw()
-{    //スプライト
+{   
+    Skydorm.Draw();
+    ground.Draw();
+    player.AllDraw();
+
+    for (std::unique_ptr<Exp>& exp : exps) { exp->ExpDraw(); }
+    //スプライト
     Sprite::SpriteCommonBeginDraw(*spritePipelinePtr);
-    debugText.Print(20, 200, 2," ClearScene");
+
+    mapBack.SpriteDraw(mapBack, *mapBackTexture.get(), mapPosition.x, mapPosition.y, mapSize, mapSize);
+    mapPlayer.rotation = player.rotasion.y;
+
+    mapPlayer.SpriteDraw(mapPlayer, *mapPlayerTexture.get(), mapPosition.x, mapPosition.y
+        , 30, 30);
+    for (std::unique_ptr<PlayerBullet>& bullet : player.bullets)
+    {
+        MiniMapDraw(bullet->sprite, { bullet->position.x,bullet->position.z }, { player.position.x,player.position.z }, mapPlayerBTexture.get());
+    }
+    //MiniMapDraw(boss.sprite, { boss.BaseRotationPos.x,boss.BaseRotationPos.z }, { player.position.x, player.position.z }, boss.bossMapTex,20);
+    //MiniMapDraw(boss.sprite, { boss.nextRotationPos.x,boss.nextRotationPos.z }, { player.position.x, player.position.z }, boss.bossMapTex,20);
+    MiniMapDraw(boss.sprite, { boss.position.x,boss.position.z }, { player.position.x, player.position.z }, boss.bossMapTex, 40, true);
+    GameClearSprite.SpriteDraw(GameClearSprite, *GameClearTexture, dxWindow->window_width / 2, dxWindow->window_height / 2 - 200, 128 * 3, 32 * 3);
+    SelectTutoSprite.SpriteDraw(SelectTutoSprite, *SelectTutoTexture, (float)dxWindow->window_width / 2, (float)dxWindow->window_height / 2 + 200, 144 * 2, 64 * 2);
+    StartSprite.SpriteDraw(StartSprite, *StartTexture, (float)dxWindow->window_width / 2, (float)dxWindow->window_height / 2 + 100, 320 * 1.5, 32 * 1.5);
+
+    ScoreSprite.SpriteDraw(ScoreSprite, *ScoreTex, dxWindow->window_width / 2 - 168, dxWindow->window_height / 2 + 64 - 200, 64 * 3, 32 * 3);
+    debugText.Print(dxWindow->window_width / 2 + 80, dxWindow->window_height / 2 + 80 - 200, 4, "%d", player.score);
+    HiScoreSprite.SpriteDraw(HiScoreSprite, *HiScoreTex, dxWindow->window_width / 2 - 208, dxWindow->window_height / 2 + 164 - 200, 96 * 3, 32 * 3);
+    debugText.Print(dxWindow->window_width / 2 + 80, dxWindow->window_height / 2 + 64 * 2 + 60 - 200, 4, "%d", player.HiScore);
+
+    if (SelectScene == Title)
+    {
+        if (SelectTimer % 50 <= 25)TitleSelectSprite.SpriteDraw(TitleSelectSprite, *TitleSelectTexture, (float)dxWindow->window_width * 1 / 3, (float)dxWindow->window_height / 2 + 400, 128 * 3, 32 * 3);
+
+    }
+    else
+    {
+        TitleSelectSprite.SpriteDraw(TitleSelectSprite, *TitleSelectTexture, (float)dxWindow->window_width * 1 / 3, (float)dxWindow->window_height / 2 + 400, 128 * 3, 32 * 3);
+    }
+    if (SelectScene == Game)
+    {
+        if (SelectTimer % 50 <= 25)  GameSelectSprite.SpriteDraw(GameSelectSprite, *GameSelectTexture, (float)dxWindow->window_width * 2 / 3, (float)dxWindow->window_height / 2 + 400, 128 * 3, 32 * 3);
+    }
+    else
+    {
+        GameSelectSprite.SpriteDraw(GameSelectSprite, *GameSelectTexture, (float)dxWindow->window_width * 2 / 3, (float)dxWindow->window_height / 2 + 400, 128 * 3, 32 * 3);
+    }
+
     debugText.AllDraw();
+    SceneChengeSprite.SpriteDraw(SceneChengeSprite, *noTexture, 0, 0, dxWindow->window_width, dxWindow->window_height);
 }
 
 void MCB::Scene::OverSceneDraw()
-{    //スプライト
+{   
+    Skydorm.Draw();
+    ground.Draw();
+    boss.AllDraw();
+    enemys.Draw();
+
+    for (std::unique_ptr<Exp>& exp : exps) { exp->ExpDraw(); }
+    //スプライト
     Sprite::SpriteCommonBeginDraw(*spritePipelinePtr);
-    debugText.Print(20, 200, 2, "OverScene");
+
+    mapBack.SpriteDraw(mapBack, *mapBackTexture.get(), mapPosition.x, mapPosition.y, mapSize, mapSize);
+    mapPlayer.rotation = player.rotasion.y;
+
+    mapPlayer.SpriteDraw(mapPlayer, *mapPlayerTexture.get(), mapPosition.x, mapPosition.y
+        , 30, 30);
+    for (std::unique_ptr<Enemy>& enemy : boss.enemys.enemys)
+    {
+        MiniMapDraw(enemy->sprite, { enemy->position.x,enemy->position.z }, { player.position.x,player.position.z }, enemy->mapTexture);
+    }
+    for (std::unique_ptr<Enemy>& enemy : boss.enemys.enemys)
+    {
+        for (std::unique_ptr<EnemyBullet>& bullet : enemy->bullets)
+        {
+            MiniMapDraw(bullet->sprite, { bullet->position.x,bullet->position.z }, { player.position.x,player.position.z }, bullet->mapTexture);
+        }
+    }
+    for (std::unique_ptr<Drone>& d : boss.drones)
+    {
+        MiniMapDraw(d->sprite, { d->position.x,d->position.z }, { player.position.x, player.position.z }, d->mapTexture);
+    }
+    //MiniMapDraw(boss.sprite, { boss.BaseRotationPos.x,boss.BaseRotationPos.z }, { player.position.x, player.position.z }, boss.bossMapTex,20);
+    //MiniMapDraw(boss.sprite, { boss.nextRotationPos.x,boss.nextRotationPos.z }, { player.position.x, player.position.z }, boss.bossMapTex,20);
+    MiniMapDraw(boss.sprite, { boss.position.x,boss.position.z }, { player.position.x, player.position.z }, boss.bossMapTex, 40, true);
+    //スプライト
+    GameOverSprite.SpriteDraw(GameOverSprite, *GameOverTexture, dxWindow->window_width / 2, dxWindow->window_height / 2 - 200, 128 * 3, 32 * 3);
+    SelectTutoSprite.SpriteDraw(SelectTutoSprite, *SelectTutoTexture, (float)dxWindow->window_width / 2, (float)dxWindow->window_height / 2 + 200, 144 * 2, 64 * 2);
+    StartSprite.SpriteDraw(StartSprite, *StartTexture, (float)dxWindow->window_width / 2, (float)dxWindow->window_height / 2 + 100, 320 * 1.5, 32 * 1.5);
+
+    ScoreSprite.SpriteDraw(ScoreSprite, *ScoreTex, dxWindow->window_width / 2 - 168, dxWindow->window_height / 2 + 64-200, 64 * 3, 32 * 3);
+    debugText.Print(dxWindow->window_width / 2 + 80, dxWindow->window_height / 2 + 80-200, 4, "%d", player.score);
+    HiScoreSprite.SpriteDraw(HiScoreSprite, *HiScoreTex, dxWindow->window_width / 2 - 208, dxWindow->window_height / 2 + 164-200, 96 * 3, 32 * 3);
+    debugText.Print(dxWindow->window_width / 2 + 80, dxWindow->window_height / 2 + 64 * 2 + 60-200, 4, "%d", player.HiScore);
+
+    if (SelectScene == Title)
+    {
+        if (SelectTimer % 50 <= 25)TitleSelectSprite.SpriteDraw(TitleSelectSprite, *TitleSelectTexture, (float)dxWindow->window_width * 1 / 3, (float)dxWindow->window_height / 2 + 400, 128 * 3, 32 * 3);
+
+    }
+    else
+    {
+        TitleSelectSprite.SpriteDraw(TitleSelectSprite, *TitleSelectTexture, (float)dxWindow->window_width * 1 / 3 , (float)dxWindow->window_height / 2 + 400, 128 * 3, 32 * 3);
+    }
+    if (SelectScene == Game)
+    {
+        if (SelectTimer % 50 <= 25)  GameSelectSprite.SpriteDraw(GameSelectSprite, *GameSelectTexture, (float)dxWindow->window_width * 2 / 3, (float)dxWindow->window_height / 2 + 400, 128 * 3, 32 * 3);
+    }
+    else
+    {
+        GameSelectSprite.SpriteDraw(GameSelectSprite, *GameSelectTexture, (float)dxWindow->window_width * 2 / 3, (float)dxWindow->window_height / 2 + 400,128*3,32*3);
+    }
+
     debugText.AllDraw();
+    SceneChengeSprite.SpriteDraw(SceneChengeSprite, *noTexture, 0, 0, dxWindow->window_width, dxWindow->window_height);
+
+
 }
 
 void MCB::Scene::GameSceneUpdate()
@@ -653,87 +867,220 @@ void MCB::Scene::GameSceneUpdate()
 
     }
 
-    if (GameStartFlag)
+    if (!isChengeScene)
     {
 
 
-        boss.Update();
-        player.Update();
-        enemys.Update();
-
-        for (std::unique_ptr<Exp>& exp : exps)
+        if (GameStartFlag)
         {
-            exp->Update();
-        }
-        exps.remove_if([](std::unique_ptr<Exp>& exp) {return exp->deleteFlag; });
 
-        if (boss.dethFlag)
-        {
-            nextScene = Clear;
-            ClearSceneInit();
-        }
-        else if (player.dethFlag)
-        {
-            nextScene = GameOver;
-            OverSceneInit();
+
+            boss.Update();
+            player.Update();
+            enemys.Update();
+
+            for (std::unique_ptr<Exp>& exp : exps)
+            {
+                exp->Update();
+            }
+            exps.remove_if([](std::unique_ptr<Exp>& exp) {return exp->deleteFlag; });
+
+            if (boss.dethFlag)
+            {
+                isChengeScene = true;
+                isChengeSceneTimer = 0;
+                soundManager.StopSoundWave(gameBGM);
+
+            }
+            else if (player.dethFlag)
+            {
+                isChengeScene = true;
+                isChengeSceneTimer = 0;
+                soundManager.StopSoundWave(gameBGM);
+            }
+            if (!player.dethFlag || !boss.dethFlag)
+            {
+                CheckAllColision();
+            }
+            if (player.GetTarget())rockOnleticle.position = player.GetTarget()->position;
         }
 
-        CheckAllColision();
-        if (player.GetTarget())rockOnleticle.position = player.GetTarget()->position;
+        if (!GameStartFlag)
+        {
+            if (GameTimer < GameMaxTime)
+            {
+                GameTimer++;
+                boss.position.y = Lerp(StartPos, player.nowFrontVec.vec.y * boss.distance, GameMaxTime, GameTimer);
+
+            }
+            else if (GameTimer < GameMaxTime + 10)
+            {
+                GameTimer++;
+            }
+            else
+            {
+                GameStartFlag = true;
+                Object3DInit();
+                exps.clear();
+            }
+        }
     }
 
-    if (!GameStartFlag)
+    if (isChengeScene)
     {
-        if (GameTimer < GameMaxTime)
+        if (isChengeSceneTimer < isChengeSceneTime)
         {
-            GameTimer++;
-            boss.position.y = Lerp(StartPos, player.nowFrontVec.vec.y * boss.distance, GameMaxTime, GameTimer);
-        
+            isChengeSceneTimer++;
         }
-        else if (GameTimer < GameMaxTime + 10)
+        if (prevScene != Game)
         {
-            GameTimer++;
+            SceneChengeSprite.color.w = Lerp(1, 0, isChengeSceneTime, isChengeSceneTimer);
+            if (isChengeSceneTimer >= isChengeSceneTime)
+            {
+                prevScene = nowScene;
+                enemys.enemys.clear();;
+                exps.clear();
+                GameSceneInit();
+                isChengeSceneTimer = 0;
+                isChengeScene = false;
+                SceneChengeSprite.color.w = 0;
+                soundManager.PlaySoundWave(gameBGM, true);
+            }
         }
         else
         {
-            GameStartFlag = true;
-            Object3DInit();
-            exps.clear();
+            SceneChengeSprite.color.w = Lerp(0, 1, isChengeSceneTime, isChengeSceneTimer);
+            if (isChengeSceneTimer >= isChengeSceneTime)
+            {
+                if (boss.dethFlag)
+                {
+                    nextScene = Clear;
+                    ClearSceneInit();
+                    isChengeSceneTimer = 0;
+                    for (int i = 0; i < 60; i++)
+                    {
+                        Sporn({ boss.position.x,boss.position.y,boss.position.z }, 0);
+                        DeleteExp();
+                    }
+                }
+                else if (player.dethFlag)
+                {
+                    nextScene = GameOver;
+                    OverSceneInit();
+                    isChengeSceneTimer = 0;
+                    for (int i = 0; i < 40; i++)
+                    {
+                        Sporn({ player.position.x,player.position.y,player.position.z }, 0,true);
+                        DeleteExp();
+                    }
+                }
+                prevScene = nowScene;
+                enemys.enemys.clear();
+                isChengeSceneTimer = 0;
+            }
         }
     }
 
 }
+
+
+
 void MCB::Scene::TitleSceneUpdate()
 {
-    
+
     switch (nowTutorial)
     {
     case None:
-        if (sinTimer > 2147483000) sinTimer = 0;
-        sinTimer++;
-        player.position.y = sinf(ConvertRadius(sinTimer)) * 20;
-        player.rockOnlaser.position = { player.position.x, player.position.y,player.position.z };
-        if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_X))
+        if (isChengeScene)
         {
-            titleMove = true;
-        }
-        if (titleMove)
-        {
-            titleTimer++;
-            if (titleTimer >= 0)
+            if (isChengeSceneTimer < isChengeSceneTime)
             {
-                titleSize.x = InOutQuad(160 * 6, 160 * 1, titleMaxTime, titleTimer);
-                titleSize.y = InOutQuad(64 * 6, 64 * 1, titleMaxTime, titleTimer);
-                titlePos.x = InOutQuad((float)dxWindow->window_width / 2, (float)dxWindow->window_width - 160 / 2, titleMaxTime, titleTimer);
-                titlePos.y = InOutQuad((float)dxWindow->window_height / 2, 64 / 2, titleMaxTime, titleTimer);
+                isChengeSceneTimer++;
+            }
+            if (prevScene != Title)
+            {
+                SceneChengeSprite.color.w = Lerp(1, 0, isChengeSceneTime, isChengeSceneTimer);
+                if (isChengeSceneTimer >= isChengeSceneTime)
+                {
+                    prevScene = nowScene;
+                    enemys.enemys.clear();;
+                    exps.clear();
+                    GameSceneInit();
+                    isChengeSceneTimer = 0;
+                    isChengeScene = false;
+                    SceneChengeSprite.color.w = 0;
+                    soundManager.PlaySoundWave(titleBGM, true);
+                }
             }
         }
-        if (titleTimer >= titleMaxTime)
+        else
         {
-            titleMove == false;
-            nowTutorial = Move;
-            player.Level = 0;
-            player.position.y = 0;
+            if (input->IsKeyTrigger(DIK_A) || input->gamePad->IsButtonTrigger(GAMEPAD_LEFT))
+            {
+                TutorialSkip = false;
+                soundManager.StopSoundWave(selectSound);
+                soundManager.PlaySoundWave(selectSound);
+            }
+            else if(input->IsKeyTrigger(DIK_D) || input->gamePad->IsButtonTrigger(GAMEPAD_RIGHT))
+            {
+                TutorialSkip = true;
+                soundManager.StopSoundWave(selectSound);
+                soundManager.PlaySoundWave(selectSound);
+
+            }
+
+            if (SelectTimer > 256)
+            {
+                SelectTimer = 0;
+            }
+
+            SelectTimer++;
+
+            if (sinTimer > 360) sinTimer = 0;
+            sinTimer++;
+            player.position.y = sinf(ConvertRadius(sinTimer)) * 20;
+            player.rockOnlaser.position = { player.position.x, player.position.y,player.position.z };
+            if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_X))
+            {
+                if (!TutorialSkip)
+                {
+                    titleMove = true;
+                    moveTutoPos = { (float)dxWindow->window_width / 2, 32 * 3 + 70 };
+                    moveTutoSize = { 288 * 2, 64 * 2 };
+                    rotaTutoPos = { (float)dxWindow->window_width / 2, 32 * 3 + 70 };
+                    rotaTutoSize = { 112 * 3, 64 * 2 };
+                    attackTutoPos = { (float)dxWindow->window_width / 2, 32 * 3 + 120 };
+                    attackTutoSize = { 112 * 3, 64 * 2 };
+
+
+                }
+                else
+                {
+                    nowTutorial = End;
+                    isChengeScene = true;
+                }
+                soundManager.StopSoundWave(titleBGM); 
+                soundManager.PlaySoundWave(enterSound);
+
+            }
+            if (titleMove)
+            {
+                titleTimer++;
+                if (titleTimer >= 0)
+                {
+                    titleSize.x = InOutQuad(160 * 6, 160 * 1, titleMaxTime, titleTimer);
+                    titleSize.y = InOutQuad(64 * 6, 64 * 1, titleMaxTime, titleTimer);
+                    titlePos.x = InOutQuad((float)dxWindow->window_width / 2, (float)dxWindow->window_width - 160 / 2, titleMaxTime, titleTimer);
+                    titlePos.y = InOutQuad((float)dxWindow->window_height / 2, 64 / 2, titleMaxTime, titleTimer);
+                }
+            }
+            if (titleTimer >= titleMaxTime)
+            {
+                titleMove == false;
+                nowTutorial = Move;
+                player.Level = 0;
+                player.position.y = 0;
+            }
         }
         break;
     case Move:
@@ -834,21 +1181,24 @@ void MCB::Scene::TitleSceneUpdate()
                 nowSPAttackTuto = None;
                 nowTutorial = End;
             }
-            player.exp = 0;
+            
             break;
         default:
             break;
         }
+        player.exp = 0;
         player.Update();
         player.Level = 0;
         break;
     case End:
-        if (enemys.enemys.size() < 1)enemys.enemyPop(&player, { (float)GetRand(-100,100),0,(float)GetRand(30,100) }, enemyModel.get(), testSphereModel.get(), mapEnemyTexture.get(), mapEnemyBTexture.get(), EnemyManager::Turret, Enemy::NoHoming);
-        if (player.homingMissileCount < 3) player.homingMissileCount = 3;
-        if (player.laserCount < 2) player.laserCount = 2;
-        if (player.bombCount < 1) player.bombCount = 1;
-
-        player.Update();
+        if (!TutorialSkip)
+        {
+            if (enemys.enemys.size() < 1)enemys.enemyPop(&player, { (float)GetRand(-100,100),0,(float)GetRand(30,100) }, enemyModel.get(), testSphereModel.get(), mapEnemyTexture.get(), mapEnemyBTexture.get(), EnemyManager::Turret, Enemy::NoHoming);
+            if (player.homingMissileCount < 3) player.homingMissileCount = 3;
+            if (player.laserCount < 2) player.laserCount = 2;
+            if (player.bombCount < 1) player.bombCount = 1;
+            player.Update();
+        }
         for (std::unique_ptr<Exp>& exp : exps)
         {
             exp->Update();
@@ -858,15 +1208,32 @@ void MCB::Scene::TitleSceneUpdate()
         if (player.exp >= 10 * 20)
         {
             player.Level = 1;
+            isChengeScene = true;
+            player.exp = 0;
+        }
+        if (isChengeScene)
+        {
+         
+            if (isChengeSceneTimer < isChengeSceneTime)
+            {
+                isChengeSceneTimer++;
+            }
+            SceneChengeSprite.color.w = Lerp(0, 1, isChengeSceneTime, isChengeSceneTimer);
+            if (isChengeSceneTimer >= isChengeSceneTime)
+            {
+                prevScene = nowScene;
+                nextScene = Game;
+                enemys.enemys.clear();;
+                exps.clear();
+                GameSceneInit();
+
+                isChengeSceneTimer = 0;
+                SceneChengeSprite.color.w = 1;
+                nowTutorial = None;
+            }
         }
 
-        if (player.Level >= 1)
-        {
-            nextScene = Game;
-            enemys.enemys.clear();;
-            exps.clear();
-            GameSceneInit();
-        }
+
 
         if (nowTutorial < Attack)
         {
@@ -891,19 +1258,137 @@ void MCB::Scene::TitleSceneUpdate()
 
 void MCB::Scene::ClearSceneUpdate()
 {
-    if (input->IsKeyTrigger(DIK_SPACE))
+    if (isChengeScene)
     {
-        nextScene = Title;
-        GameSceneInit();
+        if (isChengeSceneTimer < isChengeSceneTime)
+        {
+            isChengeSceneTimer++;
+        }
+        if (prevScene != Clear)
+        {
+            SceneChengeSprite.color.w = Lerp(1, 0, isChengeSceneTime, isChengeSceneTimer);
+            if (isChengeSceneTimer >= isChengeSceneTime)
+            {
+                prevScene = nowScene;
+                enemys.enemys.clear();;
+                ClearSceneInit();
+                isChengeSceneTimer = 0;
+                isChengeScene = false;
+                SceneChengeSprite.color.w = 0;
+            }
+        }
+        else
+        {
+            SceneChengeSprite.color.w = Lerp(0, 1, isChengeSceneTime, isChengeSceneTimer);
+            if (isChengeSceneTimer >= isChengeSceneTime)
+            {
+                nextScene = SelectScene;
+                isChengeSceneTimer = 0;
+                prevScene = nowScene;
+                exps.clear();
+                GameSceneInit();
+                TitleSceneInit();
+            }
+        }
     }
+    else
+    {
+        if (SelectTimer > 256)
+        {
+            SelectTimer = 0;
+        }
+
+        SelectTimer++;
+        if (input->IsKeyTrigger(DIK_A) || input->gamePad->IsButtonTrigger(GAMEPAD_LEFT))
+        {
+            soundManager.StopSoundWave(selectSound);
+            soundManager.PlaySoundWave(selectSound);
+            SelectScene = Title;
+        }
+        else if (input->IsKeyTrigger(DIK_D) || input->gamePad->IsButtonTrigger(GAMEPAD_RIGHT))
+        {
+            soundManager.StopSoundWave(selectSound);
+            soundManager.PlaySoundWave(selectSound);
+            SelectScene = Game;
+        }
+        if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_X))
+        {
+            isChengeScene = true;
+            isChengeSceneTimer = 0;
+            soundManager.PlaySoundWave(enterSound);
+        }
+    }
+        for (std::unique_ptr<Exp>& exp : exps)
+        {
+            exp->Update();
+        }
 }
 void MCB::Scene::OverSceneUpdate()
 {
-    if (input->IsKeyTrigger(DIK_SPACE))
+    if (isChengeScene)
     {
-        nextScene = Title;
-        GameSceneInit();
+        if (isChengeSceneTimer < isChengeSceneTime)
+        {
+            isChengeSceneTimer++;
+        }
+        if (prevScene != GameOver)
+        {
+            SceneChengeSprite.color.w = Lerp(1, 0, isChengeSceneTime, isChengeSceneTimer);
+            if (isChengeSceneTimer >= isChengeSceneTime)
+            {
+                prevScene = nowScene;
+                enemys.enemys.clear();;
+                ClearSceneInit();
+                isChengeSceneTimer = 0;
+                isChengeScene = false;
+                SceneChengeSprite.color.w = 0;
+            }
+        }
+        else
+        {
+            SceneChengeSprite.color.w = Lerp(0, 1, isChengeSceneTime, isChengeSceneTimer);
+            if (isChengeSceneTimer >= isChengeSceneTime)
+            {
+                nextScene = SelectScene;
+                isChengeSceneTimer = 0;
+                prevScene = nowScene;
+                exps.clear();
+                GameSceneInit();
+                TitleSceneInit();
+            }
+        }
     }
+    else
+    {
+        if (SelectTimer > 256)
+        {
+            SelectTimer = 0;
+        }
+
+        SelectTimer++;
+        if (input->IsKeyTrigger(DIK_A) || input->gamePad->IsButtonTrigger(GAMEPAD_LEFT))
+        {
+            soundManager.StopSoundWave(selectSound);
+            soundManager.PlaySoundWave(selectSound);
+            SelectScene = Title;
+        }
+        else if (input->IsKeyTrigger(DIK_D) || input->gamePad->IsButtonTrigger(GAMEPAD_RIGHT))
+        {
+            soundManager.StopSoundWave(selectSound);
+            soundManager.PlaySoundWave(selectSound);
+            SelectScene = Game;
+        }
+        if (input->IsKeyTrigger(DIK_SPACE) || input->gamePad->IsButtonTrigger(GAMEPAD_X))
+        {
+            isChengeScene = true;
+            isChengeSceneTimer = 0;
+            soundManager.PlaySoundWave(enterSound);
+        }
+    }
+        for (std::unique_ptr<Exp>& exp : exps)
+        {
+            exp->Update();
+        }
 }
 void MCB::Scene::Draw()
 {
@@ -1227,6 +1712,11 @@ void MCB::Scene::CheckAllColision()
                 { enemy->position.x,enemy->position.y,enemy->position.z }, enemy->r) && !enemy->deleteFlag)
             {
                 enemy->Deth(bomb.get()->damage);
+                if (!boss.imotalFlag)
+                {
+                    boss.imotalTimer = 60;
+                    boss.imotalFlag = true;
+                }
                 player.score += bomb.get()->damage * player.Level;
                 if (enemy->deleteFlag)
                 {
@@ -1273,6 +1763,16 @@ void MCB::Scene::CheckAllColision()
         }
     }
 
+    for (std::unique_ptr<Enemy>& enemy : boss.enemys.enemys)
+    {
+        if (CalcSphere({ enemy->position.x,enemy->position.y,enemy->position.z }, enemy->r,
+            { player.position.x,player.position.y,player.position.z }, player.r))
+        {
+            player.EnemyBulletHit(1);
+            enemy->deleteFlag = true;
+        }
+    }
+
 
     for (std::unique_ptr<Drone>& d : boss.drones)
     {
@@ -1306,6 +1806,10 @@ void MCB::Scene::CheckAllColision()
             { player.position.x,player.position.y,player.position.z }, player.r))
         {
             exp->ExpApproach();
+        }
+        else
+        {
+            exp->sinFlag = true;
         }
     }
 
@@ -1538,7 +2042,7 @@ void MCB::Scene::TutorialCheckAllColision()
                 { player.position.x,player.position.y,player.position.z }, player.r))
             {
                 exp->GetExp();
-                player.GetExp(exp->expPoint);
+                player.exp += exp.get()->expPoint;
                 if (nowTutorial == ExpTuto)
                 {
                     nowTutorial = SPAttack;
@@ -1557,6 +2061,10 @@ void MCB::Scene::TutorialCheckAllColision()
                 { player.position.x,player.position.y,player.position.z }, player.r))
             {
                 exp->ExpApproach();
+            }
+            else
+            {
+                exp->sinFlag = true;
             }
         }
     }
@@ -1619,13 +2127,25 @@ void MCB::Scene::MatrixUpdate()
 
         break;
     case Clear:
-
+        Skydorm.MatrixUpdata(matView, matProjection);
+        ground.MatrixUpdata(matView, matProjection);
+        player.AllMatrixUpdate(matView, matProjection);
+        for (std::unique_ptr<Exp>& exp : exps)
+        {
+            exp->MatrixUpdata(matView, matProjection);
+        }
 
 
         break;
     case GameOver:
 
-
+        Skydorm.MatrixUpdata(matView, matProjection);
+        ground.MatrixUpdata(matView, matProjection);
+        for (std::unique_ptr<Exp>& exp : exps)
+        {
+            exp->MatrixUpdata(matView, matProjection);
+        }
+        boss.AllMatrixUpdate(matView, matProjection);
         break;
     default:
         nowScene = Title;
@@ -1647,14 +2167,21 @@ MCB::Scene::Scene(RootParameter* root, Depth* depthptr, PipelineRootSignature* p
     depth = depthptr;
 }
 
-void MCB::Scene::Sporn(Float3 enemyPos,float expPoint)
+void MCB::Scene::Sporn(Float3 enemyPos,float expPoint,bool isplayer)
 {
     std::unique_ptr<Exp> exp = make_unique<Exp>();
     exp->Init();
-    exp->model = testBoxModel.get();
+    if (isplayer)
+    {
+        exp->model = playerExpModel.get();
+    }
+    else
+    {
+        exp->model = enemyExpModel.get();
+    }
     exp->scale = { 2,2,2 };
-    exp->ExpInit(GetRand(0, 10),
-        { enemyPos.x,enemyPos.y,enemyPos.z },
+    exp->ExpInit(GetRand(2, 10),
+        { enemyPos.x + GetRand(-10, 10),enemyPos.y + GetRand(-10, 10),enemyPos.z + GetRand(-10, 10) },
         { (float)GetRand(-1000, 1000) / 1000.0f,(float)GetRand(-1000,1000) / 1000.0f,
         (float)GetRand(-1000,1000) / 1000.0f }, &player);
     exp->expPoint = expPoint;

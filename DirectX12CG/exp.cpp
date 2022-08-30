@@ -1,5 +1,5 @@
 #include "exp.h"
-#include "Util.h"
+
 
 using namespace MCB;
 using namespace std;
@@ -25,6 +25,19 @@ void Exp::Update()
 	position.y += velocity.vec.y * speed;
 	position.z += velocity.vec.z * speed;
 
+	if (speed <= 0 && sinFlag)
+	{
+		if (sinTimer > 360) sinTimer = 0;
+		sinTimer++;
+		position.y = sin(ConvertRadius(sinTimer)) * sinOffSet + prevPos.y;
+	}
+	else
+	{
+		prevPos.x = position.x;
+		prevPos.y = position.y;
+		prevPos.z = position.z;
+	}
+
 	lifeTime++;
 	if (lifeTime >= maxLifeTime)
 	{
@@ -49,6 +62,7 @@ void Exp::StopSlerp()
 
 void Exp::ExpApproach()
 {
+	sinFlag = false;
 	Float3 targetposition = { playerPtr->position.x,playerPtr->position.y,playerPtr->position.z };
 	Vector3D toPlayer;
 	toPlayer = toPlayer.V3Get({ position.x,position.y,position.z }, targetposition);

@@ -32,7 +32,7 @@ void Player::PlayerInit(Model* model, Model* bulletModel, Model* missileModel, M
 	attackResponceTime = 10;
 	Level = 1;
 	nextLevelExp = 10 * 20;
-	maxhp = 20;
+	maxhp = 10;
 	hp = maxhp;
 	r = 3;
 	this->model = model;
@@ -57,7 +57,9 @@ void Player::PlayerInit(Model* model, Model* bulletModel, Model* missileModel, M
 	rockOnlaser.scale = { 1,1, targetRay.range };
 	rockOnlaser.position = { position.x, position.y,position.z};
 	playerQ = { 0,0,0,1 };
-
+	imotalFlag = false;
+	imotalTimer = 0;
+	imotalTime = 30;
 }
 
 void Player::Update()
@@ -363,7 +365,7 @@ void Player::LevelUp()
 	{
 		exp = 0;
 		Level++;
-		maxhp = maxhp + ((Level - 1) * 10);
+		maxhp = maxhp + ((Level - 1) * 5);
 		hp = maxhp;
 		nextLevelExp = nextLevelExp + (10 * 20 * (Level - 1));
 	}

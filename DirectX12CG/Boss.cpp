@@ -10,7 +10,7 @@ void Boss::Init(Player* target, MCB::Float3 position, MCB::Model* model, MCB::Mo
 
 void Boss::AllMatrixUpdate(MCB::View& view, MCB::Projection& proj)
 {
-	MatrixUpdata(view, proj);
+	MatrixUpdata(view, proj,BossQ);
 	enemys.UpdateMatrix(view, proj);
 	for (std::unique_ptr<Drone>& d : drones)
 	{
@@ -359,7 +359,7 @@ void Boss::Init(Player* target, MCB::Float3 position,
 	r = 60;
 	enemys.enemys.clear();
 	BaseRotationPos = rotationPos[0];
-	BossQ = { 0,0,0,1 };
+	BossQ.SetRota({ 0,1,0 }, ConvertRadius(180));
 	rightVec.vec = { 1,0,0 };
 	UpVec.vec = { 0,1,0 };
 	rotationVec.vec = { 0,1,0 };

@@ -147,6 +147,9 @@ namespace MCB
 		std::shared_ptr<Model> enemyModel;
 		std::shared_ptr<Model> bossModel;
 		std::shared_ptr<Model> planeModel;
+		std::shared_ptr<Model> enemyExpModel;
+		std::shared_ptr<Model> playerExpModel;
+		std::shared_ptr<Model> playerBulletModel;
 #pragma endregion 3Dモデル
 
 		//テクスチャ
@@ -157,6 +160,7 @@ namespace MCB
 		std::shared_ptr <Texture> mapPlayerTexture;
 		std::shared_ptr <Texture> mapPlayerBTexture;
 		std::shared_ptr <Texture> mapBackTexture;
+		std::shared_ptr <Texture> mapBossTexture;
 		std::shared_ptr <Texture> rockOnreticle;
 		std::shared_ptr <Texture> titleName;
 		std::shared_ptr <Texture> moveText;
@@ -198,12 +202,29 @@ namespace MCB
 		std::shared_ptr <Texture> endText;
 
 		std::shared_ptr <Texture> noTexture;
+		std::shared_ptr <Texture> StartTexture;
+
+		std::shared_ptr <Texture> attensyonTexture;
+
+		std::shared_ptr <Texture> GameClearTexture;
+		std::shared_ptr <Texture> GameOverTexture;
+
+		std::shared_ptr <Texture> GameSelectTexture;
+		std::shared_ptr <Texture> TitleSelectTexture;
+		std::shared_ptr <Texture> tutorialSelectTexture;
+		std::shared_ptr <Texture> tutorialSkipTexture;
+		std::shared_ptr <Texture> SelectTutoTexture;
 #pragma endregion テクスチャ
 
 		//サウンド
 		#pragma region サウンド
 		int rockOnreticleNum = 0;
 		int volume = 255;
+
+		int selectSound;
+		int titleBGM;
+		int enterSound;
+		int gameBGM;
 #pragma endregion サウンド
 
 #pragma endregion 各種リソース
@@ -225,6 +246,7 @@ namespace MCB
 		Sprite test;
 		Sprite mapBack;
 		Sprite mapPlayer;
+		
 		Sprite titleNameSprite;
 		Sprite moveTextSprite;
 		Sprite moveTutoSprite;
@@ -264,6 +286,19 @@ namespace MCB
 		Sprite endTextSprite;
 
 		Sprite SceneChengeSprite;
+		Sprite StartSprite;
+
+		Sprite GameOverSprite;
+		Sprite GameClearSprite;
+
+		Sprite BossMarkSprite;
+		Sprite Attensyon;
+
+		Sprite GameSelectSprite;
+		Sprite TitleSelectSprite;
+		Sprite tutorialSelectSprite;
+		Sprite tutorialSkipSprite;
+		Sprite SelectTutoSprite;
 #pragma endregion スプライト
 		
 		#pragma region 通常変数
@@ -276,7 +311,7 @@ namespace MCB
 		int nowScene = Title;
 		int nextScene = Title;
 
-		MCB::Float2 titlePos = { (float)dxWindow->window_width / 2, (float)dxWindow->window_height / 2 };
+		MCB::Float2 titlePos = { (float)dxWindow->window_width / 2, (float)dxWindow->window_height / 2-100 };
 		MCB::Float2 titleSize = { 160 * 6,64 * 6 };
 		int titleTimer = 0;
 		int titleMaxTime = 300;
@@ -314,8 +349,15 @@ namespace MCB
 
 		int sinTimer = -1;
 
-		
+		int isChengeSceneTimer = 0;
+		int isChengeSceneTime = 120;
+		bool isChengeScene = false;
+		int prevScene = None;
 
+		int SelectScene = Title;
+		bool TutorialSkip = false;
+
+		int SelectTimer = 0;
 #pragma endregion 通常変数
 		
 	public:
@@ -350,11 +392,11 @@ namespace MCB
 		void ClearSceneDraw();
 		void OverSceneDraw();
 		void Draw() override;
-		void Sporn(Float3 enemyPos, float expPoint);
+		void Sporn(Float3 enemyPos, float expPoint, bool isplayer = false);
 
 		void DeleteExp();
 
-		void MiniMapDraw(Sprite sprite, Float2 objectPos, Float2 playerPos, Texture* maptex, float SpriteSize = 15,bool flag = false);
+		void MiniMapDraw(Sprite sprite, Float2 objectPos, Float2 playerPos, Texture* maptex, float SpriteSize = 20,bool flag = false);
 		void CheckAllColision();
 
 		void TutorialCheckAllColision();

@@ -31,7 +31,7 @@ private:
 	int attackResponceTime = 10;
 
 public:
-	int maxhp = 20;
+	int maxhp = 10;
 	int hp = maxhp;
 	bool dethFlag = false;
 	int score = 0;
