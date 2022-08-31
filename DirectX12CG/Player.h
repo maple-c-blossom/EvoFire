@@ -33,7 +33,7 @@ public:
 	int normalAttackSound;
 	int DethSound;
 	int damageArat;
-
+	int levelUpSound;
 	MCB::SoundManager* soundmanager;
 private:
 	Object3d* target = nullptr;

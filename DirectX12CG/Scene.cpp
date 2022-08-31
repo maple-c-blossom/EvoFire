@@ -236,6 +236,7 @@ void MCB::Scene::LoadSound()
     GameClearBGM = soundManager.LoadWaveSound("Resources\\sound\\GameCrearBGM.wav");
     GameOverBGM = soundManager.LoadWaveSound("Resources\\sound\\GameOver.wav");
     tutorialBGM = soundManager.LoadWaveSound("Resources\\sound\\Tutorial.wav");
+    player.levelUpSound = soundManager.LoadWaveSound("Resources\\sound\\LevelUp.wav");
 
     soundManager.SetVolume(5, titleBGM);
     soundManager.SetVolume(3, gameBGM);
@@ -254,6 +255,7 @@ void MCB::Scene::LoadSound()
     soundManager.SetVolume(3, GameClearBGM);
     soundManager.SetVolume(3, GameOverBGM);
     soundManager.SetVolume(3, tutorialBGM);
+    soundManager.SetVolume(25, player.levelUpSound);
 }
 
 void MCB::Scene::SpriteInit()

@@ -376,6 +376,7 @@ void Player::LevelUp()
 		maxhp = maxhp + ((Level - 1) * 5);
 		hp = maxhp;
 		nextLevelExp = nextLevelExp + (10 * 20 * (Level - 1));
+		soundmanager->PlaySoundWave(levelUpSound);
 	}
 }
 
