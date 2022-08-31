@@ -50,7 +50,6 @@ SoundManager::SoundManager()
 
 MCB::SoundManager::~SoundManager()
 {
-	xAudio2.Reset();
 	for (int i = 0; i < MaxSound; i++)
 	{
 		if (sounds[i].pBuffer != nullptr)
@@ -63,6 +62,7 @@ MCB::SoundManager::~SoundManager()
 			sounds[i].pSourceVoice = nullptr;
 		}
 	}
+	xAudio2.Reset();
 
 }
 

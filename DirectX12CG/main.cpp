@@ -69,6 +69,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
         fpsControll.FPSFixed();
     }
 #pragma endregion ÉQÅ[ÉÄÉãÅ[Év
+    
     ShaderResource::DeleteInstace();
     DxWindow::DeleteInstance();
     Dx12::DeleteInstace();
