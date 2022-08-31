@@ -32,7 +32,7 @@ void Player::PlayerInit(Model* model, Model* bulletModel, Model* missileModel, M
 	attackResponceTime = 10;
 	Level = 1;
 	nextLevelExp = 10 * 20;
-	maxhp = 10;
+	maxhp = 15;
 	hp = maxhp;
 	r = 3;
 	this->model = model;
