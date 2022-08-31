@@ -382,8 +382,8 @@ void Player::LevelUp()
 
 void Player::SPAttack()
 {
-	if ((input->IsKeyDown(DIK_LSHIFT) && input->IsKeyTrigger(DIK_C)) || 
-		(input->gamePad->IsButtonDown(GAMEPAD_LB) && input->gamePad->IsButtonTrigger(GAMEPAD_A)))
+	if (input->IsKeyTrigger(DIK_Q) || 
+		input->gamePad->IsButtonTrigger(GAMEPAD_A))
 	{
 		if (homingMissileCount > 0)
 		{
@@ -402,8 +402,8 @@ void Player::SPAttack()
 		}
 	}
 
-	if ((input->IsKeyDown(DIK_LSHIFT) && input->IsKeyTrigger(DIK_V)) ||
-		(input->gamePad->IsButtonDown(GAMEPAD_LB) && input->gamePad->IsButtonTrigger(GAMEPAD_B)))
+	if (input->IsKeyTrigger(DIK_E) ||
+		input->gamePad->IsButtonTrigger(GAMEPAD_B))
 	{
 		if (laserCount > 0)
 		{
@@ -417,8 +417,8 @@ void Player::SPAttack()
 		}
 	}
 
-	if ((input->IsKeyDown(DIK_LSHIFT) && input->IsKeyTrigger(DIK_B)) ||
-		(input->gamePad->IsButtonDown(GAMEPAD_LB) && input->gamePad->IsButtonTrigger(GAMEPAD_Y)))
+	if (input->IsKeyTrigger(DIK_R) ||
+		input->gamePad->IsButtonTrigger(GAMEPAD_Y))
 	{
 		if (bombCount > 0)
 		{
