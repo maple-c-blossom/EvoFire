@@ -12,7 +12,7 @@ private:
 	MCB::Input* input = MCB::Input::GetInstance();
 	float speedFront = 0.0f;
 	float speedRight = 0.0f;
-	float rotasionSpeed = 0.025f;
+	float rotasionSpeed = 0.015f;
 	float speed = 2.0f;
 	float Srowspeed = 0.25f;
 	float maxspeed = 15.0f;

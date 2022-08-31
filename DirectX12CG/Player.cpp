@@ -42,7 +42,7 @@ void Player::PlayerInit(Model* model, Model* bulletModel, Model* missileModel, M
 	this->bombModel = bombModel;
 	this->rockOnlaserModel = rockOnlaserModel;
 	scale = { 6,6,6 };
-	targetRay.radius = 3;
+	targetRay.radius = 50;
 	targetRay.rayVec = nowFrontVec;
 	targetRay.StartPosition.x = position.x;
 	targetRay.StartPosition.y = position.y;
@@ -219,17 +219,17 @@ void Player::Rotasion()
 		{
 			if (input->IsKeyDown(DIK_UP))
 			{
-				position.y += 25;
+				position.y += 15.0f;
 			}
 
 			if (input->IsKeyDown(DIK_DOWN))
 			{
-				position.y -= 25;
+				position.y -= 15.0f;
 			}
 
 			if (input->gamePad->RStick.y)
 			{
-				float angleSpeed = 25 * input->gamePad->RStick.y;
+				float angleSpeed = 15.0f * input->gamePad->RStick.y;
 				if (Abs(input->gamePad->RStick.x) >= 0.4)
 				{
 					angleSpeed = 0;
@@ -268,15 +268,15 @@ void Player::Rotasion()
 		//	RollQ.SetRota(nowFrontVec, angle.z);
 		//}
 
-		if (input->IsKeyDown(DIK_E) || input->IsKeyDown(DIK_Q) || input->gamePad->RStick.x)
+		if (input->IsKeyDown(DIK_RIGHT) || input->IsKeyDown(DIK_LEFT) || input->gamePad->RStick.x)
 		{
-			if (input->IsKeyDown(DIK_E))
+			if (input->IsKeyDown(DIK_RIGHT))
 			{
 				angle.y += rotasionSpeed;
 				rotasion.y += rotasionSpeed;
 			}
 
-			if (input->IsKeyDown(DIK_Q))
+			if (input->IsKeyDown(DIK_LEFT))
 			{
 				angle.y -= rotasionSpeed;
 				rotasion.y -= rotasionSpeed;
