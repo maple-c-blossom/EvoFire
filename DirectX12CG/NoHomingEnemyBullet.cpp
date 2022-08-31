@@ -24,6 +24,7 @@ void NoHomingEnemyBullet::Fire(Float3 startPosition, Vector3D frontVec, Object3d
 	this->target = target;
 	if (target == nullptr)
 	{
+		velocity.V3Norm();
 		velocity = frontVec;
 	}
 	else

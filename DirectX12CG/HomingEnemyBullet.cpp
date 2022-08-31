@@ -61,6 +61,7 @@ void HomingEnemyBullet::Fire(Float3 startPosition, Vector3D frontVec, Object3d* 
 	position.x = startPosition.x;
 	position.y = startPosition.y;
 	position.z = startPosition.z;
+	velocity.V3Norm();
 	velocity = frontVec;
 	this->target = target;
 	lifeTime = 0;

@@ -480,6 +480,10 @@ void MCB::Scene::GameSceneDraw()
             MiniMapDraw(bullet->sprite, { bullet->position.x,bullet->position.z }, { player.position.x,player.position.z }, bullet->mapTexture);
         }
     }
+    for (std::unique_ptr<EnemyBullet>& bullet : boss.bullets)
+    {
+        MiniMapDraw(bullet->sprite, { bullet->position.x,bullet->position.z }, { player.position.x,player.position.z }, bullet->mapTexture);
+    }
     for (std::unique_ptr<Drone>& d : boss.drones)
     {
         MiniMapDraw(d->sprite, { d->position.x,d->position.z }, { player.position.x, player.position.z }, d->mapTexture);
@@ -1831,6 +1835,25 @@ void MCB::Scene::CheckAllColision()
             {
                 bullet->SlerpHit();
             }
+        }
+    }
+
+    for (std::unique_ptr<EnemyBullet>& bullet : boss.bullets)
+    {
+        if (CalcSphere({ bullet->position.x,bullet->position.y,bullet->position.z }, bullet->r,
+            { player.position.x,player.position.y,player.position.z }, player.r))
+        {
+            soundManager.StopSoundWave(playerDamageSound);
+            soundManager.PlaySoundWave(playerDamageSound);
+            bullet->BulletHit();
+            player.EnemyBulletHit(bullet->damage);
+            continue;
+        }
+
+        if (CalcSphere({ bullet->position.x,bullet->position.y,bullet->position.z }, bullet->slerpStopR,
+            { player.position.x,player.position.y,player.position.z }, player.r))
+        {
+            bullet->SlerpHit();
         }
     }
 

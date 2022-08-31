@@ -4,6 +4,8 @@
 #include "Drone.h"
 #include "EnemyManager.h"
 #include "Player.h"
+#include "NoHomingEnemyBullet.h"
+#include "HomingEnemyBullet.h"
 class Boss :public Enemy
 {
 private:
@@ -33,7 +35,7 @@ public:
 	MCB::Texture* EnemyBMapTex = nullptr;
 	MCB::Texture* bossMapTex = nullptr;
 	MCB::Texture* droneMapTex = nullptr;
-
+	std::list<std::unique_ptr<EnemyBullet>> bullets;
 	Player* playerPtr = nullptr;
 	int enemyPopTimer = 0;
 	int enemyPopTime = 60;
@@ -51,6 +53,11 @@ public:
 	int popTimer = 0;
 	int popTime = 60;
 	bool isPop = false;
+
+	int bAttackTimer = 0;
+	int gbAttackTimer = 0;
+	const int maxBAttackTime = 5;
+
 
 	EnemyManager enemys;
 	int hitCount = 0;
@@ -104,6 +111,8 @@ public:
 	void Move();
 	void Clrcle();
 	void Rotasion();
+	void Fire();
+	void GFire();
 	void Attack();
 	void Deth(int damege);
 	void Init(Player* target, MCB::Float3 position, 

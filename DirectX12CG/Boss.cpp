@@ -16,6 +16,10 @@ void Boss::AllMatrixUpdate(MCB::View& view, MCB::Projection& proj)
 	{
 		d->MatrixUpdata(view, proj);
 	}
+	for (std::unique_ptr<EnemyBullet>& bullet : bullets)
+	{
+		bullet->MatrixUpdata(view, proj);
+	}
 
 }
 
@@ -30,6 +34,10 @@ void Boss::AllDraw()
 	for (std::unique_ptr<Drone>& d : drones)
 	{
 		d->Draw();
+	}
+	for (std::unique_ptr<EnemyBullet>& bullet : bullets)
+	{
+		bullet->Draw();
 	}
 }
 
@@ -52,7 +60,11 @@ void Boss::Update()
 	}
 	drones.remove_if([](std::unique_ptr<Drone>& d) {return d->deleteFlag; });
 	enemys.Update();
-
+	for (std::unique_ptr<EnemyBullet>& bullet : bullets)
+	{
+		bullet->Update();
+	}
+	bullets.remove_if([](std::unique_ptr<EnemyBullet>& bullet) {return bullet->deleteFlag; });
 
 }
 
@@ -260,6 +272,7 @@ void Boss::Clrcle()
 		if (moveTimer < moveTime)
 		{
 			moveTimer++;
+			Fire();
 		}
 			model->material.constMapMaterial->color = { 0.0,0.0,1.f,1 };
 
@@ -307,13 +320,82 @@ void Boss::Rotasion()
 	nowFrontVec = targetVec;
 }
 
+void Boss::Fire()
+{
+	bAttackTimer++;
+
+	if (bAttackTimer > maxBAttackTime)
+	{
+		bAttackTimer = 0;
+		for (int i = 0; i < 10; i++)
+		{
+			std::unique_ptr<EnemyBullet> bullet;
+			bullet = std::make_unique<NoHomingEnemyBullet>();
+			bullet->Fire({ position.x,position.y,position.z }, { (float)GetRand(-10000,10000) / (float)10000,(float)GetRand(-10000,10000) / (float)10000 ,(float)GetRand(-10000,10000) / (float)10000 }, nullptr);
+			bullet->model = EnemyBModel;
+			bullet->scale = { 6,6,6 };
+			bullet->rotasion = rotasion;
+			bullet->maxLifeTime = 60;
+			bullet->speedOffSet = 50;
+			bullet->mapTexture = EnemyBMapTex;
+			bullets.push_back(std::move(bullet));
+		}
+		std::unique_ptr<EnemyBullet> bullet;
+		bullet = std::make_unique<HomingEnemyBullet>();
+		bullet->Fire({ position.x,position.y,position.z }, { (float)GetRand(-10000,10000) / (float)10000,(float)GetRand(-10000,10000) / (float)10000 ,(float)GetRand(-10000,10000) / (float)10000 }, playerPtr);
+		bullet->model = EnemyBModel;
+		bullet->scale = { 6,6,6 };
+		bullet->rotasion = rotasion;
+		bullet->maxLifeTime = 180;
+		bullet->speedOffSet = 50;
+		bullet->mapTexture = EnemyBMapTex;
+		bullets.push_back(std::move(bullet));
+	}
+}
+
+void Boss::GFire()
+{
+	gbAttackTimer++;
+
+	if (gbAttackTimer > maxBAttackTime * 6)
+	{
+		gbAttackTimer = 0;
+		for (int i = 0; i < 10; i++)
+		{
+			std::unique_ptr<EnemyBullet> bullet;
+			bullet = std::make_unique<NoHomingEnemyBullet>();
+			bullet->Fire({ position.x,position.y,position.z }, { (float)GetRand(-10000,10000) / (float)10000,(float)GetRand(-10000,10000) / (float)10000 ,(float)GetRand(-10000,10000) / (float)10000 }, nullptr);
+			bullet->model = EnemyBModel;
+			bullet->scale = { 6,6,6 };
+			bullet->rotasion = rotasion;
+			bullet->maxLifeTime = 60;
+			bullet->speedOffSet = 50;
+			bullet->mapTexture = EnemyBMapTex;
+			bullets.push_back(std::move(bullet));
+		}
+		std::unique_ptr<EnemyBullet> bullet;
+		bullet = std::make_unique<HomingEnemyBullet>();
+		bullet->Fire({ position.x,position.y,position.z }, { (float)GetRand(-10000,10000) / (float)10000,(float)GetRand(-10000,10000) / (float)10000 ,(float)GetRand(-10000,10000) / (float)10000 }, playerPtr);
+		bullet->model = EnemyBModel;
+		bullet->scale = { 6,6,6 };
+		bullet->rotasion = rotasion;
+		bullet->maxLifeTime = 120;
+		bullet->speedOffSet = 10;
+		bullet->mapTexture = EnemyBMapTex;
+		bullets.push_back(std::move(bullet));
+	}
+}
+
 void Boss::Attack()
 {
 	
 
 	PopEnemy();
 	FireDrone();
-
+	if (hp <= maxhp / 6)
+	{
+		GFire();
+	}
 
 }
 
@@ -390,5 +472,8 @@ void Boss::Init(Player* target, MCB::Float3 position,
 	hp = maxhp;
 	dethFlag = false;
 	nowFrontVec.vec = { 0,0,1 };
+	bullets.clear();
+	bAttackTimer = 0;
+	gbAttackTimer = 0;
 }
 
