@@ -895,7 +895,12 @@ void MCB::Scene::GameSceneUpdate()
             player.bombCount++;
         }
 
+        player.hp = player.maxhp;
+    }
 
+    if (input->IsKeyTrigger(DIK_0))
+    {
+        degug = !degug;
     }
 
     if (!isChengeScene)
@@ -1497,11 +1502,20 @@ void MCB::Scene::CheckAllColision()
         player.position.x = player.prevPosition.x;
         player.position.y = player.prevPosition.y;
         player.position.z = player.prevPosition.z;
+        player.targetRay.StartPosition.x = player.position.x;
+        player.targetRay.StartPosition.y = player.position.y;
+        player.targetRay.StartPosition.z = player.position.z;
+        player.rockOnlaser.position.x  = player.position.x;
+        player.rockOnlaser.position.y = player.position.y;
+        player.rockOnlaser.position.z = player.position.z;
     }
 
     if (player.position.y < -1500)
     {
         player.position.y = player.prevPosition.y;
+        player.targetRay.StartPosition.y = player.position.y;
+        player.rockOnlaser.position.y = player.position.y;
+
     }
 
     float mintargetDist = player.targetRay.range;
@@ -1827,6 +1841,7 @@ void MCB::Scene::CheckAllColision()
             soundManager.PlaySoundWave(playerDamageSound);
             player.EnemyBulletHit(1);
             enemy->deleteFlag = true;
+            enemy->position = { -100000,-100000,-100000 };
         }
     }
 

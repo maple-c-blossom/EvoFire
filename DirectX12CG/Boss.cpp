@@ -389,5 +389,6 @@ void Boss::Init(Player* target, MCB::Float3 position,
 	maxhp = 700;
 	hp = maxhp;
 	dethFlag = false;
+	nowFrontVec.vec = { 0,0,1 };
 }
 
