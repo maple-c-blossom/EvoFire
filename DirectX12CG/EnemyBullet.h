@@ -11,9 +11,9 @@ protected:
 public:
 	MCB::Texture* mapTexture;
 	MCB::Sprite sprite;
-	float speedOffSet = 5;
+	float speedOffSet = 30;
 	int lifeTime = 0;
-	int maxLifeTime = 120;
+	int maxLifeTime = 300;
 	int damage = 1;
 	int t = 2;
 	const int defoT = 2;

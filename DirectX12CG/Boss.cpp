@@ -335,8 +335,8 @@ void Boss::Fire()
 			bullet->model = EnemyBModel;
 			bullet->scale = { 6,6,6 };
 			bullet->rotasion = rotasion;
-			bullet->maxLifeTime = 60;
-			bullet->speedOffSet = 50;
+			bullet->speedOffSet = 35;
+			bullet->maxLifeTime = 300;
 			bullet->mapTexture = EnemyBMapTex;
 			bullets.push_back(std::move(bullet));
 		}
@@ -345,9 +345,9 @@ void Boss::Fire()
 		bullet->Fire({ position.x,position.y,position.z }, { (float)GetRand(-10000,10000) / (float)10000,(float)GetRand(-10000,10000) / (float)10000 ,(float)GetRand(-10000,10000) / (float)10000 }, playerPtr);
 		bullet->model = EnemyBModel;
 		bullet->scale = { 6,6,6 };
+		bullet->speedOffSet = 25;
 		bullet->rotasion = rotasion;
-		bullet->maxLifeTime = 180;
-		bullet->speedOffSet = 50;
+		bullet->maxLifeTime = 600;
 		bullet->mapTexture = EnemyBMapTex;
 		bullets.push_back(std::move(bullet));
 	}
@@ -369,7 +369,6 @@ void Boss::GFire()
 			bullet->scale = { 6,6,6 };
 			bullet->rotasion = rotasion;
 			bullet->maxLifeTime = 60;
-			bullet->speedOffSet = 50;
 			bullet->mapTexture = EnemyBMapTex;
 			bullets.push_back(std::move(bullet));
 		}
@@ -380,7 +379,6 @@ void Boss::GFire()
 		bullet->scale = { 6,6,6 };
 		bullet->rotasion = rotasion;
 		bullet->maxLifeTime = 120;
-		bullet->speedOffSet = 10;
 		bullet->mapTexture = EnemyBMapTex;
 		bullets.push_back(std::move(bullet));
 	}

@@ -7,7 +7,7 @@ class PlayerBullet :public MCB::Object3d
 {
 private:
 	MCB::Vector3D velocity = {};
-	float speedOffSet = 5;
+	float speedOffSet = 50;
 	int lifeTime = 0;
 	int maxLifeTime = 120;
 	MCB::Object3d* target = nullptr;

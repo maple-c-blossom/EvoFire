@@ -57,7 +57,7 @@ void HomingEnemyBullet::Update()
 void HomingEnemyBullet::Fire(Float3 startPosition, Vector3D frontVec, Object3d* target)
 {
 	Init();
-	speedOffSet = 25;
+	speedOffSet = 5;
 	position.x = startPosition.x;
 	position.y = startPosition.y;
 	position.z = startPosition.z;

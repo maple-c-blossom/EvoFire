@@ -65,8 +65,6 @@ void GuardEnemy::Attack()
 		bullet->model = bulletModel;
 		bullet->scale = { 6,6,6 };
 		bullet->rotasion = rotasion;
-		bullet->maxLifeTime = 100;
-		bullet->speedOffSet = 30;
 		bullet->mapTexture = bulletMapTexture;
 		bullets.push_back(std::move(bullet));
 		attacktime = 0;
