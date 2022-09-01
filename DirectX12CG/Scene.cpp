@@ -1834,6 +1834,11 @@ void MCB::Scene::CheckAllColision()
                 { player.position.x,player.position.y,player.position.z }, player.r))
             {
                 bullet->SlerpHit();
+                if (bullet->maxLifeTime > 60)
+                {
+                    bullet->maxLifeTime = 60;
+                    bullet->lifeTime = 0;
+                }
             }
         }
     }
@@ -1854,7 +1859,11 @@ void MCB::Scene::CheckAllColision()
             { player.position.x,player.position.y,player.position.z }, player.r))
         {
             bullet->SlerpHit();
-            bullet->lifeTime += 50;
+            if (bullet->maxLifeTime > 60)
+            {
+                bullet->maxLifeTime = 60;
+                bullet->lifeTime = 0;
+            }
             bullet->speedOffSet = 25;
         }
         else

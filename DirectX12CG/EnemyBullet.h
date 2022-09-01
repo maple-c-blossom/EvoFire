@@ -21,7 +21,7 @@ public:
 	int tUpdateTime = 5;
 	int tUpdateNowTime = 0;
 	float r = 10;
-	float slerpStopR = 30 + r;
+	float slerpStopR = 120 + r;
 	bool deleteFlag = false;
 	bool SlerpStop = false;
 	//void VelocityUpdate();

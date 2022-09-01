@@ -83,7 +83,6 @@ void RushEnemy::Attack()
 		bullet = std::make_unique<NoHomingEnemyBullet>();
 		bullet->Fire({ position.x,position.y,position.z }, nowFrontVec, nullptr);
 		bullet->model = bulletModel;
-		bullet->scale = { 6,6,6 };
 		bullet->rotasion = rotasion;
 		bullet->mapTexture = bulletMapTexture;
 		bullets.push_back(std::move(bullet));

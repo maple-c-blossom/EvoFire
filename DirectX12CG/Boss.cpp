@@ -333,7 +333,6 @@ void Boss::Fire()
 			bullet = std::make_unique<NoHomingEnemyBullet>();
 			bullet->Fire({ position.x,position.y,position.z }, { (float)GetRand(-10000,10000) / (float)10000,(float)GetRand(-10000,10000) / (float)10000 ,(float)GetRand(-10000,10000) / (float)10000 }, nullptr);
 			bullet->model = EnemyBModel;
-			bullet->scale = { 6,6,6 };
 			bullet->rotasion = rotasion;
 			bullet->speedOffSet = 35;
 			bullet->maxLifeTime = 300;
@@ -344,7 +343,6 @@ void Boss::Fire()
 		bullet = std::make_unique<HomingEnemyBullet>();
 		bullet->Fire({ position.x,position.y,position.z }, { (float)GetRand(-10000,10000) / (float)10000,(float)GetRand(-10000,10000) / (float)10000 ,(float)GetRand(-10000,10000) / (float)10000 }, playerPtr);
 		bullet->model = EnemyBModel;
-		bullet->scale = { 6,6,6 };
 		bullet->speedOffSet = 20;
 		bullet->rotasion = rotasion;
 		bullet->maxLifeTime = 500;
@@ -366,7 +364,6 @@ void Boss::GFire()
 			bullet = std::make_unique<NoHomingEnemyBullet>();
 			bullet->Fire({ position.x,position.y,position.z }, { (float)GetRand(-10000,10000) / (float)10000,(float)GetRand(-10000,10000) / (float)10000 ,(float)GetRand(-10000,10000) / (float)10000 }, nullptr);
 			bullet->model = EnemyBModel;
-			bullet->scale = { 6,6,6 };
 			bullet->rotasion = rotasion;
 			bullet->maxLifeTime = 60;
 			bullet->mapTexture = EnemyBMapTex;
@@ -376,7 +373,6 @@ void Boss::GFire()
 		bullet = std::make_unique<HomingEnemyBullet>();
 		bullet->Fire({ position.x,position.y,position.z }, { (float)GetRand(-10000,10000) / (float)10000,(float)GetRand(-10000,10000) / (float)10000 ,(float)GetRand(-10000,10000) / (float)10000 }, playerPtr);
 		bullet->model = EnemyBModel;
-		bullet->scale = { 6,6,6 };
 		bullet->rotasion = rotasion;
 		bullet->maxLifeTime = 120;
 		bullet->mapTexture = EnemyBMapTex;

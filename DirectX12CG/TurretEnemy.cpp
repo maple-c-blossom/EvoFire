@@ -57,7 +57,6 @@ void TurretEnemy::Attack()
 			bullet->Fire({ position.x,position.y,position.z }, nowFrontVec, target);
 		}
 		bullet->model = bulletModel;
-		bullet->scale = { 6,6,6 };
 		bullet->rotasion = rotasion;
 		bullet->mapTexture = bulletMapTexture;
 		bullets.push_back(std::move(bullet));
