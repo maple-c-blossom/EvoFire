@@ -239,7 +239,7 @@ void Boss::Move()
 		hitCount = 0;
 	}
 	
-	if (rotationPosMoveTimer >= maxRotationPosMoveTimer * 2 / 3)
+	if (rotationPosMoveTimer >= maxRotationPosMoveTimer / 15)
 	{
 		model->material.constMapMaterial->color = { 0.0,0.0,1.f,1 };
 	}
