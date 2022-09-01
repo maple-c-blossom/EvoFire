@@ -345,9 +345,9 @@ void Boss::Fire()
 		bullet->Fire({ position.x,position.y,position.z }, { (float)GetRand(-10000,10000) / (float)10000,(float)GetRand(-10000,10000) / (float)10000 ,(float)GetRand(-10000,10000) / (float)10000 }, playerPtr);
 		bullet->model = EnemyBModel;
 		bullet->scale = { 6,6,6 };
-		bullet->speedOffSet = 25;
+		bullet->speedOffSet = 20;
 		bullet->rotasion = rotasion;
-		bullet->maxLifeTime = 600;
+		bullet->maxLifeTime = 500;
 		bullet->mapTexture = EnemyBMapTex;
 		bullets.push_back(std::move(bullet));
 	}
